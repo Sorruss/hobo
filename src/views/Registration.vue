@@ -46,7 +46,7 @@
               />
             </el-form-item>
             <el-form-item>
-              <el-button @click="submitRegistration" plain>Обрати локацiю</el-button>
+              <el-button @click="submitRegistration" plain type="danger">Обрати локацiю</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -99,9 +99,9 @@ export default defineComponent({
       try {
         (this.$refs['registrationForm'] as typeof ElForm).validate((valid: any) => {
           if (valid) {
-            console.log('it`s valid')
+            // тут должен быть путь на второй экран
+            this.$router.push('/game_step')
           } else {
-            console.log('it`s not valid')
             return false
           }
         })
@@ -145,6 +145,12 @@ export default defineComponent({
   }
   .el-input__inner {
     font-size: 1.3em;
+  }
+  .el-button {
+    color: #af2121;
+    &:hover {
+      color: white;
+    }
   }
 }
 </style>
