@@ -57,6 +57,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { useCookies } from 'vue3-cookies'
 import { ElForm } from 'element-plus'
 
 export default defineComponent({
@@ -94,20 +95,28 @@ export default defineComponent({
       }
     }
   },
+  setup() {
+    const { cookies } = useCookies()
+    return { cookies }
+  },
   methods: {
     submitRegistration() {
       try {
         (this.$refs['registrationForm'] as typeof ElForm).validate((valid: any) => {
           if (valid) {
             // тут должен быть путь на второй экран
-            this.$router.push('/game_step')
+            this.$router.push('/game_step');
+            
+            this.cookies.set('userName', this.student.name)
+            this.cookies.set('userSurname', this.student.surname)
+            this.cookies.set('userGroup', this.student.group)
           } else {
             return false
           }
         })
       } catch (error) {
         console.log(error)
-      } 
+      }
     }
   }
 });

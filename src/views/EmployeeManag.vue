@@ -71,7 +71,7 @@ export default defineComponent({
 </script>
 
 <style scope lang="scss">
-$arrowSize: 70px;
+$arrowSize: 3em;
 
 .cards {
   display: flex;
@@ -102,7 +102,7 @@ $arrowSize: 70px;
     justify-content: center;
     align-items: center;
     img {
-      width: 40px;
+      width: 2em;
       position: fixed;
     }
   }

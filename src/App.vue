@@ -51,6 +51,9 @@ export default defineComponent({
       repeatDialogVisible: false,
       drawerIsActive: false
     }
+  },
+  mounted() {
+    this.$cookies.set('theme', 'default')
   }
 })
 </script>

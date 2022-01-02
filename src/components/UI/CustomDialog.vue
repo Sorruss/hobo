@@ -24,12 +24,17 @@ export default defineComponent({
     }
   },
   created() {
-    window.addEventListener('keydown', (event) => {
-      console.log(event.key)
-      if (event.key == 'Escape') {
-        this.hide()
-      }
-    })
+    let listenerExist = null
+    if (this.show) {
+      listenerExist = window.addEventListener('keydown', (event) => {
+        if (event.key == 'Escape') {
+          this.hide()
+        }
+      })
+    } else if (listenerExist) {
+      window.removeEventListener('keydown', listenerExist)
+      listenerExist = null
+    }
   }
 })
 </script>
