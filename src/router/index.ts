@@ -13,7 +13,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/game_step',
-    name: 'game_step',
+    name: 'game_start',
     component: () => import('@/views/EmployeeManag.vue')
   }
 ]

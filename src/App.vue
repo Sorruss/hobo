@@ -14,13 +14,14 @@
       <router-view></router-view>
     </div>
 
-    <div v-if="$route.fullPath.includes('game_step')" class="right">
+    <div @click="nextYear" v-if="$route.fullPath.includes('game_step')" class="right">
       <img :src="images.arrowBlack" alt="arrow_right">
+      <span class="right__year-counter">{{ yearCounter }}</span>
     </div>
 
     <custom-dialog v-model:show="repeatDialogVisible">
       <p>Ви впевнені, що хочете розпочати проходження заново?</p>
-      <el-button type="danger">Так</el-button>
+      <el-button @click="restart" type="danger">Так</el-button>
     </custom-dialog>
 
     <el-drawer 
@@ -49,11 +50,27 @@ export default defineComponent({
     return {
       images: {arrowBlack, repeatImage, referenceImage},
       repeatDialogVisible: false,
-      drawerIsActive: false
+      drawerIsActive: false,
+      yearCounter: 0
     }
   },
   mounted() {
     this.$cookies.set('theme', 'default')
+  },
+  methods: {
+    restart() {
+      this.$router.push('/')
+      this.repeatDialogVisible = false
+      this.drawerIsActive = false
+      this.yearCounter = 0
+
+    },
+    nextYear() {
+      if (this.yearCounter === 15) {
+        this.$router.push('/') // тут должен был переход на экран результатов и добавить условие чтобы все были живы и тд
+      }
+      this.yearCounter++
+    }
   }
 })
 </script>

@@ -63,12 +63,17 @@ import { ElForm } from 'element-plus'
 export default defineComponent({
   name: 'Registration',
   components: {},
+  setup() {
+    const { cookies } = useCookies()
+    return { cookies }
+  },
   data() {
+    const { cookies } = useCookies()
     return {
       student: {
-        surname: '',
-        name: '',
-        group: ''
+        surname: cookies.get('userSurname'),
+        name: cookies.get('userName'),
+        group: cookies.get('userGroup')
       },
       rules: {
         name: [
@@ -95,10 +100,6 @@ export default defineComponent({
       }
     }
   },
-  setup() {
-    const { cookies } = useCookies()
-    return { cookies }
-  },
   methods: {
     submitRegistration() {
       try {
@@ -106,7 +107,7 @@ export default defineComponent({
           if (valid) {
             // тут должен быть путь на второй экран
             this.$router.push('/game_step');
-            
+
             this.cookies.set('userName', this.student.name)
             this.cookies.set('userSurname', this.student.surname)
             this.cookies.set('userGroup', this.student.group)

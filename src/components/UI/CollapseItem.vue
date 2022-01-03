@@ -2,10 +2,12 @@
   <el-collapse-item :title="setting.title" :name="setting.id">
     <el-radio-group v-model="resourse" size="medium"> 
       <el-radio 
-        v-for="variant in setting.variants" 
+        v-for="(variant, id) in setting.variants" 
         border 
-        :key="variant" 
+        :key="variant + id"
         :label="variant"
+        @click="test(variant + id)"
+        :ref="variant + id"
       >
       </el-radio>
     </el-radio-group>
@@ -25,6 +27,12 @@ export default defineComponent({
   data() {
     return {
       resourse: ''
+    }
+  },
+  methods: {
+    test(idx) {
+      const setting = {[this.setting.translation]: this.$refs[idx][0].label}
+      this.$emit('setSetting', setting)
     }
   }
 })

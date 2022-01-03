@@ -9,7 +9,7 @@
     <div class="card__stats">
       <el-progress
         :text-inside="true"
-        :stroke-width="20"
+        :stroke-width="22"
         :percentage="employee.state.hp"
         :status="setStatus('hp')"
       >
@@ -25,7 +25,7 @@
       </el-progress>
       <el-progress
         :text-inside="true"
-        :stroke-width="20"
+        :stroke-width="22"
         :percentage="employee.state.hearing"
         :status="setStatus('hearing')"
       >
@@ -36,8 +36,9 @@
       <el-collapse v-model="activeSetting">
         <collapse-item 
           v-for="(setting, id) in settings" 
-          :key="id"
+          :key="setting + id"
           :setting="setting"
+          @setSetting="$emit('setSetting', [employee.id, $event])"
         />
       </el-collapse>
     </div>

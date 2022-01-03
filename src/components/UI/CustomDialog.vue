@@ -22,19 +22,6 @@ export default defineComponent({
     hide() {
       this.$emit('update:show', false)
     }
-  },
-  created() {
-    let listenerExist = null
-    if (this.show) {
-      listenerExist = window.addEventListener('keydown', (event) => {
-        if (event.key == 'Escape') {
-          this.hide()
-        }
-      })
-    } else if (listenerExist) {
-      window.removeEventListener('keydown', listenerExist)
-      listenerExist = null
-    }
   }
 })
 </script>
