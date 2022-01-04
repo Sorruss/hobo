@@ -106,7 +106,7 @@ export default defineComponent({
         (this.$refs['registrationForm'] as typeof ElForm).validate((valid: any) => {
           if (valid) {
             // тут должен быть путь на второй экран
-            this.$router.push('/game_step');
+            this.$router.push('/choose');
 
             this.cookies.set('userName', this.student.name)
             this.cookies.set('userSurname', this.student.surname)

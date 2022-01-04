@@ -15,7 +15,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/game_step',
     name: 'game_start',
     component: () => import('@/views/EmployeeManag.vue')
-  }
+  },
+  {
+    path: '/choose',
+    name: 'EmployeeChoose',
+    component: () => import('@/views/EmployeeChoose.vue')
+  },
 ]
 
 export default createRouter({
