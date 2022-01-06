@@ -21,7 +21,7 @@
         </svg>
       </div>
     </div>
-    <el-button @click="stepToManag" plain type="danger">Підтверити область</el-button>
+    <arrow-right-button :func="stepToManag"></arrow-right-button>
   </div>
 </template>
 
@@ -45,31 +45,5 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.map-container {
-  margin-top: 50px;
-  text-align: center;
-}
-.map-block {
-  display: inline-block;
-  width: 70%;
-  position: relative;
-  text-align: center;
-}
-.map-img {
-  width: 100%;
-}
-
-svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-}
-.part {
-  opacity: 0;
-  transition: 0.5s opacity;
-  &:hover {
-    opacity: 0.5;
-  }
-}
+@import '@/assets/employeeChoose.scss';
 </style>

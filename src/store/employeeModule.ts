@@ -1,3 +1,5 @@
+import router from '@/router'
+
 export const employeeModule = {
   namespaced: true,
   state: {
@@ -42,13 +44,26 @@ export const employeeModule = {
         translation: 'treatment',
         variants: ['наркоз', 'сон', 'мясо', 'голуби']
       }
-    ]
+    ],
+    yearCounter: 0
   },
   getters: {},
   mutations: {
     setSetting(state: any, setting: any) {
       Object.assign(state.employees[setting[0] - 1].settings, setting[1])
+    },
+    setYearCounter(state: any, newVal: number) {
+      state.yearCounter = newVal
     }
   },
-  actions: {}
+  actions: {
+    nextYear({ state, commit } : {state: any, commit: any}) {
+      if (state.yearCounter >= 14) {
+        commit('setYearCounter', 0)
+        router.push('/') // тут должен был переход на экран результатов и добавить условие чтобы все были живы и тд
+        return
+      }
+      commit('setYearCounter', state.yearCounter + 1)
+    }
+  }
 }

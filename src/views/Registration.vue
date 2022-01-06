@@ -45,14 +45,12 @@
                 show-word-limit
               />
             </el-form-item>
-            <el-form-item>
-              <el-button @click="submitRegistration" plain type="danger">Обрати локацiю</el-button>
-            </el-form-item>
           </el-form>
         </div>
       </el-col>
     </el-row>
   </div>
+  <arrow-right-button :func="submitRegistration"></arrow-right-button>
 </template>
 
 <script lang="ts">
@@ -105,8 +103,7 @@ export default defineComponent({
       try {
         (this.$refs['registrationForm'] as typeof ElForm).validate((valid: any) => {
           if (valid) {
-            // тут должен быть путь на второй экран
-            this.$router.push('/choose');
+            this.$router.push('/choose')
 
             this.cookies.set('userName', this.student.name)
             this.cookies.set('userSurname', this.student.surname)
@@ -124,43 +121,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scope>
-.inscription {
-  font-size: 3.75em;
-  max-width: 1em;
-  text-align: center;
-  word-wrap: break-word;
-}
-.registration {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.registration__form {
-  .el-input {
-    min-width: 400px;
-  }
-  label {
-    color: #f7f7f7;
-    font-size: 1.2em;
-    margin-right: 25px;
-  }
-  &:last-child div {
-    display: flex;
-    justify-content: flex-end;
-    button {
-      font-size: 1.2em;
-    }
-  }
-  .el-input__inner {
-    font-size: 1.3em;
-  }
-  .el-button {
-    color: #af2121;
-    &:hover {
-      color: white;
-    }
-  }
-}
+@import '@/assets/registration.scss';
 </style>

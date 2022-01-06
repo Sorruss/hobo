@@ -101,24 +101,5 @@ export default defineComponent({
 </script>
 
 <style scope lang="scss">
-.card {
-  max-width: 24%;
-  display: flex;
-  flex-direction: column;
-  &__position {
-    padding: 5px 0px;
-    text-align: center;
-  }
-  &__photo {
-    width: 100%;
-    img {
-      width: inherit;
-    }
-  }
-  &__stats {
-    .el-progress {
-      margin-bottom: 5px;
-    }
-  }
-}
+@import '@/assets/employeeCard.scss';
 </style>

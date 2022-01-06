@@ -1,0 +1,47 @@
+@import '@/assets/variables.scss';
+
+.el-collapse {
+  border: none;
+  &-item__header {
+    color: white;
+    background-color: $backgroundColor;
+    padding-left: 10px;
+  }
+  &-item__wrap {
+    background-color: $backgroundColorDarker1;
+    .el-collapse-item__content {
+      color: white;
+    }
+  }
+  &-item__content {
+    padding: 10px 0px 10px 10px;
+  }
+}
+
+.el-radio-group {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  & > label {
+    margin-bottom: 5px;
+  }
+  & > label:first-child {
+    margin-left: 10px;
+  }
+  & > label:last-child {
+    margin-right: 30px;
+    margin-bottom: 0px;
+  }
+
+  .el-radio__label {
+    color: $textColor;
+  }
+}
+.el-radio__input.is-checked+.el-radio__label {
+  color: $textColorSelected;
+  font-weight: bold;
+}
+.el-radio.is-bordered.el-radio--medium {
+  border-radius: 0px;
+}

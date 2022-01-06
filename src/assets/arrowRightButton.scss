@@ -1,0 +1,30 @@
+@import './variables.scss';
+
+.right {
+  position: absolute;
+  height: 100%;
+  right: 0;
+  top: 0;
+  width: 5%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  transition: all 0.1s ease-in-out;
+  img {
+    width: $arrowSize;
+    position: fixed;
+    top: calc(50% - $arrowSize/2);
+  }
+  &__year-counter {
+    position: fixed;
+    top: calc(50% + $arrowSize/2);
+    font-size: 1.3em;
+    background-color: black;
+    padding: 0px 5px;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+  &:hover {
+    background-color: darken($backgroundColor, 10);
+  }
+}

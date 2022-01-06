@@ -1,0 +1,46 @@
+@import './variables.scss';
+
+.cards {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.left {
+  width: 5%;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  .repeat, .reference {
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 2em;
+      position: fixed;
+    }
+  }
+}
+.repeat, .reference {
+  transition: all 0.1s ease-in-out;
+}
+.repeat:hover, .reference:hover {
+  background-color: darken($backgroundColor, 10);
+  transform: scale(1.05);
+}
+
+.el-drawer {
+  background-color: $backgroundColorLighter !important;
+  color: $drawerTextColor;
+  &__header span {
+    color: $drawerTextColor;
+  }
+  &__close-btn {
+    transition: all 0.1s ease-in-out;
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}

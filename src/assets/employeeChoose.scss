@@ -1,0 +1,27 @@
+.map-container {
+  margin-top: 50px;
+  text-align: center;
+}
+.map-block {
+  display: inline-block;
+  width: 70%;
+  position: relative;
+  text-align: center;
+}
+.map-img {
+  width: 100%;
+}
+
+svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+.part {
+  opacity: 0;
+  transition: 0.5s opacity;
+  &:hover {
+    opacity: 0.5;
+  }
+}

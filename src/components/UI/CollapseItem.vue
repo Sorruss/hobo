@@ -39,49 +39,5 @@ export default defineComponent({
 </script>
 
 <style scope lang="scss">
-.el-collapse {
-  border: none;
-  &-item__header {
-    color: white;
-    background-color: #C1A6A7;
-    padding-left: 10px;
-  }
-  &-item__wrap {
-    background-color: #aa8d8e;
-    .el-collapse-item__content {
-      color: white;
-    }
-  }
-  &-item__content {
-    padding: 10px 0px 10px 10px;
-  }
-}
-
-.el-radio-group {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-
-  & > label {
-    margin-bottom: 5px;
-  }
-  & > label:first-child {
-    margin-left: 10px;
-  }
-  & > label:last-child {
-    margin-right: 30px;
-    margin-bottom: 0px;
-  }
-
-  .el-radio__label {
-    color: white;
-  }
-}
-.el-radio__input.is-checked+.el-radio__label {
-  color: lightgreen;
-  font-weight: bold;
-}
-.el-radio.is-bordered.el-radio--medium {
-  border-radius: 0px;
-}
+@import '@/assets/UI/collapseItem.scss';
 </style>
