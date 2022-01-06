@@ -67,6 +67,7 @@ export const employeeModule = {
       }
 
       if (state.yearCounter >= 14) {
+        commit('setGameStarted', false, {root: true})
         commit('setYearCounter', 0)
         router.push({name: 'ResultReport'})
         return
