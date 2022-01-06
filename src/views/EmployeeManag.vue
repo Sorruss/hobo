@@ -36,6 +36,11 @@ export default defineComponent({
       settings: state => state.settings,
       yearCounter: state => state.yearCounter
     })
+  },
+  mounted() {
+    if (!this.$store.state.isAuth) {
+      this.$router.push({name: 'Registration'})
+    }
   }
 })
 </script>

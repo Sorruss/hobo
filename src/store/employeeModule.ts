@@ -61,17 +61,27 @@ export const employeeModule = {
     }
   },
   actions: {
-    nextYear({ state, commit } : {state: any, commit: any}) {
+    nextYear({ state, commit } : { state: any, commit: any }) {
       for (let employee of state.employees) {
-        state.employees[employee.id - 1].history.push(employee.settings)
+        employee.history.push(Object.assign({}, employee.settings))
       }
 
       if (state.yearCounter >= 14) {
         commit('setYearCounter', 0)
-        router.push('/') // тут должен был переход на экран результатов и добавить условие чтобы все были живы и тд
+        router.push({name: 'ResultReport'})
         return
       }
       commit('setYearCounter', state.yearCounter + 1)
+    },
+    clearHistories({ state } : { state: any }) {
+      for (let employee of state.employees) {
+        employee.history = []
+      }
+    },
+    clearSettings({ state } : { state: any }) {
+      for (let employee of state.employees) {
+        employee.settings = {}
+      }
     }
   }
 }

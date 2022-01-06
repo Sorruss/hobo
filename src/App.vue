@@ -47,14 +47,17 @@ export default defineComponent({
       drawerIsActive: false
     }
   },
-  mounted() {
-    this.$cookies.set('theme', 'default')
-  },
   methods: {
     restart() {
       this.repeatDialogVisible = false
       this.drawerIsActive = false
+
+      this.$store.commit('setIsAuth', false)
+      this.$store.commit('setGameStarted', false)
       this.$store.commit('employeeModule/setYearCounter', 0)
+      this.$store.dispatch('employeeModule/clearHistories')
+      this.$store.dispatch('employeeModule/clearSettings')
+
       this.$router.push({name: 'Registration'})
     }
   }

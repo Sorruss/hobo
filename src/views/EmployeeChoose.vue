@@ -21,7 +21,7 @@
         </svg>
       </div>
     </div>
-    <arrow-button :func="toManag"></arrow-button>
+    <arrow-button @click="$store.commit('setGameStarted', true)" :func="toManag"></arrow-button>
     <arrow-button :func="toRegistration" direction="left"></arrow-button>
   </div>
 </template>
@@ -36,6 +36,11 @@ export default defineComponent({
     ...mapState('chooseLocationModule', {
       map_png: state => state.map_png
     })
+  },
+  mounted() {
+    if (this.$store.state.gameStarted && !this.$route.fullPath.includes('game_step')) {
+      this.$router.push({name: 'GameStart'})
+    }
   },
   methods: {
     ...mapActions('navigationModule', {

@@ -98,16 +98,25 @@ export default defineComponent({
       }
     }
   },
+  mounted() {
+    // @ts-ignore
+    if (this.$store.state.gameStarted && !this.$route.fullPath.includes('game_step')) {
+      this.$router.push({name: 'GameStart'})
+    }
+  },
   methods: {
     submitRegistration() {
       try {
         (this.$refs['registrationForm'] as typeof ElForm).validate((valid: any) => {
           if (valid) {
-            this.$router.push({name: 'EmployeeChoose'})
-
             this.cookies.set('userName', this.student.name)
             this.cookies.set('userSurname', this.student.surname)
             this.cookies.set('userGroup', this.student.group)
+
+            // @ts-ignore
+            this.$store.commit('setIsAuth', true)
+
+            this.$router.push({name: 'EmployeeChoose'})
           } else {
             return false
           }
