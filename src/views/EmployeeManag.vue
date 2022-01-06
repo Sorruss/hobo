@@ -13,59 +13,21 @@
 <script>
 import { defineComponent } from 'vue'
 import EmployeeCard from '@/views/EmployeeCard.vue'
+import { mapState, mapMutations } from 'vuex'
+
 export default defineComponent({
   name: 'EmployeeManagement',
   components: {EmployeeCard},
   methods: {
-    setSetting(setting) {
-      Object.assign(this.employees[setting[0] - 1].settings, setting[1])
-    }
+    ...mapMutations('employeeModule', {
+      setSetting: 'setSetting'
+    })
   },
-  data() {
-    return {
-      employees: [
-        {id: 1, position: 'Программист', 
-          state: {hp: 100, vision: 100, hearing: 100}, 
-          settings: {},
-          optionalSettings: {}
-        },
-        {id: 2, position: 'Водитель', 
-          state: {hp: 100, vision: 100, hearing: 100}, 
-          settings: {},
-          optionalSettings: {}
-        },
-        {id: 3, position: 'Механик', 
-          state: {hp: 100, vision: 100, hearing: 100}, 
-          settings: {},
-          optionalSettings: {}
-        },
-        {id: 4, position: 'Токарь', 
-          state: {hp: 100, vision: 100, hearing: 100}, 
-          settings: {},
-          optionalSettings: {}
-        }
-      ],
-      settings: [
-        {
-          id: 1,
-          title: 'Питание',
-          translation: 'nutrition',
-          variants: ['на молоке', 'диета', 'мясо', 'голуби']
-        },
-        {
-          id: 2,
-          title: 'Отдых',
-          translation: 'relaxation',
-          variants: ['геншин', 'танки', 'ютуб', 'голуби']
-        },
-        {
-          id: 3,
-          title: 'Лечение',
-          translation: 'treatment',
-          variants: ['наркоз', 'сон', 'мясо', 'голуби']
-        }
-      ]
-    }
+  computed: {
+    ...mapState('employeeModule', {
+      employees: state => state.employees,
+      settings: state => state.settings
+    })
   }
 })
 </script>
