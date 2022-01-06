@@ -8,9 +8,9 @@
       @setSetting="setSetting"
     />
   </div>
-  <arrow-right-button :func="nextYear">
+  <arrow-button :func="nextYear">
     {{ yearCounter }}
-  </arrow-right-button>
+  </arrow-button>
 </template>
 
 <script>

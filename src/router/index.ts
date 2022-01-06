@@ -13,14 +13,14 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/game_step',
-    name: 'game_start',
+    name: 'GameStart',
     component: () => import('@/views/EmployeeManag.vue')
   },
   {
-    path: '/choose',
+    path: '/choose-location',
     name: 'EmployeeChoose',
     component: () => import('@/views/EmployeeChoose.vue')
-  },
+  }
 ]
 
 export default createRouter({

@@ -1,4 +1,5 @@
-@import './variables.scss';
+@import '@/assets/helpers/variables.scss';
+@import '@/assets/helpers/mixins.scss';
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -18,10 +19,10 @@ body {
   min-height: 100vh;
 
   .container {
-    width: 90%;
+    width: $containerWidth;
     background-color: $backgroundColorDarker2;
     padding: 0px 25px;
-    margin-left: 5%;
+    margin-left: calc((100% - $containerWidth) / 2);
     box-sizing: border-box;
   }
 }
@@ -31,4 +32,7 @@ body {
 }
 .mt0 {
   margin-top: 0 !important;
+}
+.noselect {
+  @include noselect;
 }

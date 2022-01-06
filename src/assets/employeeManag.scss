@@ -1,4 +1,4 @@
-@import './variables.scss';
+@import '@/assets/helpers/variables.scss';
 
 .cards {
   display: flex;
@@ -7,7 +7,7 @@
   margin-bottom: 10px;
 }
 .left {
-  width: 5%;
+  width: calc((100% - $containerWidth) / 2);
   cursor: pointer;
   display: flex;
   flex-direction: column;

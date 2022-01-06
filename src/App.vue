@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <div v-if="$route.fullPath.includes('game_step')" class="left">
+    <div v-if="$route.fullPath.includes('game_step')" class="left noselect">
       <div @click="repeatDialogVisible = true" class="repeat">
         <img :src="images.repeatImage" alt="repeat">
       </div>
@@ -55,7 +55,7 @@ export default defineComponent({
       this.repeatDialogVisible = false
       this.drawerIsActive = false
       this.$store.commit('employeeModule/setYearCounter', 0)
-      this.$router.push('/')
+      this.$router.push({name: 'Registration'})
     }
   }
 })

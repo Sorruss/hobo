@@ -2,7 +2,7 @@
   <div class="startPage">
     <el-row>
       <el-col :span="2">
-        <div class="inscription">РАБОТЯГА</div>
+        <div class="inscription noselect">работяга</div>
       </el-col>
       <el-col :span="22">
         <div class="registration">
@@ -50,7 +50,7 @@
       </el-col>
     </el-row>
   </div>
-  <arrow-right-button :func="submitRegistration"></arrow-right-button>
+  <arrow-button :func="submitRegistration"></arrow-button>
 </template>
 
 <script lang="ts">
@@ -103,7 +103,7 @@ export default defineComponent({
       try {
         (this.$refs['registrationForm'] as typeof ElForm).validate((valid: any) => {
           if (valid) {
-            this.$router.push('/choose')
+            this.$router.push({name: 'EmployeeChoose'})
 
             this.cookies.set('userName', this.student.name)
             this.cookies.set('userSurname', this.student.surname)

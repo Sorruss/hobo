@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card noselect">
     <div class="card__position">
       {{ employee.position }} ({{ statePerc }}%)
     </div>
@@ -50,7 +50,8 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
-import smileImage from '@/static/images/smile.jpeg'
+import smileImage from '@/static/images/smileState.jpeg'
+import middleStateImage from '@/static/images/middleState.png'
 
 export default defineComponent({
   name: 'EmployeeCard',
@@ -88,10 +89,11 @@ export default defineComponent({
       }
       statePerc = Math.floor(statePerc / Object.keys(this.employee.state).length)
       this.statePerc = statePerc
+      
       if (statePerc <= 100 && statePerc >= 70) {
         return smileImage
       } else if (statePerc < 70 && statePerc > 30) {
-        return smileImage
+        return middleStateImage
       } else {
         return smileImage
       }

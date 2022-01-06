@@ -1,5 +1,7 @@
+@import '@/assets/helpers/variables.scss';
+
 .card {
-  max-width: 24%;
+  max-width: $cardWidth;
   display: flex;
   flex-direction: column;
   &__position {

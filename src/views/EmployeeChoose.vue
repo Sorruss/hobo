@@ -1,5 +1,5 @@
 <template>
-  <div class="choosePage">
+  <div class="choosePage noselect">
     <div class="map-container">
       <div class="map-block">
         <img :src="map_png" alt="map" class="map-img">
@@ -21,25 +21,27 @@
         </svg>
       </div>
     </div>
-    <arrow-right-button :func="stepToManag"></arrow-right-button>
+    <arrow-button :func="toManag"></arrow-button>
+    <arrow-button :func="toRegistration" direction="left"></arrow-button>
   </div>
 </template>
 
 <script>
-import map_png from '@/static/images/map-choose.png'
 import { defineComponent } from 'vue'
+import { mapActions, mapState } from 'vuex'
 
 export default defineComponent({
   name: 'EmployeeChoose',
-  data() {
-    return {
-      map_png
-    }
+  computed: {
+    ...mapState('chooseLocationModule', {
+      map_png: state => state.map_png
+    })
   },
   methods: {
-    stepToManag() {
-      this.$router.push('/game_step')
-    }
+    ...mapActions('navigationModule', {
+      toManag: 'toManag',
+      toRegistration: 'toRegistration'
+    })
   }
 })
 </script>

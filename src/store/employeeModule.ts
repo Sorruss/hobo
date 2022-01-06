@@ -7,22 +7,26 @@ export const employeeModule = {
       {id: 1, position: 'Программист', 
         state: {hp: 100, vision: 100, hearing: 100}, 
         settings: {},
-        optionalSettings: {}
+        optionalSettings: {},
+        history: []
       },
       {id: 2, position: 'Водитель', 
         state: {hp: 100, vision: 100, hearing: 100}, 
         settings: {},
-        optionalSettings: {}
+        optionalSettings: {},
+        history: []
       },
       {id: 3, position: 'Механик', 
         state: {hp: 100, vision: 100, hearing: 100}, 
         settings: {},
-        optionalSettings: {}
+        optionalSettings: {},
+        history: []
       },
       {id: 4, position: 'Токарь', 
         state: {hp: 100, vision: 100, hearing: 100}, 
         settings: {},
-        optionalSettings: {}
+        optionalSettings: {},
+        history: []
       }
     ],
     settings: [
@@ -58,6 +62,10 @@ export const employeeModule = {
   },
   actions: {
     nextYear({ state, commit } : {state: any, commit: any}) {
+      for (let employee of state.employees) {
+        state.employees[employee.id - 1].history.push(employee.settings)
+      }
+
       if (state.yearCounter >= 14) {
         commit('setYearCounter', 0)
         router.push('/') // тут должен был переход на экран результатов и добавить условие чтобы все были живы и тд

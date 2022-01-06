@@ -1,4 +1,7 @@
+@import '@/assets/helpers/variables.scss';
+
 .inscription {
+  text-transform: uppercase;
   font-size: 3.75em;
   max-width: 1em;
   text-align: center;
@@ -16,24 +19,15 @@
     min-width: 400px;
   }
   label {
-    color: #f7f7f7;
+    color: $textColor;
     font-size: 1.2em;
     margin-right: 25px;
   }
   &:last-child div {
     display: flex;
     justify-content: flex-end;
-    button {
-      font-size: 1.2em;
-    }
   }
   .el-input__inner {
     font-size: 1.3em;
-  }
-  .el-button {
-    color: #af2121;
-    &:hover {
-      color: white;
-    }
   }
 }
