@@ -1,16 +1,10 @@
 import { createStore } from 'vuex'
 
+import { employeeModule } from '@/store/employeeModule'
+
+
 export default createStore({
-  state: {
-    
-  },
-  mutations: {
-
-  },
-  actions: {
-    
-  },
   modules: {
-
+    employeeModule
   }
 })

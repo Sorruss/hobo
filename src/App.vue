@@ -63,7 +63,6 @@ export default defineComponent({
       this.repeatDialogVisible = false
       this.drawerIsActive = false
       this.yearCounter = 0
-
     },
     nextYear() {
       if (this.yearCounter === 15) {
