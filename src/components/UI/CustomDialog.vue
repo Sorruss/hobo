@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'custom-dialog',
@@ -19,7 +19,7 @@ export default defineComponent({
     }
   },
   methods: {
-    hide() {
+    hide(): void {
       this.$emit('update:show', false)
     }
   }

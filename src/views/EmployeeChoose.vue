@@ -26,7 +26,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue'
 import { mapActions, mapState } from 'vuex'
 
@@ -34,14 +34,16 @@ export default defineComponent({
   name: 'EmployeeChoose',
   computed: {
     ...mapState('chooseLocationModule', {
-      map_png: state => state.map_png
+      map_png: (state: any) => state.map_png
     })
   },
-  mounted() {
+  mounted(): void {
     if (this.$store.state.gameStarted && !this.$route.fullPath.includes('game_step')) {
       this.$router.push({name: 'GameStart'})
     } else if (!this.$store.state.isAuth) {
       this.$router.push({name: 'Registration'})
+    } else if (this.$store.state.gameFinished) {
+      this.$router.push({name: 'ResultReport'})
     }
   },
   methods: {

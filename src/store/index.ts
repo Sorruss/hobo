@@ -8,14 +8,18 @@ import { chooseLocationModule } from '@/store/chooseLocationModule'
 export default createStore({
   state: {
     gameStarted: false,
+    gameFinished: false,
     isAuth: false
   },
   mutations: {
-    setGameStarted(state, newVal:boolean) {
+    setGameStarted(state: any, newVal:boolean): void {
       state.gameStarted = newVal
     },
-    setIsAuth(state, newVal:boolean) {
+    setIsAuth(state: any, newVal:boolean): void {
       state.isAuth = newVal
+    },
+    setGameFinished(state: any, newVal:boolean): void {
+      state.gameFinished = newVal
     }
   },
   modules: {

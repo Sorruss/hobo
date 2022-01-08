@@ -6,7 +6,7 @@
         border 
         :key="variant + id"
         :label="variant"
-        @click="test(variant + id)"
+        @click="setSetting(variant + id)"
         :ref="variant + id"
       >
       </el-radio>
@@ -14,13 +14,15 @@
   </el-collapse-item>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue'
+import { Setting } from '@/types/settingType'
+
 export default defineComponent({
   name: 'collapse-item',
   props: {
     setting: {
-      type: Object,
+      type: Object as () => Setting,
       required: true
     }
   },
@@ -30,8 +32,8 @@ export default defineComponent({
     }
   },
   methods: {
-    test(idx) {
-      const setting = {[this.setting.translation]: this.$refs[idx][0].label}
+    setSetting(idx: string): void {
+      const setting = {[this.setting.translation]: (this.$refs[idx] as any)[0].label}
       this.$emit('setSetting', setting)
     }
   }

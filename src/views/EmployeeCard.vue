@@ -48,17 +48,22 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref } from 'vue'
-import smileImage from '@/static/images/smileState.jpeg'
-import middleStateImage from '@/static/images/middleState.png'
+import { Status } from '@/types/statusType'
 
 export default defineComponent({
   name: 'EmployeeCard',
   data() {
     return {
       activeSetting: ref(1),
-      statePerc: 0
+      statePerc: 0,
+      images: {
+        smileImage: require('@/static/images/smileState.jpeg'),
+        middleStateImage: require('@/static/images/smileState.jpeg'),
+        sadState1: require('@/static/images/sadState1.png'),
+        sadState2: require('@/static/images/sadState2.png')
+      }
     }
   },
   props: {
@@ -72,7 +77,7 @@ export default defineComponent({
     }
   },
   methods: {
-    setStatus(state) {
+    setStatus(state: any): Status {
       state = this.employee.state[state]
       if (state <= 100 && state >= 70) {
         return 'success'
@@ -82,20 +87,22 @@ export default defineComponent({
         return 'exception'
       }
     },
-    setImage() {
+    setImage(): string {
       let statePerc = 0
       for (let perc of Object.values(this.employee.state)) {
-        statePerc += +perc
+        statePerc += +<string>perc
       }
       statePerc = Math.floor(statePerc / Object.keys(this.employee.state).length)
       this.statePerc = statePerc
       
       if (statePerc <= 100 && statePerc >= 70) {
-        return smileImage
-      } else if (statePerc < 70 && statePerc > 30) {
-        return middleStateImage
+        return this.images.smileImage
+      } else if (statePerc < 70 && statePerc >= 40) {
+        return this.images.middleStateImage
+      } else if (statePerc < 40 && statePerc >= 20) {
+        return this.images.sadState1
       } else {
-        return smileImage
+        return this.images.sadState2
       }
     }
   }

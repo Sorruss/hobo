@@ -7,17 +7,17 @@
   </div>
 </template>
 
-<script>
-import arrowBlackRight from '@/static/images/arrowBlackRight.png'
-import arrowBlackLeft from '@/static/images/arrowBlackLeft.png'
+<script lang="ts">
 import { defineComponent } from 'vue'
+
+type direction = 'right' | 'left'
 
 export default defineComponent({
   name: 'arrow-button',
   data() {
     return {
-      arrowBlackRight,
-      arrowBlackLeft
+      arrowBlackRight: require('@/static/images/arrowBlackRight.png'),
+      arrowBlackLeft: require('@/static/images/arrowBlackLeft.png')
     }
   },
   props: {
@@ -26,7 +26,7 @@ export default defineComponent({
       required: true,
     },
     direction: {
-      type: String,
+      type: String as () => direction,
       required: false,
       default: 'right'
     }

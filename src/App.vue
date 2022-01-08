@@ -42,24 +42,24 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue'
 
-import repeatImage from '@/static/images/repeat.png'
-import referenceImage from '@/static/images/reference.png'
-
 export default defineComponent({
-  name: 'root',
+  name: 'App',
   data() {
     return {
-      images: {repeatImage, referenceImage},
+      images: {
+        repeatImage: require('@/static/images/repeat.png'), 
+        referenceImage: require('@/static/images/reference.png')
+      },
       repeatDialogVisible: false,
       drawerIsActive: false,
       cookieAcessPopUp: this.$cookies.get('cookieAcess')
     }
   },
   methods: {
-    restart() {
+    restart(): void {
       this.repeatDialogVisible = false
       this.drawerIsActive = false
 
@@ -71,7 +71,7 @@ export default defineComponent({
 
       this.$router.push({name: 'Registration'})
     },
-    cookieAcess() {
+    cookieAcess(): void {
       this.$cookies.set('cookieAcess', true)
       this.cookieAcessPopUp = true
     }

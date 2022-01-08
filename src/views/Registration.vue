@@ -61,10 +61,10 @@ import { ElForm } from 'element-plus'
 export default defineComponent({
   name: 'Registration',
   components: {},
-  setup() {
-    const { cookies } = useCookies()
-    return { cookies }
-  },
+  // setup(): object {
+  //   const { cookies } = useCookies()
+  //   return { cookies }
+  // },
   data() {
     const { cookies } = useCookies()
     return {
@@ -98,22 +98,22 @@ export default defineComponent({
       }
     }
   },
-  mounted() {
-    // @ts-ignore
+  mounted(): void {
     if (this.$store.state.gameStarted && !this.$route.fullPath.includes('game_step')) {
       this.$router.push({name: 'GameStart'})
+    } else if (this.$store.state.gameFinished) {
+      this.$router.push({name: 'ResultReport'})
     }
   },
   methods: {
-    submitRegistration() {
+    submitRegistration(): void | false {
       try {
         (this.$refs['registrationForm'] as typeof ElForm).validate((valid: any) => {
           if (valid) {
-            this.cookies.set('userName', this.student.name)
-            this.cookies.set('userSurname', this.student.surname)
-            this.cookies.set('userGroup', this.student.group)
+            this.$cookies.set('userName', this.student.name)
+            this.$cookies.set('userSurname', this.student.surname)
+            this.$cookies.set('userGroup', this.student.group)
 
-            // @ts-ignore
             this.$store.commit('setIsAuth', true)
 
             this.$router.push({name: 'EmployeeChoose'})

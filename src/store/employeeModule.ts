@@ -4,25 +4,33 @@ export const employeeModule = {
   namespaced: true,
   state: {
     employees: [
-      {id: 1, position: 'Программист', 
+      {
+        id: 1, 
+        position: 'Программист', 
         state: {hp: 100, vision: 100, hearing: 100}, 
         settings: {},
         optionalSettings: {},
         history: []
       },
-      {id: 2, position: 'Водитель', 
+      {
+        id: 2, 
+        position: 'Водитель', 
         state: {hp: 100, vision: 100, hearing: 100}, 
         settings: {},
         optionalSettings: {},
         history: []
       },
-      {id: 3, position: 'Механик', 
+      {
+        id: 3, 
+        position: 'Механик', 
         state: {hp: 100, vision: 100, hearing: 100}, 
         settings: {},
         optionalSettings: {},
         history: []
       },
-      {id: 4, position: 'Токарь', 
+      {
+        id: 4, 
+        position: 'Токарь', 
         state: {hp: 100, vision: 100, hearing: 100}, 
         settings: {},
         optionalSettings: {},
@@ -68,6 +76,7 @@ export const employeeModule = {
 
       if (state.yearCounter >= 14) {
         commit('setGameStarted', false, {root: true})
+        commit('setGameFinished', true, {root: true})
         commit('setYearCounter', 0)
         router.push({name: 'ResultReport'})
         return

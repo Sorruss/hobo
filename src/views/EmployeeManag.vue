@@ -13,10 +13,10 @@
   </arrow-button>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue'
-import EmployeeCard from '@/views/EmployeeCard.vue'
 import { mapState, mapMutations, mapActions } from 'vuex'
+import EmployeeCard from '@/views/EmployeeCard.vue'
 
 export default defineComponent({
   name: 'EmployeeManagement',
@@ -32,14 +32,16 @@ export default defineComponent({
   },
   computed: {
     ...mapState('employeeModule', {
-      employees: state => state.employees,
-      settings: state => state.settings,
-      yearCounter: state => state.yearCounter
+      employees: (state: any): Array<any> => state.employees,
+      settings: (state: any) => state.settings,
+      yearCounter: (state: any) => state.yearCounter
     })
   },
-  mounted() {
+  mounted(): void {
     if (!this.$store.state.isAuth) {
       this.$router.push({name: 'Registration'})
+    } else if (this.$store.state.gameFinished) {
+      this.$router.push({name: 'ResultReport'})
     }
   }
 })

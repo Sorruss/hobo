@@ -15,13 +15,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue'
 import { mapState } from 'vuex'
 
 export default defineComponent({
   name: 'ResultReport',
-  mounted() {
+  mounted(): void {
     if (this.$store.state.gameStarted && !this.$route.fullPath.includes('game_step')) {
       this.$router.push({name: 'GameStart'})
     } else if (!this.$store.state.isAuth) {
@@ -30,7 +30,7 @@ export default defineComponent({
   },
   computed: {
     ...mapState('employeeModule', {
-      employees: state => state.employees
+      employees: (state: any) => state.employees
     })
   }
 })
