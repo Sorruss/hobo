@@ -4,7 +4,7 @@
 }
 .map-block {
   display: inline-block;
-  width: 70%;
+  width: 50%;
   position: relative;
   text-align: center;
 }
@@ -18,10 +18,15 @@ svg {
   left: 0;
   width: 100%;
 }
+
 .part {
   opacity: 0;
-  transition: 0.5s opacity;
   &:hover {
-    opacity: 0.5;
+    opacity: 0.25;
   }
+  transition: opacity 0.5s;
+}
+
+.active {
+  opacity:0.5
 }
