@@ -20,13 +20,12 @@ svg {
 }
 
 .part {
+  transition: opacity 0.5s ease-in-out;
   opacity: 0;
   &:hover {
     opacity: 0.25;
   }
-  transition: opacity 0.5s;
-}
-
-.active {
-  opacity:0.5
+  &.active {
+    opacity:0.5
+  }
 }
