@@ -6,24 +6,27 @@
           <div class="info-block">
             <el-scrollbar wrap-style="max-height:100vh;">
               <img
-                  :src="require('@/static/images/shot_' + parts[mapCounter].id + '.jpg')"
-                  alt=""
-                  class="info__region-image"
+                :src="require('@/static/images/shot_' + parts[mapCounter].id + '.jpg')"
+                alt=""
+                class="info__region-image"
               >
               <el-collapse v-model="activeElements">
                 <el-collapse-item title="Інформація про регіон">
                   <div class="info__text-block">
-                    <h4 class="info__region-name info__region-header">{{parts[mapCounter].about.regionInfo.name}}</h4>
-                    <p class="info__region-about info__paragraph">{{parts[mapCounter].about.regionInfo.description}}</p>
+                    <h4 class="info__region-name info__region-header">{{ parts[mapCounter].about.regionInfo.name }}</h4>
+                    <p class="info__region-about info__paragraph">{{ parts[mapCounter].about.regionInfo.description }}</p>
                   </div>
                 </el-collapse-item>
                 <el-collapse-item title="Робітники">
                   <div class="info__text-block">
                     <ul class="info__workers-list info__list">
                       <li
-                          v-for="worker in parts[mapCounter].about.workers"
-                          class="workers__list-element info__list-element"
-                      >{{worker}}</li>
+                        v-for="worker in parts[mapCounter].about.workers"
+                        class="workers__list-element info__list-element"
+                        :key="worker"
+                      >
+                        {{ worker }}
+                      </li>
                     </ul>
                   </div>
                 </el-collapse-item>
@@ -32,9 +35,12 @@
                     <p class="info__specs-text info__paragraph">У даному регіоні були виявлені такі постійні негативні чинники:</p>
                     <ul class="info__specs-list info__list">
                       <li
-                          v-for="spec in parts[mapCounter].about.specifications"
-                          class="specs__list-element info__list-element"
-                      >{{spec}}</li>
+                        v-for="spec in parts[mapCounter].about.specifications"
+                        class="specs__list-element info__list-element"
+                        :key="spec"
+                      >
+                        {{ spec }}
+                      </li>
                     </ul>
                   </div>
                 </el-collapse-item>
@@ -49,29 +55,26 @@
             <img :src="map_png" alt="map" class="map-img">
             <svg viewBox="0 0 708 478.66666" ref="mapContainer" :key="mapCounter">
               <path
-                  class="part"
-                  fill="black"
-                  v-for="part in parts"
-                  :d="part.coordinates"
-                  :id="part.id"
-                  :class="{active: part.isActive}"
-                  @click="mapChooseRegion"
+                class="part"
+                fill="black"
+                v-for="part in parts"
+                :d="part.coordinates"
+                :id="part.id"
+                :key="part.id"
+                :class="{active: part.isActive}"
+                @click="mapChooseRegion"
               />
             </svg>
           </div>
         </div>
-<!--        <el-button @click="$store.dispatch('chooseLocationModule/mapStep',false)">back</el-button>-->
-<!--        <el-button @click="$store.dispatch('chooseLocationModule/mapStep',true)">forward</el-button>-->
         <div class="map-controls__block">
           <div class="map-controls__wrap">
-            <button class="map-controls__btn" @click="$store.dispatch('chooseLocationModule/mapStep',false)">&lt;</button>
-            <button class="map-controls__btn" @click="$store.dispatch('chooseLocationModule/mapStep',true)">></button>
+            <button class="map-controls__btn" @click="$store.dispatch('chooseLocationModule/mapStep', false)">&lt;</button>
+            <button class="map-controls__btn" @click="$store.dispatch('chooseLocationModule/mapStep', true)">&gt;</button>
           </div>
         </div>
       </el-col>
     </el-row>
-
-
 
     <arrow-button @click="$store.commit('setGameStarted', true)" :func="toManag"></arrow-button>
     <arrow-button :func="toRegistration" direction="left"></arrow-button>
@@ -79,16 +82,34 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue'
+import { defineComponent, ref } from 'vue'
 import { mapActions, mapState } from 'vuex'
+
+import { regionPartType } from '@/types/regionPartType'
 
 export default defineComponent({
   name: 'EmployeeChoose',
+  data() {
+    return {
+      activeElements: ref(1)
+    }
+  },
   computed: {
     ...mapState('chooseLocationModule', {
       map_png: (state: any) => state.map_png,
-      parts: (state:any) => state.regions.parts,
-      mapCounter: (state:any) => state.mapCounter
+      parts: (state: any) => state.parts as Array<regionPartType>,
+      mapCounter: (state: any) => state.mapCounter
+    })
+  },
+  methods: {
+    ...mapActions('navigationModule', {
+      toManag: 'toManag',
+      toRegistration: 'toRegistration'
+    }),
+    ...mapActions('chooseLocationModule', {
+      mapCounterCorrect: 'mapCounterCorrect',
+      mapStep: 'mapStep',
+      mapChooseRegion: 'mapChooseRegion'
     })
   },
   mounted(): void {
@@ -100,22 +121,6 @@ export default defineComponent({
       this.$router.push({name: 'ResultReport'})
     }
   },
-  methods: {
-    ...mapActions('navigationModule', {
-      toManag: 'toManag',
-      toRegistration: 'toRegistration'
-    }),
-
-    mapChooseRegion(event:any): void{
-      this.$store.commit("chooseLocationModule/mapChooseRegion",event.target.id)
-    }
-
-  },
-  data() {
-    return{
-      activeElements: ref(1)
-    }
-  }
 })
 </script>
 
