@@ -20,7 +20,6 @@ export const chooseLocationModule = {
   actions: {
     mapChooseRegion({ state, commit }: any, id: number): void {
       state.parts[state.mapCounter].isActive = false
-      console.log(typeof id)
       commit('setMapCounter', id)
       state.parts[state.mapCounter].isActive = true
     },

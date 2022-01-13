@@ -1,13 +1,13 @@
 <template>
   <div class="choosePage noselect">
     <el-row>
-      <el-col :span="6">
+      <el-col :span="6" class="info">
         <div class="info-container">
           <div class="info-block">
-            <el-scrollbar wrap-style="max-height:100vh;">
+            <el-scrollbar wrap-style="height: 100vh;">
               <img
-                :src="require('@/static/images/shot_' + parts[mapCounter].id + '.jpg')"
-                alt=""
+                :src="require(`@/static/images/${parts[mapCounter].imgName}`)"
+                alt="location_photo"
                 class="info__region-image"
               >
               <el-collapse v-model="activeElements">
@@ -17,7 +17,7 @@
                     <p class="info__region-about info__paragraph">{{ parts[mapCounter].about.regionInfo.description }}</p>
                   </div>
                 </el-collapse-item>
-                <el-collapse-item title="Робітники">
+                <el-collapse-item title="Робітники" :name="1">
                   <div class="info__text-block">
                     <ul class="info__workers-list info__list">
                       <li
@@ -30,7 +30,7 @@
                     </ul>
                   </div>
                 </el-collapse-item>
-                <el-collapse-item title="Специфіка регіону">
+                <el-collapse-item title="Специфіка регіону" :name="1">
                   <div class="info__text-block">
                     <p class="info__specs-text info__paragraph">У даному регіоні були виявлені такі постійні негативні чинники:</p>
                     <ul class="info__specs-list info__list">
@@ -49,28 +49,31 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="18">
+      <el-col :span="18" class="map">
         <div class="map-container">
           <div class="map-block">
             <img :src="map_png" alt="map" class="map-img">
-            <svg viewBox="0 0 708 478.66666" ref="mapContainer" :key="mapCounter">
+            <svg viewBox="0 0 708 478.66666" ref="mapContainer">
               <path
-                class="part"
                 fill="black"
                 v-for="part in parts"
                 :d="part.coordinates"
                 :id="part.id"
                 :key="part.id"
-                :class="{active: part.isActive}"
-                @click="mapChooseRegion"
+                :class="{active: part.isActive, part: true}"
+                @click="mapChooseRegion(part.id)"
               />
             </svg>
           </div>
         </div>
         <div class="map-controls__block">
           <div class="map-controls__wrap">
-            <button class="map-controls__btn" @click="$store.dispatch('chooseLocationModule/mapStep', false)">&lt;</button>
-            <button class="map-controls__btn" @click="$store.dispatch('chooseLocationModule/mapStep', true)">&gt;</button>
+            <button class="map-controls__btn" @click="$store.dispatch('chooseLocationModule/mapStep', false)">
+              <img src="@/static/images/arrowBlackLeft.png" alt="arrowBack">
+            </button>
+            <button class="map-controls__btn" @click="$store.dispatch('chooseLocationModule/mapStep', true)">
+              <img src="@/static/images/arrowBlackRight.png" alt="arrowNext">
+            </button>
           </div>
         </div>
       </el-col>
@@ -110,7 +113,14 @@ export default defineComponent({
       mapCounterCorrect: 'mapCounterCorrect',
       mapStep: 'mapStep',
       mapChooseRegion: 'mapChooseRegion'
-    })
+    }),
+    keyDownListener(event: any): void {
+      if (event.key === 'ArrowRight') {
+        this.toManag()
+      } else if (event.key === 'ArrowLeft') {
+        this.toRegistration()
+      }
+    }
   },
   mounted(): void {
     if (this.$store.state.gameStarted && !this.$route.fullPath.includes('game_step')) {
@@ -120,7 +130,12 @@ export default defineComponent({
     } else if (this.$store.state.gameFinished) {
       this.$router.push({name: 'ResultReport'})
     }
+  
+    window.addEventListener('keydown', this.keyDownListener)
   },
+  unmounted(): void {
+    window.removeEventListener('keydown', this.keyDownListener)
+  }
 })
 </script>
 

@@ -99,8 +99,18 @@ export default defineComponent({
     } else if (this.$store.state.gameFinished) {
       this.$router.push({name: 'ResultReport'})
     }
+
+    window.addEventListener('keydown', this.keyDownListener)
+  },
+  unmounted(): void {
+    window.removeEventListener('keydown', this.keyDownListener)
   },
   methods: {
+    keyDownListener(event: any): void {
+      if (event.key === 'ArrowRight') {
+        this.submitRegistration()
+      }
+    },
     submitRegistration(): void | false {
       try {
         (this.$refs['registrationForm'] as typeof ElForm).validate((valid: any) => {

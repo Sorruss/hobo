@@ -9,5 +9,6 @@ export type regionPartType = {
     "specifications": Array<string>
   },
   "coordinates": string,
-  "isActive": boolean
+  "isActive": boolean,
+  "imgName": string
 }
