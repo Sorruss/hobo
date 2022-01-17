@@ -73,7 +73,7 @@
 
 
 
-    <arrow-button @click="$store.commit('setGameStarted', true)" :func="toManag"></arrow-button>
+    <arrow-button @click="gameStart(parts[mapCounter].about.workers)" :func="toManag"></arrow-button>
     <arrow-button :func="toRegistration" direction="left"></arrow-button>
   </div>
 </template>
@@ -108,6 +108,11 @@ export default defineComponent({
 
     mapChooseRegion(event:any): void{
       this.$store.commit("chooseLocationModule/mapChooseRegion",event.target.id)
+    },
+
+    gameStart(workers:Array<string>): void {
+      this.$store.commit('setGameStarted', true)
+      this.$store.commit('employeeModule/setWorkers',workers)
     }
 
   },

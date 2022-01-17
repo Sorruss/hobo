@@ -66,6 +66,11 @@ export const employeeModule = {
     },
     setYearCounter(state: any, newVal: number) {
       state.yearCounter = newVal
+    },
+    setWorkers(state:any, workers:any){
+      for(let worker in workers){
+        state.employees[worker].position=workers[worker];
+      }
     }
   },
   actions: {
