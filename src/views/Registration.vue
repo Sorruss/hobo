@@ -60,11 +60,6 @@ import { ElForm } from 'element-plus'
 
 export default defineComponent({
   name: 'Registration',
-  components: {},
-  // setup(): object {
-  //   const { cookies } = useCookies()
-  //   return { cookies }
-  // },
   data() {
     const { cookies } = useCookies()
     return {
@@ -104,18 +99,29 @@ export default defineComponent({
     } else if (this.$store.state.gameFinished) {
       this.$router.push({name: 'ResultReport'})
     }
+
+    window.addEventListener('keydown', this.keyDownListener)
+  },
+  unmounted(): void {
+    window.removeEventListener('keydown', this.keyDownListener)
   },
   methods: {
+    keyDownListener(event: any): void {
+      if (event.key === 'ArrowRight') {
+        this.submitRegistration()
+      }
+    },
     submitRegistration(): void | false {
       try {
         (this.$refs['registrationForm'] as typeof ElForm).validate((valid: any) => {
           if (valid) {
-            this.$cookies.set('userName', this.student.name)
-            this.$cookies.set('userSurname', this.student.surname)
-            this.$cookies.set('userGroup', this.student.group)
+            if (this.$cookies.get('cookieAccess')) {
+              this.$cookies.set('userName', this.student.name)
+              this.$cookies.set('userSurname', this.student.surname)
+              this.$cookies.set('userGroup', this.student.group)
+            }
 
             this.$store.commit('setIsAuth', true)
-
             this.$router.push({name: 'EmployeeChoose'})
           } else {
             return false

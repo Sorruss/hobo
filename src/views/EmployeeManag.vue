@@ -28,7 +28,12 @@ export default defineComponent({
     }),
     ...mapActions('employeeModule', {
       nextYear: 'nextYear'
-    })
+    }),
+    keyDownListener(event: any): void {
+      if (event.key === 'ArrowRight') {
+        this.nextYear()
+      }
+    }
   },
   computed: {
     ...mapState('employeeModule', {
@@ -43,6 +48,11 @@ export default defineComponent({
     } else if (this.$store.state.gameFinished) {
       this.$router.push({name: 'ResultReport'})
     }
+
+    window.addEventListener('keydown', this.keyDownListener)
+  },
+  unmounted(): void {
+    window.removeEventListener('keydown', this.keyDownListener)
   }
 })
 </script>

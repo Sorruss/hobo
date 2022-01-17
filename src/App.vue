@@ -30,13 +30,13 @@
       <span>Тут будет справка</span>
     </el-drawer>
     
-    <div class="cookie-access" v-if="!cookieAcessPopUp">
+    <div class="cookie-access" v-if="!cookieAccessPopUp">
       <div class="cookie-access__inner">
         Ви згодні з тим, що цей сайт буде використовувати файли cookie для зберігання даних на вашому комп’ютері?
       </div>
       <div class="cookie-access__buttons">
-        <el-button plain @click="cookieAcessPopUp = true">Ні</el-button>
-        <el-button plain @click="cookieAcess">Так</el-button>
+        <el-button plain @click="cookieAccessPopUp = true">Ні</el-button>
+        <el-button plain @click="cookieAccess">Так</el-button>
       </div>
     </div>
   </div>
@@ -55,7 +55,7 @@ export default defineComponent({
       },
       repeatDialogVisible: false,
       drawerIsActive: false,
-      cookieAcessPopUp: this.$cookies.get('cookieAcess')
+      cookieAccessPopUp: this.$cookies.get('cookieAccess')
     }
   },
   methods: {
@@ -71,9 +71,9 @@ export default defineComponent({
 
       this.$router.push({name: 'Registration'})
     },
-    cookieAcess(): void {
-      this.$cookies.set('cookieAcess', true)
-      this.cookieAcessPopUp = true
+    cookieAccess(): void {
+      this.$cookies.set('cookieAccess', true)
+      this.cookieAccessPopUp = true
     }
   }
 })
