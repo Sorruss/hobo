@@ -6,7 +6,7 @@
           <div class="info-block">
             <el-scrollbar wrap-style="height: 100vh;">
               <img
-                :src="require(`@/static/images/${parts[mapCounter].imgName}`)"
+                :src="require(`@/static/images/shot_` + parts[mapCounter].id + '.jpg')"
                 alt="location_photo"
                 class="info__region-image"
               >
@@ -78,9 +78,8 @@
         </div>
       </el-col>
     </el-row>
-
+    
     <arrow-button @click="gameStart(parts[mapCounter].about.workers)" :func="toManag"></arrow-button>
-    <arrow-button @click="$store.commit('setGameStarted', true)" :func="toManag"></arrow-button>
     <arrow-button :func="toRegistration" direction="left"></arrow-button>
   </div>
 </template>
@@ -121,6 +120,10 @@ export default defineComponent({
       } else if (event.key === 'ArrowLeft') {
         this.toRegistration()
       }
+    },
+    gameStart(workers:Array<string>): void {
+      this.$store.commit('employeeModule/setWorkers',workers)
+      this.$store.commit('setGameStarted', true)
     }
   },
   mounted(): void {
@@ -134,7 +137,7 @@ export default defineComponent({
   
     window.addEventListener('keydown', this.keyDownListener)
   },
-  
+
   unmounted(): void {
     window.removeEventListener('keydown', this.keyDownListener)
   }
