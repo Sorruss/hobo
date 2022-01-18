@@ -6,13 +6,13 @@ export const navigationModule = {
   getters: {},
   mutations: {},
   actions: {
-    toManag() {
+    toManag(): void {
       router.push({name: 'GameStart'})
     },
-    toRegistration() {
+    toRegistration(): void {
       router.push({name: 'Registration'})
     },
-    toChooseLocation() {
+    toChooseLocation(): void {
       router.push({name: 'EmployeeChoose'})
     }
   }

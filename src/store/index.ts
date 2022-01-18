@@ -12,14 +12,14 @@ export default createStore({
     isAuth: false
   },
   mutations: {
-    setGameStarted(state: any, newVal:boolean): void {
-      state.gameStarted = newVal
+    setGameStarted(state: any, payload: boolean): void {
+      state.gameStarted = payload
     },
-    setIsAuth(state: any, newVal:boolean): void {
-      state.isAuth = newVal
+    setIsAuth(state: any, payload: boolean): void {
+      state.isAuth = payload
     },
-    setGameFinished(state: any, newVal:boolean): void {
-      state.gameFinished = newVal
+    setGameFinished(state: any, payload: boolean): void {
+      state.gameFinished = payload
     }
   },
   modules: {

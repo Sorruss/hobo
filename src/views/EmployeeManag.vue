@@ -1,13 +1,22 @@
 <template>
   <div class="cards">
     <employee-card
-      v-for="employee in employees"
+      v-for="(employee, id) in employees"
       :employee="employee"
-      :key="employee.id"
-      :settings="settings"
+      :key="id"
       @setSetting="setSetting"
     />
   </div>
+  <custom-dialog :show="overdozeAlertVisible" @hideDialog="setOverdozeAlertVisible(false)">
+    <p>{{ overdozeReport }}</p>
+    <el-button @click="setOverdozeAlertVisible(false)" type="danger">Зрозуміло, дякую</el-button>
+  </custom-dialog>
+
+  <custom-dialog :show="gameOver" :closeButton="false">
+    <p>game over mazafucka</p>
+    <el-button @click="setGameOver(false); pageReload()" type="danger">Розпочати заново</el-button>
+  </custom-dialog>
+
   <arrow-button :func="nextYear">
     {{ yearCounter }}
   </arrow-button>
@@ -24,7 +33,8 @@ export default defineComponent({
   methods: {
     ...mapMutations('employeeModule', {
       setSetting: 'setSetting',
-      setYearCounter: 'setYearCounter'
+      setOverdozeAlertVisible: 'setOverdozeAlertVisible',
+      setGameOver: 'setGameOver'
     }),
     ...mapActions('employeeModule', {
       nextYear: 'nextYear'
@@ -33,13 +43,18 @@ export default defineComponent({
       if (event.key === 'ArrowRight') {
         this.nextYear()
       }
+    },
+    pageReload() {
+      window.location.reload()
     }
   },
   computed: {
     ...mapState('employeeModule', {
       employees: (state: any): Array<any> => state.employees,
-      settings: (state: any) => state.settings,
-      yearCounter: (state: any) => state.yearCounter
+      yearCounter: (state: any) => state.yearCounter,
+      overdozeReport: (state: any) => state.overdozeReport,
+      overdozeAlertVisible: (state: any) => state.overdozeAlertVisible,
+      gameOver: (state: any) => state.gameOver
     })
   },
   mounted(): void {

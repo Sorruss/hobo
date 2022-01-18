@@ -25,12 +25,12 @@
                         class="workers__list-element info__list-element"
                         :key="worker"
                       >
-                        {{ worker }}
+                        {{ employees[worker].translation }}
                       </li>
                     </ul>
                   </div>
                 </el-collapse-item>
-                <el-collapse-item title="Специфіка регіону" :name="1">
+                <el-collapse-item title="Специфіка регіону" :name="2">
                   <div class="info__text-block">
                     <p class="info__specs-text info__paragraph">У даному регіоні були виявлені такі постійні негативні чинники:</p>
                     <ul class="info__specs-list info__list">
@@ -68,10 +68,10 @@
         </div>
         <div class="map-controls__block">
           <div class="map-controls__wrap">
-            <button class="map-controls__btn" @click="$store.dispatch('chooseLocationModule/mapStep', false)">
+            <button class="map-controls__btn" @click="mapStep(false)">
               <img src="@/static/images/arrowBlackLeft.png" alt="arrowBack">
             </button>
-            <button class="map-controls__btn" @click="$store.dispatch('chooseLocationModule/mapStep', true)">
+            <button class="map-controls__btn" @click="mapStep(true)">
               <img src="@/static/images/arrowBlackRight.png" alt="arrowNext">
             </button>
           </div>
@@ -79,7 +79,11 @@
       </el-col>
     </el-row>
 
-    <arrow-button @click="$store.commit('setGameStarted', true)" :func="toManag"></arrow-button>
+    <arrow-button 
+      @click="$store.commit('setGameStarted', true); 
+        $store.dispatch('employeeModule/setEmployees', parts[mapCounter].about.workers)" 
+      :func="toManag"
+    ></arrow-button>
     <arrow-button :func="toRegistration" direction="left"></arrow-button>
   </div>
 </template>
@@ -94,14 +98,15 @@ export default defineComponent({
   name: 'EmployeeChoose',
   data() {
     return {
-      activeElements: ref(1)
+      activeElements: ref([1, 2])
     }
   },
   computed: {
     ...mapState('chooseLocationModule', {
       map_png: (state: any) => state.map_png,
       parts: (state: any) => state.parts as Array<regionPartType>,
-      mapCounter: (state: any) => state.mapCounter
+      mapCounter: (state: any) => state.mapCounter,
+      employees: (state: any) => state.employees
     })
   },
   methods: {
@@ -110,12 +115,12 @@ export default defineComponent({
       toRegistration: 'toRegistration'
     }),
     ...mapActions('chooseLocationModule', {
-      mapCounterCorrect: 'mapCounterCorrect',
       mapStep: 'mapStep',
       mapChooseRegion: 'mapChooseRegion'
     }),
     keyDownListener(event: any): void {
       if (event.key === 'ArrowRight') {
+        this.$store.dispatch('employeeModule/setEmployees', this.parts[this.mapCounter].about.workers)
         this.toManag()
       } else if (event.key === 'ArrowLeft') {
         this.toRegistration()

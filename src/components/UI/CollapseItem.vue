@@ -5,7 +5,7 @@
         v-for="(variant, id) in setting.variants" 
         border 
         :key="variant + id"
-        :label="variant"
+        :label="variant + (setting.additionalText ? setting.additionalText : '')"
         @click="setSetting(variant + id)"
         :ref="variant + id"
       >

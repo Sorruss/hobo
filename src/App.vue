@@ -14,7 +14,7 @@
       <router-view></router-view>
     </div>
 
-    <custom-dialog v-model:show="repeatDialogVisible">
+    <custom-dialog :show="repeatDialogVisible" @hideDialog="repeatDialogVisible = false">
       <p>Ви впевнені, що хочете розпочати проходження заново?</p>
       <el-button @click="restart" type="danger">Так</el-button>
     </custom-dialog>

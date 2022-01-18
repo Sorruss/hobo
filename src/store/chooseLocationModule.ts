@@ -1,11 +1,13 @@
 import regions from '@/static/data/mapData.json'
+import employees from '@/static/data/employees'
 
 export const chooseLocationModule = {
   namespaced: true,
   state: {
     map_png: require('@/static/images/map-choose.png'),
     parts: regions.parts,
-    mapCounter: 0
+    mapCounter: 0,
+    employees: employees
   },
   getters: {
     getRegionIndex(state: any) {
@@ -13,8 +15,8 @@ export const chooseLocationModule = {
     }
   },
   mutations: {
-    setMapCounter(state: any, newVal: number): void {
-      state.mapCounter = newVal
+    setMapCounter(state: any, payload: number): void {
+      state.mapCounter = payload
     }
   },
   actions: {

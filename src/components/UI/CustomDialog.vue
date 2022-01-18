@@ -1,7 +1,7 @@
 <template>
   <div v-if="show" @click.stop="hide" class="modal">
     <div @click.stop class="modal-content">
-      <span class="close" @click="hide">&times;</span>
+      <span v-if="closeButton" class="close" @click="hide">&times;</span>
       <slot></slot>
     </div>
   </div>
@@ -16,11 +16,16 @@ export default defineComponent({
       type: Boolean, 
       required: false,
       default: false
+    },
+    closeButton: {
+      type: Boolean, 
+      required: false,
+      default: true
     }
   },
   methods: {
     hide(): void {
-      this.$emit('update:show', false)
+      this.$emit('hideDialog')
     }
   }
 })

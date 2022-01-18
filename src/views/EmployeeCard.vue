@@ -1,7 +1,7 @@
 <template>
   <div class="card noselect">
     <div class="card__position">
-      {{ employee.position }} ({{ statePerc }}%)
+      {{ employee.translation }} ({{ statePerc }}%)
     </div>
     <div class="card__photo">
       <img :src="setImage()" alt="employee_image">
@@ -10,40 +10,43 @@
       <el-progress
         :text-inside="true"
         :stroke-width="22"
-        :percentage="employee.state.hp"
+        :percentage="employee.state.hp >= 0 ? employee.state.hp : 0"
         :status="setStatus('hp')"
       >
-        <span>Здоровье</span>
+        <span>Здоров'я</span>
       </el-progress>
       <el-progress
         :text-inside="true"
         :stroke-width="22"
-        :percentage="employee.state.vision"
-        :status="setStatus('vision')"
-      >
-        <span>Зрение</span>
-      </el-progress>
-      <el-progress
-        :text-inside="true"
-        :stroke-width="22"
-        :percentage="employee.state.hearing"
+        :percentage="employee.state.hearing >= 0 ? employee.state.hearing : 0"
         :status="setStatus('hearing')"
       >
         <span>Слух</span>
       </el-progress>
+      <el-progress
+        :text-inside="true"
+        :stroke-width="22"
+        :percentage="employee.state.vision >= 0 ? employee.state.vision : 0"
+        :status="setStatus('vision')"
+      >
+        <span>Зір</span>
+      </el-progress>
     </div>
     <div class="card__settings">
       <el-collapse v-model="activeSetting">
+        <collapse-item-overdoze 
+          v-show="employee.optionalSettings"
+          v-for="(overdoze, id) in getOptionalSettings(employee)" 
+          :key="overdoze.title + id"
+          :overdoze="overdoze"
+        />
         <collapse-item 
-          v-for="(setting, id) in settings" 
+          v-for="(setting, id) in getSettings(employee)" 
           :key="setting + id"
           :setting="setting"
           @setSetting="$emit('setSetting', [employee.id, $event])"
         />
       </el-collapse>
-    </div>
-    <div class="card__additional_settings">
-
     </div>
   </div>
 </template>
@@ -51,6 +54,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { Status } from '@/types/statusType'
+import allSettings from '@/static/data/settings'
 
 export default defineComponent({
   name: 'EmployeeCard',
@@ -68,10 +72,6 @@ export default defineComponent({
   },
   props: {
     employee: {
-      type: Object,
-      required: true
-    },
-    settings: {
       type: Object,
       required: true
     }
@@ -104,6 +104,19 @@ export default defineComponent({
       } else {
         return this.images.sadState2
       }
+    },
+    getSettings(employee: any): Array<any> {
+      const settings = []
+      for (let setting of Object.entries(employee.settings)) {
+        if (setting[1]) {
+          // @ts-ignore
+          settings.push({translation: setting[0], ...allSettings[setting[0]]})
+        }
+      }
+      return settings
+    },
+    getOptionalSettings(employee: any): Array<any> {
+      return employee.optionalSettings
     }
   }
 })
