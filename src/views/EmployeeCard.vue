@@ -36,14 +36,16 @@
       <el-collapse v-model="activeSetting">
         <collapse-item-overdoze 
           v-show="employee.optionalSettings"
-          v-for="(overdoze, id) in getOptionalSettings(employee)" 
-          :key="overdoze.title + id"
+          v-for="overdoze in getOptionalSettings(employee)" 
+          :key="overdoze.id"
           :overdoze="overdoze"
         />
+
         <collapse-item 
           v-for="(setting, id) in getSettings(employee)" 
           :key="setting + id"
           :setting="setting"
+          :id="id"
           @setSetting="$emit('setSetting', [employee.id, $event])"
         />
       </el-collapse>
@@ -60,7 +62,7 @@ export default defineComponent({
   name: 'EmployeeCard',
   data() {
     return {
-      activeSetting: ref(1),
+      activeSetting: ref(Array(this.getSettings(this.employee).length).fill(0).map((x, id) => x + id)),
       statePerc: 0,
       images: {
         smileImage: require('@/static/images/smileState.jpeg'),

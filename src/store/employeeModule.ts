@@ -2,6 +2,7 @@ import router from '@/router'
 
 import allEmployees from '@/static/data/employees'
 import allSettings from '@/static/data/settings'
+import allStates from '@/static/data/states'
 import allDozes from '@/static/data/dozes'
 
 
@@ -12,7 +13,10 @@ export const employeeModule = {
     yearCounter: 0,
     overdozeReport: '',
     overdozeAlertVisible: false,
-    gameOver: false
+    gameOver: false,
+    gameOverReport: '',
+    missingSettingAlertVidible: false,
+    missingSettingAlertText: ''
   },
   getters: {},
   mutations: {
@@ -32,41 +36,55 @@ export const employeeModule = {
       state.overdozeReport = payload
     },
     setOptionalSettings(state: any, overdozeInfo: object[]): void {
+      // {eId: employee.id, dozeTrans: allDozes[doze].translation, title: doze}
       for (const employee of state.employees) {
         employee.optionalSettings = []
       }
       for (const overdoze of overdozeInfo) {
         // @ts-ignore
-        state.employees[overdoze.eId - 1].optionalSettings.push({title: overdoze.dozeTrans, variants: Object.keys(allDozes[overdoze.title].treatmentWays)})
+        state.employees[overdoze.eId - 1].optionalSettings.push({id: overdoze.eId, title: overdoze.dozeTrans, variants: Object.keys(allDozes[overdoze.title].treatmentWays)})
       }
     },
     setGemeOver(state: any, payload: boolean): void {
       state.gameOver = payload
     },
+    setGameOverReport(state: any, report: string): void {
+      state.gameOverReport = report
+    },
     pushSelected2History(_: any, employee: any): void {
       employee.history.push(Object.assign({}, employee.selectedSettings))
     },
-    updateEmployeeState(_: any, employee: any): void {
-      let settingType = null
-      for (const setting of Object.keys(employee.settings)) {
-        // @ts-ignore
-        settingType = allSettings[setting].type
-        if (settingType === 'mp') {
-          
-        } else if (settingType === 'mm') {
-
-        } else if (settingType === 'pm') {
-          
-        } else {
-          throw new Error(`Unknown setting type "${settingType}", choose one from "mp|mm|pm"`)
-        }
-      }
+    setMissingSettingAlertVisible(state: any, payload: boolean): void {
+      state.missingSettingAlertVidible = payload
+    },
+    setMissingSettingAlertText(state: any, {settingTitle, employeePosition} : {settingTitle: string, employeePosition: string}): void {
+      state.missingSettingAlertText = `Ви не обрали параметр ${settingTitle} для Вашого робітника ${employeePosition}`
+    },
+    selectODozeTreatment(state: any, payload: any): void {
+      console.log(payload)
     }
   },
   actions: {
     nextYear({ state, commit, dispatch }: any): void {
       for (const employee of state.employees) {
-        commit('updateEmployeeState', employee)
+        if (!(Object.keys(employee.selectedSettings).length === 
+        (Object.keys(employee.settings).length - 
+        Object.values(employee.settings).filter(x => x === null).length))) {
+          const selected = Object.keys(employee.selectedSettings)
+          const missing = Object.keys(employee.settings).filter(x => !selected.includes(x))[0]
+
+          commit('setMissingSettingAlertVisible', true)
+          commit('setMissingSettingAlertText', {
+            // @ts-ignore 
+            settingTitle: allSettings[missing].title.toLowerCase(),
+            employeePosition: employee.translation
+          })
+          return
+        }
+      }
+
+      for (const employee of state.employees) {
+        dispatch('updateEmployeeState', employee)
         commit('pushSelected2History', employee)
       }
 
@@ -82,12 +100,12 @@ export const employeeModule = {
       dispatch('dozesIncrement')
     },
     clearHistories({ state } : { state: any }): void {
-      for (let employee of state.employees) {
+      for (const employee of state.employees) {
         employee.history = []
       }
     },
     clearSettings({ state } : { state: any }): void {
-      for (let employee of state.employees) {
+      for (const employee of state.employees) {
         employee.settings = {}
       }
     },
@@ -107,7 +125,7 @@ export const employeeModule = {
         })
         dozes = state.employees[id - 1].dozes
         if (dozes) {
-          for (let doze of Object.keys(dozes)) {
+          for (const doze of Object.keys(dozes)) {
             state.employees[id - 1].dozes[doze] = {
               increment: dozes[doze],
               state: 0
@@ -119,18 +137,20 @@ export const employeeModule = {
     },
     dozesIncrement({ state, dispatch }: any): void {
       const overdozes = []
+      let empDoze = null
       for (const employee of state.employees) {
         if (employee.dozes) {
           for (const doze of Object.keys(employee.dozes)) {
-            employee.dozes[doze].state += employee.dozes[doze].increment
+            empDoze = employee.dozes[doze]
+            employee.dozes[doze].state += empDoze.increment
             // @ts-ignore
-            if ((employee.dozes[doze].state + employee.dozes[doze].increment) > allDozes[doze].threshold) {
+            if ((empDoze.state + empDoze.increment) > allDozes[doze].threshold) {
               // @ts-ignore
               employee.state.hp -= allDozes[doze].damage
-              dispatch('checkEmployeeState')
+              dispatch('checkEmployeesState')
             }
             // @ts-ignore
-            if ((employee.dozes[doze].state + employee.dozes[doze].increment) >= allDozes[doze].threshold * 0.8) {
+            if ((empDoze.state + empDoze.increment) >= allDozes[doze].threshold * 0.8) {
               // @ts-ignore
               overdozes.push({eId: employee.id, dozeTrans: allDozes[doze].translation, title: doze})
             }
@@ -142,10 +162,10 @@ export const employeeModule = {
     overdozeAlert({ state, commit }: any, overdozeInfo: Array<any>): void {
       let report
       const overdozes: any = {}
-      for (let overdoze of overdozeInfo) {
+      for (const overdoze of overdozeInfo) {
         overdozes[state.employees[overdoze.eId - 1].translation] = []
       }
-      for (let overdoze of overdozeInfo) {
+      for (const overdoze of overdozeInfo) {
         overdozes[state.employees[overdoze.eId - 1].translation].push(overdoze.dozeTrans)
       }
       const emps = Object.keys(overdozes)
@@ -176,11 +196,82 @@ export const employeeModule = {
         return word + 'у'
       } 
     },
-    checkEmployeeState({ state, commit }: any): void {
+    checkEmployeesState({ state, dispatch }: any): void {
       for (const employee of state.employees) {
-        if (employee.state.hp <= 0) {
-          commit('setGemeOver', true)
-          return
+        for (const empState of Object.keys(employee.state)) {
+          if (employee.state[empState] <= 0) {
+            dispatch('gameOver', {stateTitle: empState, employeePosition: employee.translation})
+            return
+          }
+        }
+      }
+    },
+    gameOver({ commit }: any, {stateTitle, employeePosition} : {stateTitle: string, employeePosition: string}): void {
+      commit('setGemeOver', true)
+      // @ts-ignore
+      commit('setGameOverReport', `Показник ${allStates[stateTitle].translation} Вашого робітника ${employeePosition} досяг критичного значення`)
+    },
+    updateEmployeeState({ dispatch }: any, employee: any): void {
+      let settingType, setting, variants, diff = null
+      for (const settingName of Object.keys(employee.settings)) {
+        if (!employee.settings[settingName]) {
+          continue
+        }
+        // @ts-ignore
+        setting = allSettings[settingName]
+        settingType = setting.type
+        variants = [...setting.variants].sort()
+        diff = variants.indexOf(employee.selectedSettings[settingName].replace(setting.additionalText, '')) - variants.indexOf(employee.settings[settingName])
+        if (settingType === 'mp') {
+          if (diff >= 0) {
+            for (const damage of Object.keys(setting.stateDamages)) {
+              employee.state[damage] += (diff > 0 ? diff : 1) * setting.stateDamages[damage]
+              if (employee.state[damage] > 100) {
+                employee.state[damage] = 100
+              }
+            }
+          } else {
+            for (const damage of Object.keys(setting.stateDamages)) {
+              employee.state[damage] -= (-diff) * setting.stateDamages[damage]
+              if (employee.state[damage] < 0) {
+                dispatch('gameOver', {stateTitle: damage, employeePosition: employee.translation})
+              }
+            }
+          }
+        } else if (settingType === 'mm') {
+          if (diff) {
+            for (const damage of Object.keys(setting.stateDamages)) {
+              employee.state[damage] -= Math.abs(diff) * setting.stateDamages[damage]
+              if (employee.state[damage] < 0) {
+                dispatch('gameOver', {stateTitle: damage, employeePosition: employee.translation})
+              }
+            }
+          } else {
+            for (const damage of Object.keys(setting.stateDamages)) {
+              employee.state[damage] += setting.stateDamages[damage]
+              if (employee.state[damage] > 100) {
+                employee.state[damage] = 100
+              }
+            }
+          }
+        } else if (settingType === 'pm') {
+          if (diff <= 0) {
+            for (const damage of Object.keys(setting.stateDamages)) {
+              employee.state[damage] += (diff !== 0 ? -diff : 1) * setting.stateDamages[damage]
+              if (employee.state[damage] > 100) {
+                employee.state[damage] = 100
+              }
+            }
+          } else {
+            for (const damage of Object.keys(setting.stateDamages)) {
+              employee.state[damage] -= diff * setting.stateDamages[damage]
+              if (employee.state[damage] < 0) {
+                dispatch('gameOver', {stateTitle: damage, employeePosition: employee.translation})
+              }
+            }
+          }
+        } else {
+          throw new Error(`Unknown setting type "${settingType}", choose one from "mp|mm|pm"`)
         }
       }
     }

@@ -1,5 +1,5 @@
 <template>
-  <el-collapse-item :title="'Міри щодо ' + overdoze.title" class="overdoze">
+  <el-collapse-item :title="'Міри щодо ' + overdoze.title" class="overdoze" :name="overdoze.id">
     <el-radio-group v-model="resourse" size="medium"> 
       <el-radio 
         v-for="(variant, id) in overdoze.variants" 

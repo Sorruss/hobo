@@ -1,5 +1,5 @@
 <template>
-  <el-collapse-item :title="setting.title" :name="setting.id">
+  <el-collapse-item :title="setting.title" :name="id">
     <el-radio-group v-model="resourse" size="medium"> 
       <el-radio 
         v-for="(variant, id) in setting.variants" 
@@ -23,6 +23,10 @@ export default defineComponent({
   props: {
     setting: {
       type: Object as () => Setting,
+      required: true
+    },
+    id: {
+      type: Number,
       required: true
     }
   },

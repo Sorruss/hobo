@@ -7,13 +7,18 @@
       @setSetting="setSetting"
     />
   </div>
+  <custom-dialog :show="missingSettingAlertVidible" @hideDialog="setMissingSettingAlertVisible(false)">
+    <p>{{ missingSettingAlertText }}</p>
+    <el-button @click="setMissingSettingAlertVisible(false)" type="danger">Зрозуміло, дякую</el-button>
+  </custom-dialog>
+
   <custom-dialog :show="overdozeAlertVisible" @hideDialog="setOverdozeAlertVisible(false)">
     <p>{{ overdozeReport }}</p>
     <el-button @click="setOverdozeAlertVisible(false)" type="danger">Зрозуміло, дякую</el-button>
   </custom-dialog>
 
   <custom-dialog :show="gameOver" :closeButton="false">
-    <p>game over mazafucka</p>
+    <p>{{ gameOverReport }}</p>
     <el-button @click="setGameOver(false); pageReload()" type="danger">Розпочати заново</el-button>
   </custom-dialog>
 
@@ -34,7 +39,8 @@ export default defineComponent({
     ...mapMutations('employeeModule', {
       setSetting: 'setSetting',
       setOverdozeAlertVisible: 'setOverdozeAlertVisible',
-      setGameOver: 'setGameOver'
+      setGameOver: 'setGameOver',
+      setMissingSettingAlertVisible: 'setMissingSettingAlertVisible'
     }),
     ...mapActions('employeeModule', {
       nextYear: 'nextYear'
@@ -54,7 +60,10 @@ export default defineComponent({
       yearCounter: (state: any) => state.yearCounter,
       overdozeReport: (state: any) => state.overdozeReport,
       overdozeAlertVisible: (state: any) => state.overdozeAlertVisible,
-      gameOver: (state: any) => state.gameOver
+      gameOver: (state: any) => state.gameOver,
+      missingSettingAlertVidible: (state: any) => state.missingSettingAlertVidible,
+      missingSettingAlertText: (state: any) => state.missingSettingAlertText,
+      gameOverReport: (state: any) => state.gameOverReport
     })
   },
   mounted(): void {

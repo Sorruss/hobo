@@ -120,6 +120,7 @@ export default defineComponent({
     }),
     keyDownListener(event: any): void {
       if (event.key === 'ArrowRight') {
+        this.$store.commit('setGameStarted', true)
         this.$store.dispatch('employeeModule/setEmployees', this.parts[this.mapCounter].about.workers)
         this.toManag()
       } else if (event.key === 'ArrowLeft') {
