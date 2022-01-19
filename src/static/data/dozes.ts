@@ -30,7 +30,7 @@ export default {
       'голуби :D': 1
     },
     threshold: 30,
-    damage: 3
+    damage: 5
   },
   nitricOxide: {
     translation: 'оксиду азоту',

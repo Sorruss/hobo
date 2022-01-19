@@ -1,5 +1,6 @@
 export type Overdoze = {
-  id: number,
+  eId: number,
+  dozeTrans: string,
   title: string,
   variants: Array<string>
 }

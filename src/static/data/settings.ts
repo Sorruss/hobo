@@ -55,8 +55,8 @@ export default {
     type: 'pm',
     stateDamages: {
       hp: 4,
-      hearing: 4,
-      vision: 4
+      hearing: 2,
+      vision: 2
     }
   },
   illumination: {

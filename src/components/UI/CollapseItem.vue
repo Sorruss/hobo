@@ -20,6 +20,7 @@ import { Setting } from '@/types/settingType'
 
 export default defineComponent({
   name: 'collapse-item',
+  inheritAttrs: false,
   props: {
     setting: {
       type: Object as () => Setting,

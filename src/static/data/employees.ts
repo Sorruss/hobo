@@ -8,8 +8,8 @@ export default {
       illumination: null
     },
     dozes: {
-      carbonMonoxide: 9, 
-      carbonDioxide: 7
+      carbonMonoxide: 3, 
+      carbonDioxide: 2
     }
   },
   manager: {

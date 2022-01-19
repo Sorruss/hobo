@@ -37,7 +37,7 @@
         <collapse-item-overdoze 
           v-show="employee.optionalSettings"
           v-for="overdoze in getOptionalSettings(employee)" 
-          :key="overdoze.id"
+          :key="overdoze.eId"
           :overdoze="overdoze"
         />
 

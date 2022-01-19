@@ -23,6 +23,10 @@ export const employeeModule = {
     setSetting(state: any, setting: any): void {
       Object.assign(state.employees[setting[0] - 1].selectedSettings, setting[1])
     },
+    setODozeTreatment(state: any, treatment: any): void {
+      Object.assign(state.employees[treatment.eId - 1].selectedODozeTreatments, 
+        {[treatment.overdozeTitle]: treatment.variant})
+    },
     setYearCounter(state: any, payload: number): void {
       state.yearCounter = payload
     },
@@ -35,14 +39,9 @@ export const employeeModule = {
     setOverdozeReport(state: any, payload: string): void {
       state.overdozeReport = payload
     },
-    setOptionalSettings(state: any, overdozeInfo: object[]): void {
-      // {eId: employee.id, dozeTrans: allDozes[doze].translation, title: doze}
+    clearOptionalSettings(state: any): void {
       for (const employee of state.employees) {
         employee.optionalSettings = []
-      }
-      for (const overdoze of overdozeInfo) {
-        // @ts-ignore
-        state.employees[overdoze.eId - 1].optionalSettings.push({id: overdoze.eId, title: overdoze.dozeTrans, variants: Object.keys(allDozes[overdoze.title].treatmentWays)})
       }
     },
     setGemeOver(state: any, payload: boolean): void {
@@ -59,13 +58,35 @@ export const employeeModule = {
     },
     setMissingSettingAlertText(state: any, {settingTitle, employeePosition} : {settingTitle: string, employeePosition: string}): void {
       state.missingSettingAlertText = `Ви не обрали параметр ${settingTitle} для Вашого робітника ${employeePosition}`
-    },
-    selectODozeTreatment(state: any, payload: any): void {
-      console.log(payload)
     }
   },
   actions: {
     nextYear({ state, commit, dispatch }: any): void {
+      if (!dispatch('checkOnAllSelected')) {
+        return
+      }
+
+      for (const employee of state.employees) {
+        dispatch('updateEmployeeState', employee)
+        commit('pushSelected2History', employee)
+
+        if (Object.keys(employee.selectedODozeTreatments).length) {
+          dispatch('overdozeTreatment', employee)
+        }
+      }
+
+      if (state.yearCounter >= 14) {
+        commit('setGameStarted', false, {root: true})
+        commit('setGameFinished', true, {root: true})
+        commit('setYearCounter', 0)
+        router.push({name: 'ResultReport'})
+        return
+      }
+      commit('setYearCounter', state.yearCounter + 1)
+
+      dispatch('dozesIncrement')
+    },
+    checkOnAllSelected({ state, commit }: any): boolean {
       for (const employee of state.employees) {
         if (!(Object.keys(employee.selectedSettings).length === 
         (Object.keys(employee.settings).length - 
@@ -79,25 +100,10 @@ export const employeeModule = {
             settingTitle: allSettings[missing].title.toLowerCase(),
             employeePosition: employee.translation
           })
-          return
+          return false
         }
       }
-
-      for (const employee of state.employees) {
-        dispatch('updateEmployeeState', employee)
-        commit('pushSelected2History', employee)
-      }
-
-      if (state.yearCounter >= 14) {
-        commit('setGameStarted', false, {root: true})
-        commit('setGameFinished', true, {root: true})
-        commit('setYearCounter', 0)
-        router.push({name: 'ResultReport'})
-        return
-      }
-      commit('setYearCounter', state.yearCounter + 1)
-
-      dispatch('dozesIncrement')
+      return true
     },
     clearHistories({ state } : { state: any }): void {
       for (const employee of state.employees) {
@@ -118,6 +124,7 @@ export const employeeModule = {
           id: id,
           state: {hp: 100, vision: 100, hearing: 100}, 
           selectedSettings: {},
+          selectedODozeTreatments: {},
           history: [],
           optionalSettings: [],
           // @ts-ignore
@@ -146,7 +153,7 @@ export const employeeModule = {
             // @ts-ignore
             if ((empDoze.state + empDoze.increment) > allDozes[doze].threshold) {
               // @ts-ignore
-              employee.state.hp -= allDozes[doze].damage
+              state.employees[employee.id - 1].state.hp -= allDozes[doze].damage
               dispatch('checkEmployeesState')
             }
             // @ts-ignore
@@ -157,9 +164,11 @@ export const employeeModule = {
           }
         }
       }
-      dispatch('overdozeAlert', overdozes)
+      if (overdozes.length) {
+        dispatch('overdozeAlert', overdozes)
+      }
     },
-    overdozeAlert({ state, commit }: any, overdozeInfo: Array<any>): void {
+    overdozeAlert({ state, commit, dispatch }: any, overdozeInfo: Array<any>): void {
       let report
       const overdozes: any = {}
       for (const overdoze of overdozeInfo) {
@@ -181,7 +190,7 @@ export const employeeModule = {
 
       commit('setOverdozeAlertVisible', true)
       commit('setOverdozeReport', report)
-      commit('setOptionalSettings', overdozeInfo)
+      dispatch('setOptionalSettings', overdozeInfo)
     },
     changeEnding(_: any, word: string): string | void {
       if (word.endsWith('ий')) {
@@ -271,9 +280,31 @@ export const employeeModule = {
             }
           }
         } else {
-          throw new Error(`Unknown setting type "${settingType}", choose one from "mp|mm|pm"`)
+          throw new Error(`Unknown setting type "${settingType}", please, choose one from list ['mp', 'mm', 'pm']`)
         }
       }
+    },
+    setOptionalSettings({state, commit}: any, overdozeInfo: object[]): void {
+      commit('clearOptionalSettings')
+      for (const overdoze of overdozeInfo) {
+        // @ts-ignore
+        state.employees[overdoze.eId - 1].optionalSettings.push({...overdoze, variants: Object.keys(allDozes[overdoze.title].treatmentWays)})
+      }
+    },
+    overdozeTreatment({state, commit}: any, employee: any): void {
+      for (const oDoze of Object.keys(employee.selectedODozeTreatments)) {
+        // @ts-ignore
+        const treatmentFactor = allDozes[oDoze].treatmentWays[employee.selectedODozeTreatments[oDoze]]
+        const currentState = employee.dozes[oDoze].state
+        console.log(treatmentFactor, currentState, currentState * treatmentFactor)
+        employee.dozes[oDoze].state -= Math.ceil(currentState * treatmentFactor)
+        console.log(state.employees[employee.id - 1].dozes[oDoze].state)
+        // @ts-ignore
+        if (employee.dozes[oDoze].state <= allDozes[oDoze].threshold) {
+          employee.optionalSettings = employee.optionalSettings.filter((doze: any) => doze.title !== oDoze)
+        }
+      }
+      for (const treat in employee.selectedODozeTreatments) delete employee.selectedODozeTreatments[treat]
     }
   }
 }
