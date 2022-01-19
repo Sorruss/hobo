@@ -4,7 +4,7 @@
       <el-col :span="2">
         <div class="inscription noselect">работяга</div>
       </el-col>
-      <el-col :span="22">
+      <el-col :span="22" v-if="mounted">
         <div class="registration">
           <el-form 
             ref="registrationForm"
@@ -48,6 +48,31 @@
           </el-form>
         </div>
       </el-col>
+      <div v-else>
+        <el-skeleton animated :throttle="500" style="
+          height: 100vh;
+          width: 75vw;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;"
+        >
+          <template #template>
+            <div style="width: 45%; display: flex; justify-content: space-around; align-items: center; margin-bottom: 20px;">
+              <el-skeleton-item variant="p" style="width: 20%; height: 6vh;"/>
+              <el-skeleton-item variant="p" style="width: 75%; height: 7vh;"/>
+            </div>
+            <div style="width: 45%; display: flex; justify-content: space-around; align-items: center; margin-bottom: 20px;">
+              <el-skeleton-item variant="p" style="width: 20%; height: 6vh;"/>
+              <el-skeleton-item variant="p" style="width: 75%; height: 7vh;"/>
+            </div>
+            <div style="width: 45%; display: flex; justify-content: space-around; align-items: center;">
+              <el-skeleton-item variant="p" style="width: 20%; height: 6vh;"/>
+              <el-skeleton-item variant="p" style="width: 75%; height: 7vh;"/>
+            </div>
+          </template>
+        </el-skeleton>
+      </div>
     </el-row>
   </div>
   <arrow-button :func="submitRegistration"></arrow-button>
@@ -90,7 +115,8 @@ export default defineComponent({
             trigger: 'blur'
           }
         ]
-      }
+      },
+      mounted: false
     }
   },
   mounted(): void {
@@ -101,6 +127,7 @@ export default defineComponent({
     }
 
     window.addEventListener('keydown', this.keyDownListener)
+    this.mounted = true
   },
   unmounted(): void {
     window.removeEventListener('keydown', this.keyDownListener)

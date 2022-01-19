@@ -1,5 +1,5 @@
 <template>
-  <div class="card noselect">
+  <div class="card noselect" v-if="mounted">
     <div class="card__position">
       {{ employee.translation }} ({{ statePerc }}%)
     </div>
@@ -51,6 +51,26 @@
       </el-collapse>
     </div>
   </div>
+  <div v-else>
+    <el-skeleton :throttle="400" animated style="width: 20vw; display: flex; flex-direction: column; align-items: center; margin-top: 10px;">
+      <template #template>
+        <el-skeleton-item variant="p" style="width: 75%; margin-bottom: 5px;" />
+        
+        <el-skeleton-item variant="image" style="width: 100%; height: 240px; margin-bottom: 5px;" />
+        
+        <el-skeleton-item variant="rect" style="width: 100%; margin-bottom: 5px;" />
+        <el-skeleton-item variant="rect" style="width: 100%; margin-bottom: 5px;" />
+        <el-skeleton-item variant="rect" style="width: 100%; margin-bottom: 5px;" />
+
+        <el-skeleton-item 
+          v-for="(setting, id) in getSettings(employee)" 
+          :key="setting + id"
+          variant="rect"
+          style="width: 100%; height: 20vh; margin-bottom: 5px;"
+        />
+      </template>
+    </el-skeleton>
+  </div>
 </template>
 
 <script lang="ts">
@@ -69,7 +89,8 @@ export default defineComponent({
         middleStateImage: require('@/static/images/smileState.jpeg'),
         sadState1: require('@/static/images/sadState1.png'),
         sadState2: require('@/static/images/sadState2.png')
-      }
+      },
+      mounted: false
     }
   },
   props: {
@@ -120,6 +141,9 @@ export default defineComponent({
     getOptionalSettings(employee: any): Array<any> {
       return employee.optionalSettings
     }
+  },
+  mounted() {
+    this.mounted = true
   }
 })
 </script>
