@@ -22,8 +22,11 @@ export default createStore({
     setGameFinished(state: any, payload: boolean): void {
       state.gameFinished = payload
     },
-    setStudent(state: any, payload: any): void {
-      state.student = payload
+    setStudent(state: any, obj: any): void {
+      state.student = obj
+    },
+    setStudentField(state: any, {field, payload}: {field: string, payload: any}): void {
+      state.student[field] = payload
     }
   },
   modules: {

@@ -23,6 +23,10 @@ export const chooseLocationModule = {
     mapChooseRegion({ state, commit }: any, id: number): void {
       state.parts[state.mapCounter].isActive = false
       commit('setMapCounter', id)
+
+      commit('setStudentField', {field: 'region', payload: state.parts[state.mapCounter].about.regionInfo.name}, {root: true})
+      commit('setStudentField', {field: 'company', payload: state.parts[state.mapCounter].about.regionInfo.company}, {root: true})
+      
       state.parts[state.mapCounter].isActive = true
     },
     mapCounterCorrect({ state, commit }: any): void {

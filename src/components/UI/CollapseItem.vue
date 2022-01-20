@@ -6,7 +6,7 @@
         border 
         :key="variant + id"
         :label="variant + (setting.additionalText ? setting.additionalText : '')"
-        @click="setSetting(variant + id); setMissedSettingIndex(null)"
+        @click="setSetting(variant + id); (employeePosition + id) === missedSettingIndex ? setMissedSettingIndex(null) : null"
         :ref="variant + id"
       >
       </el-radio>
