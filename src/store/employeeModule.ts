@@ -1,6 +1,7 @@
 import router from '@/router'
 
 import allEmployees from '@/static/data/employees'
+import categories from '@/static/data/categories'
 import allSettings from '@/static/data/settings'
 import allStates from '@/static/data/states'
 import allDozes from '@/static/data/dozes'
@@ -10,13 +11,16 @@ export const employeeModule = {
   namespaced: true,
   state: {
     employees: [],
+    totalYears: 2,
     yearCounter: 0,
     overdozeReport: '',
     overdozeAlertVisible: false,
     gameOver: false,
     gameOverReport: '',
     missingSettingAlertVidible: false,
-    missingSettingAlertText: ''
+    missingSettingAlertText: '',
+    permissionOnContinue: false,
+    missedSettingIndex: null
   },
   getters: {},
   mutations: {
@@ -58,11 +62,18 @@ export const employeeModule = {
     },
     setMissingSettingAlertText(state: any, {settingTitle, employeePosition} : {settingTitle: string, employeePosition: string}): void {
       state.missingSettingAlertText = `Ви не обрали параметр ${settingTitle} для Вашого робітника ${employeePosition}`
+    },
+    serPermissionOnContinue(state: any, payload: boolean): void {
+      state.permissionOnContinue = payload
+    },
+    setMissedSettingIndex(state: any, index: string): void {
+      state.missedSettingIndex = index
     }
   },
   actions: {
     nextYear({ state, commit, dispatch }: any): void {
-      if (!dispatch('checkOnAllSelected')) {
+      dispatch('checkOnAllSelected')
+      if (!state.permissionOnContinue) {
         return
       }
 
@@ -75,7 +86,7 @@ export const employeeModule = {
         }
       }
 
-      if (state.yearCounter >= 14) {
+      if (state.yearCounter >= state.totalYears - 1) {
         commit('setGameStarted', false, {root: true})
         commit('setGameFinished', true, {root: true})
         commit('setYearCounter', 0)
@@ -86,24 +97,27 @@ export const employeeModule = {
 
       dispatch('dozesIncrement')
     },
-    checkOnAllSelected({ state, commit }: any): boolean {
+    checkOnAllSelected({ state, commit }: any): void {
+      let empSettings = null
       for (const employee of state.employees) {
+        empSettings = Object.keys(employee.settings)
         if (!(Object.keys(employee.selectedSettings).length === 
-        (Object.keys(employee.settings).length - 
+        (empSettings.length - 
         Object.values(employee.settings).filter(x => x === null).length))) {
           const selected = Object.keys(employee.selectedSettings)
-          const missing = Object.keys(employee.settings).filter(x => !selected.includes(x))[0]
+          const missing = empSettings.filter(x => employee.settings[x] !== null && !selected.includes(x))[0]
 
           commit('setMissingSettingAlertVisible', true)
           commit('setMissingSettingAlertText', {
-            // @ts-ignore 
             settingTitle: allSettings[missing].title.toLowerCase(),
             employeePosition: employee.translation
           })
-          return false
+          commit('serPermissionOnContinue', false)
+          commit('setMissedSettingIndex', employee.translation + empSettings.filter(x => employee.settings[x] !== null).indexOf(missing))
+          return
         }
       }
-      return true
+      commit('serPermissionOnContinue', true)
     },
     clearHistories({ state } : { state: any }): void {
       for (const employee of state.employees) {
@@ -118,27 +132,32 @@ export const employeeModule = {
     setEmployees({ state, commit }: any, employees: Array<string>): void {
       commit('resetEmployees')
       let id = 1
-      let dozes
+      let dozes, newEmp
       for (const employee of employees) {
-        state.employees.push({
+        newEmp = {
           id: id,
           state: {hp: 100, vision: 100, hearing: 100}, 
           selectedSettings: {},
           selectedODozeTreatments: {},
           history: [],
           optionalSettings: [],
-          // @ts-ignore
           ...JSON.parse(JSON.stringify(allEmployees[employee]))
-        })
-        dozes = state.employees[id - 1].dozes
+        }
+
+        newEmp.settings.calories = categories[newEmp.category].calories
+        newEmp.settings.temperatureWarmSeason = categories[newEmp.category].temperatureWarmSeason
+        newEmp.settings.temperatureColdSeason = categories[newEmp.category].temperatureColdSeason
+
+        dozes = newEmp.dozes
         if (dozes) {
           for (const doze of Object.keys(dozes)) {
-            state.employees[id - 1].dozes[doze] = {
+            newEmp.dozes[doze] = {
               increment: dozes[doze],
               state: 0
             }
           }
         }
+        state.employees.push(newEmp)
         id++
       }
     },
@@ -150,15 +169,11 @@ export const employeeModule = {
           for (const doze of Object.keys(employee.dozes)) {
             empDoze = employee.dozes[doze]
             employee.dozes[doze].state += empDoze.increment
-            // @ts-ignore
             if ((empDoze.state + empDoze.increment) > allDozes[doze].threshold) {
-              // @ts-ignore
               state.employees[employee.id - 1].state.hp -= allDozes[doze].damage
               dispatch('checkEmployeesState')
             }
-            // @ts-ignore
             if ((empDoze.state + empDoze.increment) >= allDozes[doze].threshold * 0.8) {
-              // @ts-ignore
               overdozes.push({eId: employee.id, dozeTrans: allDozes[doze].translation, title: doze})
             }
           }
@@ -217,7 +232,6 @@ export const employeeModule = {
     },
     gameOver({ commit }: any, {stateTitle, employeePosition} : {stateTitle: string, employeePosition: string}): void {
       commit('setGemeOver', true)
-      // @ts-ignore
       commit('setGameOverReport', `Показник ${allStates[stateTitle].translation} Вашого робітника ${employeePosition} досяг критичного значення`)
     },
     updateEmployeeState({ dispatch }: any, employee: any): void {
@@ -226,7 +240,6 @@ export const employeeModule = {
         if (!employee.settings[settingName]) {
           continue
         }
-        // @ts-ignore
         setting = allSettings[settingName]
         settingType = setting.type
         variants = [...setting.variants].sort()
@@ -284,22 +297,18 @@ export const employeeModule = {
         }
       }
     },
-    setOptionalSettings({state, commit}: any, overdozeInfo: object[]): void {
+    setOptionalSettings({state, commit}: any, overdozeInfo: any): void {
       commit('clearOptionalSettings')
       for (const overdoze of overdozeInfo) {
-        // @ts-ignore
         state.employees[overdoze.eId - 1].optionalSettings.push({...overdoze, variants: Object.keys(allDozes[overdoze.title].treatmentWays)})
       }
     },
-    overdozeTreatment({state, commit}: any, employee: any): void {
+    overdozeTreatment(_: any, employee: any): void {
       for (const oDoze of Object.keys(employee.selectedODozeTreatments)) {
-        // @ts-ignore
         const treatmentFactor = allDozes[oDoze].treatmentWays[employee.selectedODozeTreatments[oDoze]]
         const currentState = employee.dozes[oDoze].state
-        console.log(treatmentFactor, currentState, currentState * treatmentFactor)
+        
         employee.dozes[oDoze].state -= Math.ceil(currentState * treatmentFactor)
-        console.log(state.employees[employee.id - 1].dozes[oDoze].state)
-        // @ts-ignore
         if (employee.dozes[oDoze].state <= allDozes[oDoze].threshold) {
           employee.optionalSettings = employee.optionalSettings.filter((doze: any) => doze.title !== oDoze)
         }

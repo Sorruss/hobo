@@ -20,3 +20,16 @@
     }
   }
 }
+
+.missed-setting {
+  border: 1px #ff0000 solid;
+  animation: blinker .9s cubic-bezier(.5, 0, 1, 1) infinite alternate;
+}
+@keyframes blinker {
+  to {
+    opacity: 0.7;
+  }
+}
+.missed-setting:hover {
+  animation: 0;
+}

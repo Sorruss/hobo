@@ -1,4 +1,4 @@
-export default {
+export default <any>{
   carbonMonoxide: {
     translation: 'чадного газу',
     treatmentWays: {

@@ -9,7 +9,8 @@ export default createStore({
   state: {
     gameStarted: false,
     gameFinished: false,
-    isAuth: false
+    isAuth: false,
+    student: null
   },
   mutations: {
     setGameStarted(state: any, payload: boolean): void {
@@ -20,6 +21,9 @@ export default createStore({
     },
     setGameFinished(state: any, payload: boolean): void {
       state.gameFinished = payload
+    },
+    setStudent(state: any, payload: any): void {
+      state.student = payload
     }
   },
   modules: {

@@ -149,6 +149,11 @@ export default defineComponent({
             }
 
             this.$store.commit('setIsAuth', true)
+            this.$store.commit('setStudent', {
+              name: this.student.name, 
+              surname: this.student.surname, 
+              group: this.student.group
+            })
             this.$router.push({name: 'EmployeeChoose'})
           } else {
             return false

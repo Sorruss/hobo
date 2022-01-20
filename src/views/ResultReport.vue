@@ -1,9 +1,9 @@
 <template>
   <div class="report">
     <div class="user">
-      <span class="user__info">Iм'я: {{ $cookies.get('userSurname') }}</span> <br>
-      <span class="user__info">Фамiлiя: {{ $cookies.get('userName') }}</span> <br>
-      <span class="user__info">Група: {{ $cookies.get('userGroup') }}</span>
+      <span class="user__info">Iм'я: {{ student.name }}</span> <br>
+      <span class="user__info">Фамiлiя: {{ student.surname }}</span> <br>
+      <span class="user__info">Група: {{ student.group }}</span>
     </div>
     <br>
     <div class="result">
@@ -31,6 +31,9 @@ export default defineComponent({
   computed: {
     ...mapState('employeeModule', {
       employees: (state: any) => state.employees
+    }),
+    ...mapState({
+      student: (state: any) => state.student
     })
   }
 })

@@ -1,12 +1,12 @@
 <template>
-  <el-collapse-item :title="setting.title" :name="id">
+  <el-collapse-item :title="setting.title" :name="id" :class="(employeePosition + id) === missedSettingIndex ? 'missed-setting' : ''">
     <el-radio-group v-model="resourse" size="medium"> 
       <el-radio 
         v-for="(variant, id) in setting.variants" 
         border 
         :key="variant + id"
         :label="variant + (setting.additionalText ? setting.additionalText : '')"
-        @click="setSetting(variant + id)"
+        @click="setSetting(variant + id); setMissedSettingIndex(null)"
         :ref="variant + id"
       >
       </el-radio>
@@ -17,6 +17,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { Setting } from '@/types/settingType'
+import { mapMutations, mapState } from 'vuex'
 
 export default defineComponent({
   name: 'collapse-item',
@@ -29,6 +30,10 @@ export default defineComponent({
     id: {
       type: Number,
       required: true
+    },
+    employeePosition: {
+      type: String,
+      required: true
     }
   },
   data() {
@@ -40,7 +45,15 @@ export default defineComponent({
     setSetting(idx: string): void {
       const setting = {[this.setting.translation]: (this.$refs[idx] as any)[0].label}
       this.$emit('setSetting', setting)
-    }
+    },
+    ...mapMutations('employeeModule', {
+      setMissedSettingIndex: 'setMissedSettingIndex'
+    })
+  },
+  computed: {
+    ...mapState('employeeModule', {
+      missedSettingIndex: (state: any) => state.missedSettingIndex
+    })
   }
 })
 </script>

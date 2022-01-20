@@ -126,10 +126,6 @@ export default defineComponent({
       } else if (event.key === 'ArrowLeft') {
         this.toRegistration()
       }
-    },
-    gameStart(workers:Array<string>): void {
-      this.$store.commit('employeeModule/setWorkers',workers)
-      this.$store.commit('setGameStarted', true)
     }
   },
   mounted(): void {
@@ -147,7 +143,6 @@ export default defineComponent({
   unmounted(): void {
     window.removeEventListener('keydown', this.keyDownListener)
   }
-
 })
 </script>
 

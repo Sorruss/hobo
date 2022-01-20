@@ -1,4 +1,4 @@
-export default {
+export default <any>{
   driver: {
     translation: 'Водій',
     category: '2а',
@@ -36,7 +36,7 @@ export default {
   },
   smelter: {
     translation: 'Сталевар',
-    category: '3а',
+    category: '3',
     settings: {
       workingDayHours: '8',
       noiseLevel: '<65',
@@ -108,7 +108,7 @@ export default {
   },
   shipRepair: {
     translation: 'Судноремонт',
-    category: '3а',
+    category: '3',
     settings: {
       workingDayHours: '8',
       noiseLevel: '<75',
@@ -134,7 +134,7 @@ export default {
   },
   miner: {
     translation: 'Шахтар',
-    category: '3а',
+    category: '3',
     settings: {
       workingDayHours: '6-7',
       noiseLevel: '>75',

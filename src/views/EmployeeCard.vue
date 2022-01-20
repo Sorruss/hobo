@@ -37,7 +37,7 @@
         <collapse-item-overdoze 
           v-show="employee.optionalSettings"
           v-for="overdoze in getOptionalSettings(employee)" 
-          :key="overdoze.eId"
+          :key="overdoze.eId" 
           :overdoze="overdoze"
         />
 
@@ -45,6 +45,7 @@
           v-for="(setting, id) in getSettings(employee)" 
           :key="setting + id"
           :setting="setting"
+          :employeePosition="employee.translation"
           :id="id"
           @setSetting="$emit('setSetting', [employee.id, $event])"
         />
@@ -132,7 +133,6 @@ export default defineComponent({
       const settings = []
       for (let setting of Object.entries(employee.settings)) {
         if (setting[1]) {
-          // @ts-ignore
           settings.push({translation: setting[0], ...allSettings[setting[0]]})
         }
       }

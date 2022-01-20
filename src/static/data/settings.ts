@@ -1,4 +1,4 @@
-export default {
+export default <any>{
   relaxation: {
     title: 'Відпочинок',
     variants: ['геншин', 'танки', 'ютуб', 'голуби'],
@@ -32,16 +32,25 @@ export default {
   },
   calories: {
     title: 'Калорійність',
-    variants: ['10', '11', '12', '13'],
-    additionalText: 'кк',
+    variants: ['<120', '121-150', '151-200', '201-250', '>250'],
+    additionalText: ' ккал/г',
+    type: 'mm',
+    stateDamages: {
+      hp: 5
+    }
+  },
+  temperatureWarmSeason: {
+    title: 'Температура на теплий сезон',
+    variants: ['16-18', '17-19', '19-21', '21-23', '22-24'],
+    additionalText: '°C',
     type: 'mm',
     stateDamages: {
       hp: 4
     }
   },
-  temperature: {
-    title: 'Температура',
-    variants: ['20', '30', '40', '50'],
+  temperatureColdSeason: {
+    title: 'Температура на холодний сезон',
+    variants: ['19-20', '20-22', '21-23', '22-24', '23-25'],
     additionalText: '°C',
     type: 'mm',
     stateDamages: {

@@ -1,4 +1,4 @@
-export default {
+export default <any>{
   hp: {
     translation: 'здоров\'я'
   },
