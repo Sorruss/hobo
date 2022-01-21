@@ -3,6 +3,7 @@ export type regionPartType = {
   about: {
     regionInfo: {
       name: string,
+      company: string,
       description: string
     },
     workers: Array<string>,

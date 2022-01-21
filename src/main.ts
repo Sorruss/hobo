@@ -6,6 +6,7 @@ import store from '@/store'
 import VueCookies from 'vue3-cookies'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import Vue3ProgressBar from '@aacassandra/vue3-progressbar'
 
 import uiComponents from '@/components/UI/index'
 
@@ -24,4 +25,24 @@ const globalCookiesConfig = {
   secure: true,
   sameSite: 'None',
 }
-app.use(ElementPlus).use(store).use(router).use(VueCookies, globalCookiesConfig).mount('#app')
+
+const Vue3ProgressBarOptions = {
+  color: '#bffaf3',
+  failedColor: '#874b4b',
+  thickness: '3px',
+  transition: {
+    speed: '0.2s',
+    opacity: '0.6s',
+    termination: 300,
+  },
+  autoRevert: true,
+  location: 'left',
+  inverse: false,
+}
+
+app.use(Vue3ProgressBar, Vue3ProgressBarOptions)
+  .use(ElementPlus)
+  .use(store)
+  .use(router)
+  .use(VueCookies, globalCookiesConfig)
+  .mount('#app')

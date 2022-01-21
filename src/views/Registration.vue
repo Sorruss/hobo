@@ -143,16 +143,16 @@ export default defineComponent({
         (this.$refs['registrationForm'] as typeof ElForm).validate((valid: any) => {
           if (valid) {
             if (this.$cookies.get('cookieAccess')) {
-              this.$cookies.set('userName', this.student.name)
-              this.$cookies.set('userSurname', this.student.surname)
-              this.$cookies.set('userGroup', this.student.group)
+              this.$cookies.set('userName', this.student.name.trim())
+              this.$cookies.set('userSurname', this.student.surname.trim())
+              this.$cookies.set('userGroup', this.student.group.trim())
             }
 
             this.$store.commit('setIsAuth', true)
             this.$store.commit('setStudent', {
-              name: this.student.name, 
-              surname: this.student.surname, 
-              group: this.student.group
+              name: this.student.name.trim(), 
+              surname: this.student.surname.trim(), 
+              group: this.student.group.trim()
             })
             this.$router.push({name: 'EmployeeChoose'})
           } else {

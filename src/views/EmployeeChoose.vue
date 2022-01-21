@@ -80,12 +80,11 @@
       </el-col>
     </el-row>
 
+    <arrow-button :func="toRegistration" direction="left"></arrow-button>
     <arrow-button 
-      @click="$store.commit('setGameStarted', true); 
-        $store.dispatch('employeeModule/setEmployees', parts[mapCounter].about.workers)" 
+      @click="gameStart" 
       :func="toManag"
     ></arrow-button>
-    <arrow-button :func="toRegistration" direction="left"></arrow-button>
   </div>
 </template>
 
@@ -121,15 +120,22 @@ export default defineComponent({
     }),
     keyDownListener(event: any): void {
       if (event.key === 'ArrowRight') {
-        this.$store.commit('setGameStarted', true)
-        this.$store.dispatch('employeeModule/setEmployees', this.parts[this.mapCounter].about.workers)
+        this.gameStart()
         this.toManag()
       } else if (event.key === 'ArrowLeft') {
         this.toRegistration()
       }
+    },
+    gameStart(): void {
+      this.$store.commit('setGameStarted', true)
+      this.$store.dispatch('employeeModule/setEmployees', this.parts[this.mapCounter].about.workers)
+      this.$store.commit('setStudentField', {field: 'gameStartTime', payload: new Date(new Date().getTime()).toLocaleString()})
     }
   },
   mounted(): void {
+    this.$store.commit('setStudentField', {field: 'region', payload: this.parts[this.mapCounter].about.regionInfo.name})
+    this.$store.commit('setStudentField', {field: 'company', payload: this.parts[this.mapCounter].about.regionInfo.company})
+
     if (this.$store.state.gameStarted && !this.$route.fullPath.includes('game_step')) {
       this.$router.push({name: 'GameStart'})
     } else if (!this.$store.state.isAuth) {

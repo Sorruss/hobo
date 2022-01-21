@@ -7,15 +7,25 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@aacassandra/vue3-progressbar": "^1.0.3",
+    "@element-plus/icons-vue": "^0.2.6",
     "core-js": "^3.6.5",
+    "docxtemplater": "^3.28.6",
+    "file-saver": "^2.0.5",
+    "html2canvas": "^1.4.0",
+    "jszip": "^2.6.1",
+    "jszip-utils": "^0.1.0",
     "vue": "^3.0.0",
     "vue-carousel": "^0.18.0",
     "vue-cli": "^2.9.6",
     "vue-router": "^4.0.0-0",
+    "vue3-charts": "^1.1.27",
     "vue3-cookies": "^1.0.6",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.5",
+    "@types/html2canvas": "^1.0.0",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-typescript": "~4.5.0",

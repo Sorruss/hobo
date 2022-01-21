@@ -54,8 +54,8 @@ export const employeeModule = {
     setGameOverReport(state: any, report: string): void {
       state.gameOverReport = report
     },
-    pushSelected2History(_: any, employee: any): void {
-      employee.history.push(Object.assign({}, employee.selectedSettings))
+    pushState2History(state: any, employee: any): void {
+      employee.history.push(Object.assign({year: state.yearCounter + 1}, employee.state))
     },
     setMissingSettingAlertVisible(state: any, payload: boolean): void {
       state.missingSettingAlertVidible = payload
@@ -73,17 +73,22 @@ export const employeeModule = {
   actions: {
     nextYear({ state, commit, dispatch }: any): void {
       dispatch('checkOnAllSelected')
-      if (!state.permissionOnContinue) {
+      if (!state.permissionOnContinue || state.gameOver) {
         return
       }
 
       for (const employee of state.employees) {
         dispatch('updateEmployeeState', employee)
-        commit('pushSelected2History', employee)
+        commit('pushState2History', employee)
 
         if (Object.keys(employee.selectedODozeTreatments).length) {
           dispatch('overdozeTreatment', employee)
         }
+      }
+      dispatch('dozesIncrement')
+
+      if (state.gameOver) {
+        return
       }
 
       if (state.yearCounter >= state.totalYears - 1) {
@@ -94,8 +99,6 @@ export const employeeModule = {
         return
       }
       commit('setYearCounter', state.yearCounter + 1)
-
-      dispatch('dozesIncrement')
     },
     checkOnAllSelected({ state, commit }: any): void {
       let empSettings = null
@@ -162,6 +165,10 @@ export const employeeModule = {
       }
     },
     dozesIncrement({ state, dispatch }: any): void {
+      if (state.gameOver) {
+        return
+      }
+
       const overdozes = []
       let empDoze = null
       for (const employee of state.employees) {
@@ -234,10 +241,12 @@ export const employeeModule = {
       commit('setGemeOver', true)
       commit('setGameOverReport', `Показник ${allStates[stateTitle].translation} Вашого робітника ${employeePosition} досяг критичного значення`)
     },
-    updateEmployeeState({ dispatch }: any, employee: any): void {
+    updateEmployeeState({ state, dispatch }: any, employee: any): void {
       let settingType, setting, variants, diff = null
       for (const settingName of Object.keys(employee.settings)) {
-        if (!employee.settings[settingName]) {
+        if (state.gameOver) {
+          return
+        } else if (!employee.settings[settingName]) {
           continue
         }
         setting = allSettings[settingName]
@@ -255,7 +264,7 @@ export const employeeModule = {
           } else {
             for (const damage of Object.keys(setting.stateDamages)) {
               employee.state[damage] -= (-diff) * setting.stateDamages[damage]
-              if (employee.state[damage] < 0) {
+              if (employee.state[damage] <= 0) {
                 dispatch('gameOver', {stateTitle: damage, employeePosition: employee.translation})
               }
             }
@@ -264,7 +273,8 @@ export const employeeModule = {
           if (diff) {
             for (const damage of Object.keys(setting.stateDamages)) {
               employee.state[damage] -= Math.abs(diff) * setting.stateDamages[damage]
-              if (employee.state[damage] < 0) {
+              if (employee.state[damage] <= 0) {
+                console.log('1')
                 dispatch('gameOver', {stateTitle: damage, employeePosition: employee.translation})
               }
             }
@@ -287,7 +297,7 @@ export const employeeModule = {
           } else {
             for (const damage of Object.keys(setting.stateDamages)) {
               employee.state[damage] -= diff * setting.stateDamages[damage]
-              if (employee.state[damage] < 0) {
+              if (employee.state[damage] <= 0) {
                 dispatch('gameOver', {stateTitle: damage, employeePosition: employee.translation})
               }
             }
