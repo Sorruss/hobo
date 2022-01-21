@@ -10,10 +10,11 @@
                 alt="location_photo"
                 class="info__region-image"
               >
+              <h3 class="info__company-name">{{parts[mapCounter].about.regionInfo.name}}</h3>
               <el-collapse v-model="activeElements">
-                <el-collapse-item title="Інформація про регіон">
+                <el-collapse-item title="Інформація про підприємство" :name="0">
                   <div class="info__text-block">
-                    <h4 class="info__region-name info__region-header">{{ parts[mapCounter].about.regionInfo.name }}</h4>
+                    <h4 class="info__company-name info__region-header">{{ parts[mapCounter].about.regionInfo.companyName }}</h4>
                     <p class="info__region-about info__paragraph">{{ parts[mapCounter].about.regionInfo.description }}</p>
                   </div>
                 </el-collapse-item>
@@ -98,7 +99,7 @@ export default defineComponent({
   name: 'EmployeeChoose',
   data() {
     return {
-      activeElements: ref([1, 2])
+      activeElements: ref([0])
     }
   },
   computed: {
