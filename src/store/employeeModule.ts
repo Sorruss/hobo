@@ -73,7 +73,6 @@ export const employeeModule = {
   actions: {
     nextYear({ state, commit, dispatch }: any): void {
       dispatch('checkOnAllSelected')
-      console.log(state.gameOver)
       if (!state.permissionOnContinue || state.gameOver) {
         return
       }
