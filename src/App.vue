@@ -1,5 +1,7 @@
 <template>
   <div class="page">
+    <vue-progress-bar></vue-progress-bar>
+
     <div v-if="$route.fullPath.includes('game_step')" class="left noselect">
       <div @click="repeatDialogVisible = true" class="repeat">
         <img :src="images.repeatImage" alt="repeat">
@@ -75,6 +77,23 @@ export default defineComponent({
       this.$cookies.set('cookieAccess', true)
       this.cookieAccessPopUp = true
     }
+  },
+  created() {
+    this.$Progress.start()
+    this.$router.beforeEach((to, from, next) => {
+      if (to.meta.progress !== undefined) {
+        let meta = to.meta.progress
+        this.$Progress.parseMeta(meta)
+      }
+      this.$Progress.start()
+      next()
+    })
+    this.$router.afterEach((to, from) => {
+      this.$Progress.finish()
+    })
+  },
+  mounted() {
+    this.$Progress.finish()
   }
 })
 </script>
