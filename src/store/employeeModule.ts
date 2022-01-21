@@ -11,7 +11,7 @@ export const employeeModule = {
   namespaced: true,
   state: {
     employees: [],
-    totalYears: 5,
+    totalYears: 15,
     yearCounter: 0,
     overdozeReport: '',
     overdozeAlertVisible: false,
@@ -144,9 +144,9 @@ export const employeeModule = {
           ...JSON.parse(JSON.stringify(allEmployees[employee]))
         }
 
-        // newEmp.settings.calories = categories[newEmp.category].calories
-        // newEmp.settings.temperatureWarmSeason = categories[newEmp.category].temperatureWarmSeason
-        // newEmp.settings.temperatureColdSeason = categories[newEmp.category].temperatureColdSeason
+        newEmp.settings.calories = categories[newEmp.category].calories
+        newEmp.settings.temperatureWarmSeason = categories[newEmp.category].temperatureWarmSeason
+        newEmp.settings.temperatureColdSeason = categories[newEmp.category].temperatureColdSeason
 
         dozes = newEmp.dozes
         if (dozes) {
