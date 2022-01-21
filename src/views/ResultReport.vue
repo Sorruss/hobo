@@ -64,8 +64,8 @@
                 <Line :dataKeys="['year', 'vision']" type="monotone" :lineStyle="{stroke: 'red'}"/>
                 <Line :dataKeys="['year', 'hearing']" type="monotone" :lineStyle="{stroke: 'brown'}"/>
 
-                <Marker v-if="true" :value="40" label="мiнiмум" color="red" strokeWidth="2" strokeDasharray="12 12"/>
-                <Marker v-if="true" :value="80" label="норма" color="lightgreen" strokeWidth="2" strokeDasharray="12 12"/>
+                <Marker v-if="true" :value="40" label="мiнiмум" color="red" :strokeWidth="2" strokeDasharray="12 12"/>
+                <Marker v-if="true" :value="80" label="норма" color="lightgreen" :strokeWidth="2" strokeDasharray="12 12"/>
               </template>
 
               <template #widgets>
@@ -95,7 +95,6 @@
               :data="getTableData()" 
               border 
               stripe
-              :default-sort="{prop: 'score'}"
             >
               <el-table-column prop="employeePosition" label="Професія" width="180"/>
               <el-table-column prop="score" label="Бали" width="180"/>
