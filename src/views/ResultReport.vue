@@ -46,9 +46,13 @@
       </div>
 
       <div class="charts">
-        <div class="chart" v-for="employee in getEmployees()" :key="employee.id">
-          <div class="chart__header">{{ employee.translation }}</div>
-          <div class="chart__vue3">
+        <div class="my-chart" :id="employee.translation" v-for="employee in getEmployees()" :key="employee.id">
+          <div class="my-chart__header">{{ employee.translation }}</div>
+          <div class="my-chart__vue3">
+            <el-button type="info" class="downloadBtn" @click="downloadChart(employee.translation)" circle>
+              <download style="width: 2em; height: 2em;"/>
+            </el-button>
+
             <Chart
               :size="{width: 500, height: 420}"
               :data="employee.history"
@@ -81,7 +85,7 @@
               </template>
             </Chart>
           </div>
-          <div class="chart__title">
+          <div class="my-chart__title">
             Графiк {{ employee.id }}. Зміна стану здоров'я за фахом {{ employee.translation }}
           </div>
         </div>
@@ -114,10 +118,13 @@
 import { defineComponent, ref } from 'vue'
 import { mapState } from 'vuex'
 import { Chart, Grid, Line, Tooltip, Marker } from 'vue3-charts'
+import { saveAs } from 'file-saver'
+import html2canvas from 'html2canvas'
+import { Download } from '@element-plus/icons-vue'
 
 export default defineComponent({
   name: 'ResultReport',
-  components: {Chart, Grid, Line, Tooltip, Marker},
+  components: {Chart, Grid, Line, Tooltip, Marker, Download},
   created(): void {
     if (this.$store.state.gameStarted && !this.$route.fullPath.includes('game_step')) {
       this.$router.push({name: 'GameStart'})
@@ -161,6 +168,14 @@ export default defineComponent({
         state: ''
       })
       return tableData
+    },
+    downloadChart(id: string): void {
+      const chart = document.getElementById(id)!
+      html2canvas(chart, {backgroundColor: 'black'}).then(function(canvas) {
+        canvas.toBlob(function(blob: any) {
+          saveAs(blob, `${id} - графiк.png`)
+        })
+      })
     }
   },
   setup() {

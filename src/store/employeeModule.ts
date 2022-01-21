@@ -11,7 +11,7 @@ export const employeeModule = {
   namespaced: true,
   state: {
     employees: [],
-    totalYears: 15,
+    totalYears: 2,
     yearCounter: 0,
     overdozeReport: '',
     overdozeAlertVisible: false,
