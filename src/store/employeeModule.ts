@@ -11,7 +11,7 @@ export const employeeModule = {
   namespaced: true,
   state: {
     employees: [],
-    totalYears: 15,
+    totalYears: 2,
     yearCounter: 0,
     overdozeReport: '',
     overdozeAlertVisible: false,
@@ -73,7 +73,6 @@ export const employeeModule = {
   actions: {
     nextYear({ state, commit, dispatch }: any): void {
       dispatch('checkOnAllSelected')
-      console.log(state.gameOver)
       if (!state.permissionOnContinue || state.gameOver) {
         return
       }

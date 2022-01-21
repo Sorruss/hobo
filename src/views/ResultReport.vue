@@ -46,9 +46,13 @@
       </div>
 
       <div class="charts">
-        <div class="chart" v-for="employee in getEmployees()" :key="employee.id">
-          <div class="chart__header">{{ employee.translation }}</div>
-          <div class="chart__vue3">
+        <div class="my-chart" :id="employee.translation" v-for="employee in getEmployees()" :key="employee.id">
+          <div class="my-chart__header">{{ employee.translation }}</div>
+          <div class="my-chart__vue3">
+            <el-button type="info" class="downloadBtn" @click="downloadChart(employee.translation)" circle>
+              <download style="width: 2em; height: 2em;"/>
+            </el-button>
+
             <Chart
               :size="{width: 500, height: 420}"
               :data="employee.history"
@@ -81,7 +85,7 @@
               </template>
             </Chart>
           </div>
-          <div class="chart__title">
+          <div class="my-chart__title">
             Графiк {{ employee.id }}. Зміна стану здоров'я за фахом {{ employee.translation }}
           </div>
         </div>
@@ -107,6 +111,9 @@
         </div>
       </div>
     </div>
+    <div class="download_template">
+      <el-button @click="downloadDocxTemplate" type="info">Завантажити .docx звiт</el-button>
+    </div>
   </div>
 </template>
 
@@ -114,10 +121,21 @@
 import { defineComponent, ref } from 'vue'
 import { mapState } from 'vuex'
 import { Chart, Grid, Line, Tooltip, Marker } from 'vue3-charts'
+import { saveAs } from 'file-saver'
+import html2canvas from 'html2canvas'
+import { Download } from '@element-plus/icons-vue'
+import docxtemplater from 'docxtemplater'
+import JSZip from 'jszip'
+import JSzipUtils from 'jszip-utils'
 
 export default defineComponent({
   name: 'ResultReport',
-  components: {Chart, Grid, Line, Tooltip, Marker},
+  components: {Chart, Grid, Line, Tooltip, Marker, Download},
+  data() {
+    return {
+      totalScore: 0
+    }
+  },
   created(): void {
     if (this.$store.state.gameStarted && !this.$route.fullPath.includes('game_step')) {
       this.$router.push({name: 'GameStart'})
@@ -142,12 +160,12 @@ export default defineComponent({
       let empScore = null
       let totalScore = 0
       for (const employee of this.employees) {
-        empScore = (Math.floor((employee.state.hp + employee.state.hearing + employee.state.vision) * 0.43))
+        empScore = this.getEmployeeScore(employee)
         totalScore += empScore
         tableData.push({
           employeePosition: employee.translation,
           score: empScore.toString(),
-          state: 'Пояснично-крестцовый радикулит (XXX ст.)',
+          state: 'Попереково-крижовий радикуліт  (XXX ст.)',
         })
       }
       tableData.push({
@@ -160,7 +178,69 @@ export default defineComponent({
         score: '450 – 500',
         state: ''
       })
+      this.totalScore = totalScore
       return tableData
+    },
+    getEmployeeScore(employee: any): number {
+      return (Math.floor(<number>(Object.values(employee.state).reduce((acc: any, x: any) => acc + x, 0)) * 0.43))
+    },
+    downloadChart(id: string): void {
+      const chart = document.getElementById(id)!
+      chart.querySelector('.el-button')!.classList.add('d-none')
+      html2canvas(chart, {backgroundColor: 'black'}).then(function(canvas) {
+        canvas.toBlob(function(blob: any) {
+          saveAs(blob, `${id} - графiк.png`)
+          chart.querySelector('.el-button')!.classList.remove('d-none')
+        })
+      })
+    },
+    downloadDocxTemplate(): void {
+      const employees = []
+      for (const employee of this.employees) {
+        employees.push({
+          translation: employee.translation, 
+          score: this.getEmployeeScore(employee)
+        })
+      }
+      const dataset = {
+        name: this.student.name,
+        surname: this.student.surname,
+        group: this.student.group,
+        region: this.student.region,
+        company: this.student.company,
+        gameStartTime: this.student.gameStartTime,
+        employees: employees,
+        employeesList: this.employees.map((x: any) => x.translation).join(', '),
+        totalScore: this.totalScore
+      }
+      this.loadFile('reportResultDocx.docx', function(error: any, content : any) {
+        if (error) { 
+          throw error
+        }
+        const zip = new JSZip(content)
+        const doc = new docxtemplater().loadZip(zip)
+        doc.setData(dataset)
+        try {
+          doc.render()
+        } catch (error: any) {
+          const e = {
+            message: error.message,
+            name: error.name,
+            stack: error.stack,
+            properties: error.properties,
+          }
+          console.log(JSON.stringify({error: e}))
+          throw error
+        }
+        let out = doc.getZip().generate({
+          type: 'blob',
+          mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        })
+        saveAs(out, 'Звiт.docx')
+      })
+    },
+    loadFile(url: string, callback: Function): void {
+      JSzipUtils.getBinaryContent(url, callback)
     }
   },
   setup() {
