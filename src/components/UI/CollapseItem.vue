@@ -2,12 +2,12 @@
   <el-collapse-item :title="setting.title" :name="id" :class="(employeePosition + id) === missedSettingIndex ? 'missed-setting' : ''">
     <el-radio-group v-model="resourse" size="medium"> 
       <el-radio 
-        v-for="(variant, id) in setting.variants" 
+        v-for="(variant, idx) in setting.variants" 
         border 
-        :key="variant + id"
+        :key="variant + idx"
         :label="variant + (setting.additionalText ? setting.additionalText : '')"
-        @click="setSetting(variant + id); (employeePosition + id) === missedSettingIndex ? setMissedSettingIndex(null) : null"
-        :ref="variant + id"
+        @click="setSetting(variant + idx); if ((employeePosition + id) === missedSettingIndex) setMissedSettingIndex(null)"
+        :ref="variant + idx"
       >
       </el-radio>
     </el-radio-group>

@@ -11,7 +11,7 @@ export const employeeModule = {
   namespaced: true,
   state: {
     employees: [],
-    totalYears: 2,
+    totalYears: 5,
     yearCounter: 0,
     overdozeReport: '',
     overdozeAlertVisible: false,
@@ -54,8 +54,8 @@ export const employeeModule = {
     setGameOverReport(state: any, report: string): void {
       state.gameOverReport = report
     },
-    pushSelected2History(_: any, employee: any): void {
-      employee.history.push(Object.assign({}, employee.selectedSettings))
+    pushState2History(state: any, employee: any): void {
+      employee.history.push(Object.assign({year: state.yearCounter + 1}, employee.state))
     },
     setMissingSettingAlertVisible(state: any, payload: boolean): void {
       state.missingSettingAlertVidible = payload
@@ -79,7 +79,7 @@ export const employeeModule = {
 
       for (const employee of state.employees) {
         dispatch('updateEmployeeState', employee)
-        commit('pushSelected2History', employee)
+        commit('pushState2History', employee)
 
         if (Object.keys(employee.selectedODozeTreatments).length) {
           dispatch('overdozeTreatment', employee)
@@ -144,9 +144,9 @@ export const employeeModule = {
           ...JSON.parse(JSON.stringify(allEmployees[employee]))
         }
 
-        newEmp.settings.calories = categories[newEmp.category].calories
-        newEmp.settings.temperatureWarmSeason = categories[newEmp.category].temperatureWarmSeason
-        newEmp.settings.temperatureColdSeason = categories[newEmp.category].temperatureColdSeason
+        // newEmp.settings.calories = categories[newEmp.category].calories
+        // newEmp.settings.temperatureWarmSeason = categories[newEmp.category].temperatureWarmSeason
+        // newEmp.settings.temperatureColdSeason = categories[newEmp.category].temperatureColdSeason
 
         dozes = newEmp.dozes
         if (dozes) {

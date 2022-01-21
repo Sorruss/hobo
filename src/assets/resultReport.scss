@@ -1,3 +1,7 @@
+.report {
+  margin-bottom: 30px;
+}
+
 .user {
   display: flex;
   flex-direction: column;
@@ -18,7 +22,35 @@
       flex-direction: column;
     }
   }
-  &:last-child {
-    margin-bottom: 0px;
+}
+
+.charts {
+  margin-bottom: 30px;
+
+  .chart {
+    width: 35vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+
+    &__header {
+      font-weight: bold;
+    }
+  }
+  :first-child {
+    margin-top: 0px;
+  }
+
+  &__results {
+    .results__text {
+      margin: 30px 0px 20px 0px;
+    }
+    .results__table {
+      width: 60%;
+    }
+    .table__title {
+      text-align: center;
+    }
   }
 }
