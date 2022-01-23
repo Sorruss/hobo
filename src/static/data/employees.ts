@@ -121,7 +121,7 @@ export default <any>{
     }
   },
   conveyor: {
-    translation: 'Конвеєр',
+    translation: 'Конвеєрний робочий',
     category: '2а',
     settings: {
       workingDayHours: '8',
@@ -277,5 +277,42 @@ export default <any>{
       illumination: null
     },
     dozes: null
+  },
+  driller: {
+    translation: 'Бурильник',
+    category: '3',
+    settings: {
+      workingDayHours: '6-7',
+      noiseLevel: '>75',
+      illumination: null
+    },
+    dozes: {
+      earthDust: 3
+    }
+  },
+  engineer: {
+    translation: 'Інженер',
+    category: '2а',
+    settings: {
+      workingDayHours: '8',
+      noiseLevel: '<75',
+      illumination: null,
+    },
+    dozes: {
+      metalDust: 1
+    },
+  },
+  builder: {
+    translation: 'Будівельник',
+    category: '2а',
+    settings: {
+      workingDayHours: '8',
+      noiseLevel: '<75',
+      illumination: null,
+    },
+    dozes: {
+      metalDust: 2
+    },
   }
+
 }
