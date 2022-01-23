@@ -59,7 +59,7 @@ export default <any>{
   },
   dispatcher: {
     translation: 'Диспетчер',
-    category: '1a',
+    category: '1а',
     settings: {
       workingDayHours: '7',
       noiseLevel: '<65',
@@ -71,7 +71,7 @@ export default <any>{
   },
   handyman: {
     translation: 'Різноробочий',
-    category: '2a',
+    category: '2а',
     settings: {
       workingDayHours: '8',
       noiseLevel: '<75',
