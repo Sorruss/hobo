@@ -83,7 +83,7 @@ export default defineComponent({
   name: 'EmployeeCard',
   data() {
     return {
-      activeSetting: ref(Array(this.getSettings(this.employee).length).fill(0).map((x, id) => x + id)),
+      activeSetting: ref(0),
       statePerc: 0,
       images: {
         smileImage: require('@/static/images/smileState.jpeg'),

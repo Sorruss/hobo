@@ -203,8 +203,8 @@ export default defineComponent({
         })
       }
       const dataset = {
-        name: this.student.name,
-        surname: this.student.surname,
+        name: this.student.name[0].toUpperCase() + this.student.name.slice(1).toLowerCase(),
+        surname: this.student.surname[0].toUpperCase() + this.student.surname.slice(1).toLowerCase(),
         group: this.student.group,
         region: this.student.region,
         company: this.student.company,

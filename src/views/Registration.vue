@@ -1,8 +1,8 @@
 <template>
-  <div class="startPage">
+  <div class="startPage" @click="isInputting = false">
     <el-row>
-      <el-col :span="2">
-        <div class="inscription noselect">работяга</div>
+      <el-col style="height: 100vh" :span="2">
+        <div class="inscription noselect">умови працi</div>
       </el-col>
       <el-col :span="22" v-if="mounted">
         <div class="registration">
@@ -13,6 +13,7 @@
             label-position="left"
             :rules="rules"
             :model="student"
+            @click.stop
           >
             <el-form-item label="Фамiлiя" prop="surname">
               <el-input 
@@ -23,6 +24,7 @@
                 maxlength="30"
                 show-word-limit
                 class="mt0"
+                @click="isInputting = true"
               />
             </el-form-item>
             <el-form-item label="Iм'я" prop="name">
@@ -33,6 +35,7 @@
                 clearable 
                 maxlength="30"
                 show-word-limit
+                @click="isInputting = true"
               />
             </el-form-item>
             <el-form-item label="Група" prop="group">
@@ -43,6 +46,7 @@
                 clearable
                 maxlength="20"
                 show-word-limit
+                @click="isInputting = true"
               />
             </el-form-item>
           </el-form>
@@ -116,7 +120,8 @@ export default defineComponent({
           }
         ]
       },
-      mounted: false
+      mounted: false,
+      isInputting: false
     }
   },
   mounted(): void {
@@ -134,7 +139,7 @@ export default defineComponent({
   },
   methods: {
     keyDownListener(event: any): void {
-      if (event.key === 'ArrowRight') {
+      if (event.key === 'ArrowRight' && !this.isInputting) {
         this.submitRegistration()
       }
     },

@@ -129,13 +129,14 @@ export default defineComponent({
     gameStart(): void {
       this.$store.commit('setGameStarted', true)
       this.$store.dispatch('employeeModule/setEmployees', this.parts[this.mapCounter].about.workers)
+      
       this.$store.commit('setStudentField', {field: 'gameStartTime', payload: new Date(new Date().getTime()).toLocaleString()})
+      this.$store.commit('setStudentField', {field: 'region', payload: this.parts[this.mapCounter].about.regionInfo.name})
+      console.log('setStudentField::company', this.parts[this.mapCounter].about.regionInfo.companyName)
+      this.$store.commit('setStudentField', {field: 'company', payload: this.parts[this.mapCounter].about.regionInfo.companyName})
     }
   },
   mounted(): void {
-    this.$store.commit('setStudentField', {field: 'region', payload: this.parts[this.mapCounter].about.regionInfo.name})
-    this.$store.commit('setStudentField', {field: 'company', payload: this.parts[this.mapCounter].about.regionInfo.company})
-
     if (this.$store.state.gameStarted && !this.$route.fullPath.includes('game_step')) {
       this.$router.push({name: 'GameStart'})
     } else if (!this.$store.state.isAuth) {
@@ -143,7 +144,7 @@ export default defineComponent({
     } else if (this.$store.state.gameFinished) {
       this.$router.push({name: 'ResultReport'})
     }
-  
+
     window.addEventListener('keydown', this.keyDownListener)
   },
 

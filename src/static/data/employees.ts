@@ -10,7 +10,8 @@ export default <any>{
     dozes: {
       carbonMonoxide: 3, 
       carbonDioxide: 2
-    }
+    },
+    diseases: ['radiculitis']
   },
   manager: {
     translation: 'Менеджер',
@@ -22,7 +23,8 @@ export default <any>{
     },
     dozes: {
       paperDust: 6
-    }
+    },
+    diseases: ['hypodynamia']
   },
   brewer: {
     translation: 'Пивовар',
@@ -32,7 +34,8 @@ export default <any>{
       noiseLevel: null,
       illumination: '150-300'
     },
-    dozes: null
+    dozes: null,
+    diseases: ['tuberculosis']
   },
   smelter: {
     translation: 'Сталевар',
@@ -42,7 +45,8 @@ export default <any>{
       noiseLevel: '<65',
       illumination: null
     },
-    dozes: null
+    dozes: null,
+    diseases: ['silicosis']
   },
   welder: {
     translation: 'Зварювальник',
@@ -55,11 +59,12 @@ export default <any>{
     dozes: {
       carbonMonoxide: 2,
       nitricOxide: 1
-    }
+    },
+    diseases: ['bronchialAsthma']
   },
   dispatcher: {
     translation: 'Диспетчер',
-    category: '1a',
+    category: '1а',
     settings: {
       workingDayHours: '7',
       noiseLevel: '<65',
@@ -67,11 +72,12 @@ export default <any>{
     },
     dozes: {
       carbonDioxide: 1
-    }
+    },
+    diseases: ['hypodynamia']
   },
   handyman: {
     translation: 'Різноробочий',
-    category: '2a',
+    category: '2а',
     settings: {
       workingDayHours: '8',
       noiseLevel: '<75',
@@ -80,7 +86,8 @@ export default <any>{
     dozes: {
       woodDust: 2,
       metalDust: 3
-    }
+    },
+    diseases: ['epicondylitis']
   },
   agronomist: {
     translation: 'Агроном',
@@ -92,7 +99,8 @@ export default <any>{
     },
     dozes: {
       earthDust: 1
-    }
+    },
+    diseases: ['chronicalBronchitis']
   },
   pilot: {
     translation: 'Пілот',
@@ -104,7 +112,8 @@ export default <any>{
     },
     dozes: {
       carbonDioxide: 1
-    }
+    },
+    diseases: ['tuberculosis']
   },
   shipRepair: {
     translation: 'Судноремонт',
@@ -118,7 +127,8 @@ export default <any>{
       carbonMonoxide: 2,
       lead: 1,
       metalDust: 2
-    }
+    },
+    diseases: ['tuberculosis']
   },
   conveyor: {
     translation: 'Конвеєрний робочий',
@@ -130,7 +140,8 @@ export default <any>{
     },
     dozes: {
       paperDust: 2
-    }
+    },
+    diseases: ['bronchialAsthma']
   },
   miner: {
     translation: 'Шахтар',
@@ -142,7 +153,8 @@ export default <any>{
     },
     dozes: {
       methane: 3
-    }
+    },
+    diseases: ['silicosis']
   },
   dataAnalyst: {
     translation: 'Дата аналітик',
@@ -152,7 +164,8 @@ export default <any>{
       noiseLevel: null,
       illumination: '200-500'
     },
-    dozes: null
+    dozes: null,
+    diseases: ['hypodynamia']
   },
   tester: {
     translation: 'Тестувальник',
@@ -162,7 +175,8 @@ export default <any>{
       noiseLevel: null,
       illumination: null
     },
-    dozes: null
+    dozes: null,
+    diseases: ['hypodynamia']
   },
   projectManager: {
     translation: 'Проджект менеджер',
@@ -172,7 +186,8 @@ export default <any>{
       noiseLevel: '<50',
       illumination: null,
     },
-    dozes: null
+    dozes: null,
+    diseases: ['radiculitis']
   },
   HRManager: {
     translation: 'HR менеджер',
@@ -182,7 +197,8 @@ export default <any>{
       noiseLevel: '<65',
       illumination: null
     },
-    dozes: null
+    dozes: null,
+    diseases: ['tuberculosis']
   },
   accountant: {
     translation: 'Бухгалтер',
@@ -194,7 +210,8 @@ export default <any>{
     },
     dozes: {
       paperDust: 1
-    }
+    },
+    diseases: ['osteochondrosis']
   },
   economist: {
     translation: 'Економіст',
@@ -206,7 +223,8 @@ export default <any>{
     },
     dozes: {
       paperDust: 1
-    }
+    },
+    diseases: ['osteochondrosis']
   },
   teacher: {
     translation: 'Викладач',
@@ -216,7 +234,8 @@ export default <any>{
       noiseLevel: '<65',
       illumination: '200-500'
     },
-    dozes: null
+    dozes: null,
+    diseases: ['osteochondrosis']
   },
   salesConsultant: {
     translation: 'Продавець-консультант',
@@ -226,7 +245,8 @@ export default <any>{
       noiseLevel: '<65',
       illumination: null
     },
-    dozes: null
+    dozes: null,
+    diseases: ['vegetovascularDystonia']
   },
   cashier: {
     translation: 'Касир',
@@ -236,7 +256,8 @@ export default <any>{
       noiseLevel: '<65',
       illumination: null
     },
-    dozes: null
+    dozes: null,
+    diseases: ['radiculitis']
   },
   secretary: {
     translation: 'Секретар',
@@ -246,7 +267,8 @@ export default <any>{
       noiseLevel: '<65',
       illumination: '200-500'
     },
-    dozes: null
+    dozes: null,
+    diseases: ['osteochondrosis']
   },
   dean: {
     translation: 'Декан',
@@ -256,7 +278,8 @@ export default <any>{
       noiseLevel: '<65',
       illumination: '200-500'
     },
-    dozes: null
+    dozes: null,
+    diseases: ['osteochondrosis']
   },
   student: {
     translation: 'Студент',
@@ -266,7 +289,8 @@ export default <any>{
       noiseLevel: '<65',
       illumination: '200-500'
     },
-    dozes: null
+    dozes: null,
+    diseases: ['hypodynamia']
   },
   administrator: {
     translation: 'Адміністратор',
@@ -276,7 +300,8 @@ export default <any>{
       noiseLevel: '<65',
       illumination: null
     },
-    dozes: null
+    dozes: null,
+    diseases: ['hypodynamia']
   },
   driller: {
     translation: 'Бурильник',
@@ -288,7 +313,8 @@ export default <any>{
     },
     dozes: {
       earthDust: 3
-    }
+    },
+    diseases: ['silicosis']
   },
   engineer: {
     translation: 'Інженер',
@@ -301,6 +327,7 @@ export default <any>{
     dozes: {
       metalDust: 1
     },
+    diseases: ['osteochondrosis']
   },
   builder: {
     translation: 'Будівельник',
@@ -313,6 +340,6 @@ export default <any>{
     dozes: {
       metalDust: 2
     },
+    diseases: ['prostatitis']
   }
-
 }

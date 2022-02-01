@@ -3,13 +3,12 @@ export type regionPartType = {
   about: {
     regionInfo: {
       name: string,
-      company: string,
+      companyName: string,
       description: string
     },
     workers: Array<string>,
     specifications: Array<string>
   },
   coordinates: string,
-  isActive: boolean,
-  imgName: string
+  isActive: boolean
 }
