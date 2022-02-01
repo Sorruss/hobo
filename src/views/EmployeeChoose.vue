@@ -131,9 +131,13 @@ export default defineComponent({
       this.$store.dispatch('employeeModule/setEmployees', this.parts[this.mapCounter].about.workers)
       
       this.$store.commit('setStudentField', {field: 'gameStartTime', payload: new Date(new Date().getTime()).toLocaleString()})
+<<<<<<< HEAD
       this.$store.commit('setStudentField', {field: 'region', payload: this.parts[this.mapCounter].about.regionInfo.name})
       console.log('setStudentField::company', this.parts[this.mapCounter].about.regionInfo.companyName)
       this.$store.commit('setStudentField', {field: 'company', payload: this.parts[this.mapCounter].about.regionInfo.companyName})
+=======
+      this.$store.commit('employeeModule/setRandomAccident')
+>>>>>>> baebd32d9d6802d5994dcddad680d7e7a936f2be
     }
   },
   mounted(): void {

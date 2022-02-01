@@ -11,7 +11,8 @@ export default <any>{
       carbonMonoxide: 3, 
       carbonDioxide: 2
     },
-    diseases: ['radiculitis']
+    diseases: ['radiculitis'],
+    accidentType: 'office'
   },
   manager: {
     translation: 'Менеджер',
@@ -24,7 +25,8 @@ export default <any>{
     dozes: {
       paperDust: 6
     },
-    diseases: ['hypodynamia']
+    diseases: ['hypodynamia'],
+    accidentType: 'office'
   },
   brewer: {
     translation: 'Пивовар',
@@ -35,7 +37,8 @@ export default <any>{
       illumination: '150-300'
     },
     dozes: null,
-    diseases: ['tuberculosis']
+    diseases: ['tuberculosis'],
+    accidentType: 'office'
   },
   smelter: {
     translation: 'Сталевар',
@@ -46,7 +49,8 @@ export default <any>{
       illumination: null
     },
     dozes: null,
-    diseases: ['silicosis']
+    diseases: ['silicosis'],
+    accidentType: 'office'
   },
   welder: {
     translation: 'Зварювальник',
@@ -60,7 +64,8 @@ export default <any>{
       carbonMonoxide: 2,
       nitricOxide: 1
     },
-    diseases: ['bronchialAsthma']
+    diseases: ['bronchialAsthma'],
+    accidentType: 'office'
   },
   dispatcher: {
     translation: 'Диспетчер',
@@ -73,7 +78,8 @@ export default <any>{
     dozes: {
       carbonDioxide: 1
     },
-    diseases: ['hypodynamia']
+    diseases: ['hypodynamia'],
+    accidentType: 'office'
   },
   handyman: {
     translation: 'Різноробочий',
@@ -87,7 +93,8 @@ export default <any>{
       woodDust: 2,
       metalDust: 3
     },
-    diseases: ['epicondylitis']
+    diseases: ['epicondylitis'],
+    accidentType: 'office'
   },
   agronomist: {
     translation: 'Агроном',
@@ -100,7 +107,8 @@ export default <any>{
     dozes: {
       earthDust: 1
     },
-    diseases: ['chronicalBronchitis']
+    diseases: ['chronicalBronchitis'],
+    accidentType: 'office'
   },
   pilot: {
     translation: 'Пілот',
@@ -113,7 +121,8 @@ export default <any>{
     dozes: {
       carbonDioxide: 1
     },
-    diseases: ['tuberculosis']
+    diseases: ['tuberculosis'],
+    accidentType: 'office'
   },
   shipRepair: {
     translation: 'Судноремонт',
@@ -128,7 +137,8 @@ export default <any>{
       lead: 1,
       metalDust: 2
     },
-    diseases: ['tuberculosis']
+    diseases: ['tuberculosis'],
+    accidentType: 'office'
   },
   conveyor: {
     translation: 'Конвеєрний робочий',
@@ -141,7 +151,8 @@ export default <any>{
     dozes: {
       paperDust: 2
     },
-    diseases: ['bronchialAsthma']
+    diseases: ['bronchialAsthma'],
+    accidentType: 'office'
   },
   miner: {
     translation: 'Шахтар',
@@ -154,7 +165,8 @@ export default <any>{
     dozes: {
       methane: 3
     },
-    diseases: ['silicosis']
+    diseases: ['silicosis'],
+    accidentType: 'office'
   },
   dataAnalyst: {
     translation: 'Дата аналітик',
@@ -165,7 +177,8 @@ export default <any>{
       illumination: '200-500'
     },
     dozes: null,
-    diseases: ['hypodynamia']
+    diseases: ['hypodynamia'],
+    accidentType: 'office'
   },
   tester: {
     translation: 'Тестувальник',
@@ -176,7 +189,8 @@ export default <any>{
       illumination: null
     },
     dozes: null,
-    diseases: ['hypodynamia']
+    diseases: ['hypodynamia'],
+    accidentType: 'office'
   },
   projectManager: {
     translation: 'Проджект менеджер',
@@ -187,7 +201,8 @@ export default <any>{
       illumination: null,
     },
     dozes: null,
-    diseases: ['radiculitis']
+    diseases: ['radiculitis'],
+    accidentType: 'office'
   },
   HRManager: {
     translation: 'HR менеджер',
@@ -198,7 +213,8 @@ export default <any>{
       illumination: null
     },
     dozes: null,
-    diseases: ['tuberculosis']
+    diseases: ['tuberculosis'],
+    accidentType: 'office'
   },
   accountant: {
     translation: 'Бухгалтер',
@@ -211,7 +227,8 @@ export default <any>{
     dozes: {
       paperDust: 1
     },
-    diseases: ['osteochondrosis']
+    diseases: ['osteochondrosis'],
+    accidentType: 'office'
   },
   economist: {
     translation: 'Економіст',
@@ -224,7 +241,8 @@ export default <any>{
     dozes: {
       paperDust: 1
     },
-    diseases: ['osteochondrosis']
+    diseases: ['osteochondrosis'],
+    accidentType: 'office'
   },
   teacher: {
     translation: 'Викладач',
@@ -235,7 +253,8 @@ export default <any>{
       illumination: '200-500'
     },
     dozes: null,
-    diseases: ['osteochondrosis']
+    diseases: ['osteochondrosis'],
+    accidentType: 'office'
   },
   salesConsultant: {
     translation: 'Продавець-консультант',
@@ -246,7 +265,8 @@ export default <any>{
       illumination: null
     },
     dozes: null,
-    diseases: ['vegetovascularDystonia']
+    diseases: ['vegetovascularDystonia'],
+    accidentType: 'office'
   },
   cashier: {
     translation: 'Касир',
@@ -257,7 +277,8 @@ export default <any>{
       illumination: null
     },
     dozes: null,
-    diseases: ['radiculitis']
+    diseases: ['radiculitis'],
+    accidentType: 'office'
   },
   secretary: {
     translation: 'Секретар',
@@ -268,7 +289,8 @@ export default <any>{
       illumination: '200-500'
     },
     dozes: null,
-    diseases: ['osteochondrosis']
+    diseases: ['osteochondrosis'],
+    accidentType: 'office'
   },
   dean: {
     translation: 'Декан',
@@ -279,7 +301,8 @@ export default <any>{
       illumination: '200-500'
     },
     dozes: null,
-    diseases: ['osteochondrosis']
+    diseases: ['osteochondrosis'],
+    accidentType: 'office'
   },
   student: {
     translation: 'Студент',
@@ -290,7 +313,8 @@ export default <any>{
       illumination: '200-500'
     },
     dozes: null,
-    diseases: ['hypodynamia']
+    diseases: ['hypodynamia'],
+    accidentType: 'office'
   },
   administrator: {
     translation: 'Адміністратор',
@@ -301,7 +325,8 @@ export default <any>{
       illumination: null
     },
     dozes: null,
-    diseases: ['hypodynamia']
+    diseases: ['hypodynamia'],
+    accidentType: 'office'
   },
   driller: {
     translation: 'Бурильник',
@@ -314,7 +339,8 @@ export default <any>{
     dozes: {
       earthDust: 3
     },
-    diseases: ['silicosis']
+    diseases: ['silicosis'],
+    accidentType: 'office'
   },
   engineer: {
     translation: 'Інженер',
@@ -327,7 +353,8 @@ export default <any>{
     dozes: {
       metalDust: 1
     },
-    diseases: ['osteochondrosis']
+    diseases: ['osteochondrosis'],
+    accidentType: 'office'
   },
   builder: {
     translation: 'Будівельник',
@@ -340,6 +367,7 @@ export default <any>{
     dozes: {
       metalDust: 2
     },
-    diseases: ['prostatitis']
+    diseases: ['prostatitis'],
+    accidentType: 'office'
   }
 }
