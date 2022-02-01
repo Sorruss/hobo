@@ -10,7 +10,8 @@ export default <any>{
     dozes: {
       carbonMonoxide: 3, 
       carbonDioxide: 2
-    }
+    },
+    accidentType: 'office'
   },
   manager: {
     translation: 'Менеджер',
@@ -22,7 +23,8 @@ export default <any>{
     },
     dozes: {
       paperDust: 6
-    }
+    },
+    accidentType: 'office'
   },
   brewer: {
     translation: 'Пивовар',
@@ -32,7 +34,8 @@ export default <any>{
       noiseLevel: null,
       illumination: '150-300'
     },
-    dozes: null
+    dozes: null,
+    accidentType: 'office'
   },
   smelter: {
     translation: 'Сталевар',
@@ -42,7 +45,8 @@ export default <any>{
       noiseLevel: '<65',
       illumination: null
     },
-    dozes: null
+    dozes: null,
+    accidentType: 'office'
   },
   welder: {
     translation: 'Зварювальник',
@@ -55,7 +59,8 @@ export default <any>{
     dozes: {
       carbonMonoxide: 2,
       nitricOxide: 1
-    }
+    },
+    accidentType: 'office'
   },
   dispatcher: {
     translation: 'Диспетчер',
@@ -67,7 +72,8 @@ export default <any>{
     },
     dozes: {
       carbonDioxide: 1
-    }
+    },
+    accidentType: 'office'
   },
   handyman: {
     translation: 'Різноробочий',
@@ -80,7 +86,8 @@ export default <any>{
     dozes: {
       woodDust: 2,
       metalDust: 3
-    }
+    },
+    accidentType: 'office'
   },
   agronomist: {
     translation: 'Агроном',
@@ -92,7 +99,8 @@ export default <any>{
     },
     dozes: {
       earthDust: 1
-    }
+    },
+    accidentType: 'office'
   },
   pilot: {
     translation: 'Пілот',
@@ -104,7 +112,8 @@ export default <any>{
     },
     dozes: {
       carbonDioxide: 1
-    }
+    },
+    accidentType: 'office'
   },
   shipRepair: {
     translation: 'Судноремонт',
@@ -118,7 +127,8 @@ export default <any>{
       carbonMonoxide: 2,
       lead: 1,
       metalDust: 2
-    }
+    },
+    accidentType: 'office'
   },
   conveyor: {
     translation: 'Конвеєрний робочий',
@@ -130,7 +140,8 @@ export default <any>{
     },
     dozes: {
       paperDust: 2
-    }
+    },
+    accidentType: 'office'
   },
   miner: {
     translation: 'Шахтар',
@@ -142,7 +153,8 @@ export default <any>{
     },
     dozes: {
       methane: 3
-    }
+    },
+    accidentType: 'office'
   },
   dataAnalyst: {
     translation: 'Дата аналітик',
@@ -152,7 +164,8 @@ export default <any>{
       noiseLevel: null,
       illumination: '200-500'
     },
-    dozes: null
+    dozes: null,
+    accidentType: 'office'
   },
   tester: {
     translation: 'Тестувальник',
@@ -162,7 +175,8 @@ export default <any>{
       noiseLevel: null,
       illumination: null
     },
-    dozes: null
+    dozes: null,
+    accidentType: 'office'
   },
   projectManager: {
     translation: 'Проджект менеджер',
@@ -172,7 +186,8 @@ export default <any>{
       noiseLevel: '<50',
       illumination: null,
     },
-    dozes: null
+    dozes: null,
+    accidentType: 'office'
   },
   HRManager: {
     translation: 'HR менеджер',
@@ -182,7 +197,8 @@ export default <any>{
       noiseLevel: '<65',
       illumination: null
     },
-    dozes: null
+    dozes: null,
+    accidentType: 'office'
   },
   accountant: {
     translation: 'Бухгалтер',
@@ -194,7 +210,8 @@ export default <any>{
     },
     dozes: {
       paperDust: 1
-    }
+    },
+    accidentType: 'office'
   },
   economist: {
     translation: 'Економіст',
@@ -206,7 +223,8 @@ export default <any>{
     },
     dozes: {
       paperDust: 1
-    }
+    },
+    accidentType: 'office'
   },
   teacher: {
     translation: 'Викладач',
@@ -216,7 +234,8 @@ export default <any>{
       noiseLevel: '<65',
       illumination: '200-500'
     },
-    dozes: null
+    dozes: null,
+    accidentType: 'office'
   },
   salesConsultant: {
     translation: 'Продавець-консультант',
@@ -226,7 +245,8 @@ export default <any>{
       noiseLevel: '<65',
       illumination: null
     },
-    dozes: null
+    dozes: null,
+    accidentType: 'office'
   },
   cashier: {
     translation: 'Касир',
@@ -236,7 +256,8 @@ export default <any>{
       noiseLevel: '<65',
       illumination: null
     },
-    dozes: null
+    dozes: null,
+    accidentType: 'office'
   },
   secretary: {
     translation: 'Секретар',
@@ -246,7 +267,8 @@ export default <any>{
       noiseLevel: '<65',
       illumination: '200-500'
     },
-    dozes: null
+    dozes: null,
+    accidentType: 'office'
   },
   dean: {
     translation: 'Декан',
@@ -256,7 +278,8 @@ export default <any>{
       noiseLevel: '<65',
       illumination: '200-500'
     },
-    dozes: null
+    dozes: null,
+    accidentType: 'office'
   },
   student: {
     translation: 'Студент',
@@ -266,7 +289,8 @@ export default <any>{
       noiseLevel: '<65',
       illumination: '200-500'
     },
-    dozes: null
+    dozes: null,
+    accidentType: 'office'
   },
   administrator: {
     translation: 'Адміністратор',
@@ -276,7 +300,8 @@ export default <any>{
       noiseLevel: '<65',
       illumination: null
     },
-    dozes: null
+    dozes: null,
+    accidentType: 'office'
   },
   driller: {
     translation: 'Бурильник',
@@ -288,7 +313,8 @@ export default <any>{
     },
     dozes: {
       earthDust: 3
-    }
+    },
+    accidentType: 'office'
   },
   engineer: {
     translation: 'Інженер',
@@ -301,6 +327,7 @@ export default <any>{
     dozes: {
       metalDust: 1
     },
+    accidentType: 'office'
   },
   builder: {
     translation: 'Будівельник',
@@ -313,6 +340,7 @@ export default <any>{
     dozes: {
       metalDust: 2
     },
+    accidentType: 'office'
   }
 
 }

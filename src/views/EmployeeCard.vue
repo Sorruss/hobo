@@ -34,6 +34,11 @@
     </div>
     <div class="card__settings">
       <el-collapse v-model="activeSetting">
+        <collapse-item-accident
+          v-show="isTreat()"
+          :accident="accident"
+        />
+
         <collapse-item-overdoze 
           v-show="employee.optionalSettings"
           v-for="overdoze in getOptionalSettings(employee)" 
@@ -78,6 +83,7 @@
 import { defineComponent, ref } from 'vue'
 import { Status } from '@/types/statusType'
 import allSettings from '@/static/data/settings'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default defineComponent({
   name: 'EmployeeCard',
@@ -93,6 +99,12 @@ export default defineComponent({
       },
       mounted: false
     }
+  },
+  computed: {
+    ...mapState('employeeModule', {
+      isAccident: (state:any) => state.isAccident,
+      accident: (state:any) => state.currentAccident
+    })
   },
   props: {
     employee: {
@@ -140,7 +152,12 @@ export default defineComponent({
     },
     getOptionalSettings(employee: any): Array<any> {
       return employee.optionalSettings
+    },
+    isTreat(): boolean {
+      console.log(this.employee.id, this.accident.emplIndex)
+      return (this.isAccident && (this.employee.id === (this.accident.emplIndex + 1)))
     }
+
   },
   mounted() {
     this.mounted = true

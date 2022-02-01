@@ -130,6 +130,7 @@ export default defineComponent({
       this.$store.commit('setGameStarted', true)
       this.$store.dispatch('employeeModule/setEmployees', this.parts[this.mapCounter].about.workers)
       this.$store.commit('setStudentField', {field: 'gameStartTime', payload: new Date(new Date().getTime()).toLocaleString()})
+      this.$store.commit('employeeModule/setRandomAccident')
     }
   },
   mounted(): void {

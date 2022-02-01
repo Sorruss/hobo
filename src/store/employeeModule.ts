@@ -1,17 +1,23 @@
 import router from '@/router'
 
+import { Accident } from "@/types/accidentType";
+import accidentGroups from "@/static/data/accidentGroups";
 import allEmployees from '@/static/data/employees'
 import categories from '@/static/data/categories'
 import allSettings from '@/static/data/settings'
 import allStates from '@/static/data/states'
 import allDozes from '@/static/data/dozes'
+import {DXT} from "docxtemplater";
+import integer = DXT.integer;
+import accidents from "@/static/data/accidents";
+import employees from "@/static/data/employees";
 
 
 export const employeeModule = {
   namespaced: true,
   state: {
     employees: [],
-    totalYears: 2,
+    totalYears: 15,
     yearCounter: 0,
     overdozeReport: '',
     overdozeAlertVisible: false,
@@ -20,7 +26,19 @@ export const employeeModule = {
     missingSettingAlertVidible: false,
     missingSettingAlertText: '',
     permissionOnContinue: false,
-    missedSettingIndex: null
+    missedSettingIndex: null,
+    accidentDescription: [],
+    accidentAlert: false,
+    isAccident: false,
+    currentAccident: {
+      employee: '',
+      emplIndex: -1,
+      damage: '',
+      text: '',
+      variants: [],
+      treatment: ''
+    },
+    accidentTimer: -1
   },
   getters: {},
   mutations: {
@@ -68,6 +86,92 @@ export const employeeModule = {
     },
     setMissedSettingIndex(state: any, index: string): void {
       state.missedSettingIndex = index
+    },
+    setRandomAccident(state:any): void {
+      let newAccidents:Array<Accident> = []
+
+      for(let i = 0;i < 2; i++)
+        newAccidents.push({year:0,employee:-1,accident:{}})
+
+      //randomYears
+      const firstMin=1,
+          firstMax=6,
+          secMax=13,
+          interval= 7
+
+      const firstYear = 1//Math.floor(Math.random() * (firstMax - firstMin + 1)) + firstMin
+      const secMin=firstYear + interval
+      const secYear = Math.floor(Math.random() * (secMax - secMin + 1)) + secMin
+
+      newAccidents[0].year = firstYear
+      newAccidents[1].year = secYear
+
+      //randomEmployee
+      let emplIndexes = [0,1,2,3]
+
+      const firstEmpl = Math.floor(Math.random()*4)
+      emplIndexes.splice(firstEmpl,1)
+      const secEmpl = emplIndexes[Math.floor(Math.random()*3)]
+
+      newAccidents[0].employee = firstEmpl
+      newAccidents[1].employee = secEmpl
+
+      //choosing the type of an accident
+      const firstAccTypes = accidentGroups[state.employees[firstEmpl].accidentType]
+      const secAccTypes = accidentGroups[state.employees[secEmpl].accidentType]
+
+      const firstAccInd = Math.floor(Math.random() * firstAccTypes.length)
+      const secAccInd = Math.floor(Math.random() * secAccTypes.length)
+
+      let firstAcc = accidents[firstAccTypes[firstAccInd]]
+      let secAcc = accidents[secAccTypes[secAccInd]]
+
+      newAccidents[0].accident = firstAcc
+      newAccidents[1].accident = secAcc
+
+      state.accidentDescription = newAccidents
+      console.log(firstYear, secYear, newAccidents)
+    },
+    checkYearOnAccident(state:any): void {
+      let accidentYears = [state.accidentDescription[0].year, state.accidentDescription[1].year]
+
+      if(state.isAccident){
+        if(state.accidentTimer > 0)
+          state.accidentTimer--
+        else
+          state.isAccident = false
+      } else if(state.yearCounter === accidentYears[0]){
+        state.accidentTimer = 2
+        state.isAccident = true
+        state.accidentAlert = true
+        state.currentAccident = {
+          employee:state.employees[state.accidentDescription[0].employee].translation,
+          emplIndex: state.accidentDescription[0].employee,
+          ...state.accidentDescription[0].accident
+        }
+
+      } else if(state.yearCounter === accidentYears[1]){
+        state.accidentTimer = 2
+        state.isAccident = true
+        state.accidentAlert = true
+        state.currentAccident = {
+          employee:state.employees[state.accidentDescription[1].employee].translation,
+          emplIndex: state.accidentDescription[1].employee,
+          ...state.accidentDescription[0].accident
+        }
+      }
+    },
+    setAccidentAlert(state:any,flag:boolean): void {
+      state.accidentAlert = flag
+    },
+    updateStateAccident(state:any): void {
+      let emplIndex = state.currentAccident.emplIndex,
+          stat = state.currentAccident.damage
+
+      state.employees[emplIndex].state[stat] = Math.ceil(state.employees[emplIndex].state[stat] * 0.7)
+    },
+    setAccidentTreatment(state:any, treatChoose:any): void {
+
     }
   },
   actions: {
@@ -98,7 +202,10 @@ export const employeeModule = {
         router.push({name: 'ResultReport'})
         return
       }
+
+      commit('checkYearOnAccident')
       commit('setYearCounter', state.yearCounter + 1)
+
     },
     checkOnAllSelected({ state, commit }: any): void {
       let empSettings = null

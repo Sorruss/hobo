@@ -22,7 +22,15 @@
     <el-button @click="setGameOver(false); pageReload()" type="danger">Розпочати заново</el-button>
   </custom-dialog>
 
-  <arrow-button :func="nextYear">
+  <custom-dialog :show="accidentAlert" :closeButton="false">
+    <h2>Нещасний випадок</h2>
+    <p>{{ String(currentAccident.text).replace("_",currentAccident.employee) }}</p>
+    <p></p>
+    <p>Ваш робітник пройшов лікування в міській лікарні і наразі потребує застосування профілактичних засобів для покращення загального стану роботи та підвищення ефективності своєї роботи. Протягом двох ігрових років вам буде доступний додатковий розділ "Профілактика". Поставтеся до цих засобів відповідально, бо від цього сильно залежить успіх вашої роботи</p>
+    <el-button @click="setAccidentAlert(false);updateStateAccident(currentAccident.emplIndex,currentAccident.damage)" type="danger">OK</el-button>
+  </custom-dialog>
+
+  <arrow-button :func="nextYearWrap">
     {{ yearCounter }}
   </arrow-button>
 </template>
@@ -40,7 +48,9 @@ export default defineComponent({
       setSetting: 'setSetting',
       setOverdozeAlertVisible: 'setOverdozeAlertVisible',
       setGameOver: 'setGameOver',
-      setMissingSettingAlertVisible: 'setMissingSettingAlertVisible'
+      setMissingSettingAlertVisible: 'setMissingSettingAlertVisible',
+      setAccidentAlert: 'setAccidentAlert',
+      updateStateAccident: 'updateStateAccident'
     }),
     ...mapActions('employeeModule', {
       nextYear: 'nextYear'
@@ -52,6 +62,9 @@ export default defineComponent({
     },
     pageReload() {
       window.location.reload()
+    },
+    nextYearWrap(): void {
+      this.nextYear();
     }
   },
   computed: {
@@ -63,7 +76,11 @@ export default defineComponent({
       gameOver: (state: any) => state.gameOver,
       missingSettingAlertVidible: (state: any) => state.missingSettingAlertVidible,
       missingSettingAlertText: (state: any) => state.missingSettingAlertText,
-      gameOverReport: (state: any) => state.gameOverReport
+      gameOverReport: (state: any) => state.gameOverReport,
+      isAccident: (state:any) => state.isAccident,
+      currentAccident: (state:any) => state.currentAccident,
+      accidentAlert: (state:any) => state.accidentAlert,
+
     })
   },
   mounted(): void {
