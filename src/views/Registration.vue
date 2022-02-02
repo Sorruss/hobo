@@ -1,8 +1,8 @@
 <template>
   <div class="startPage" @click="isInputting = false">
     <el-row>
-      <el-col style="height: 100vh" :span="2">
-        <div class="inscription noselect">умови працi</div>
+      <el-col :span="2">
+        <div class="inscription noselect">умовиㅤпрацi</div>
       </el-col>
       <el-col :span="22" v-if="mounted">
         <div class="registration">

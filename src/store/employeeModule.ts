@@ -1,23 +1,25 @@
 import router from '@/router'
 
-import { Accident } from "@/types/accidentType";
-import accidentGroups from "@/static/data/accidentGroups";
+import { Accident } from '@/types/accidentType'
+import accidentGroups from '@/static/data/accidentGroups'
 import allEmployees from '@/static/data/employees'
-import categories from '@/static/data/categories'
+// import categories from '@/static/data/categories'
+import allDiseases from '@/static/data/diseases'
 import allSettings from '@/static/data/settings'
+import allSystems from '@/static/data/systems'
 import allStates from '@/static/data/states'
 import allDozes from '@/static/data/dozes'
-import {DXT} from "docxtemplater";
-import integer = DXT.integer;
-import accidents from "@/static/data/accidents";
-import employees from "@/static/data/employees";
+// import { DXT } from 'docxtemplater'
+// import integer = DXT.integer
+import accidents from '@/static/data/accidents'
+// import employees from '@/static/data/employees'
 
 
 export const employeeModule = {
   namespaced: true,
   state: {
     employees: [],
-    totalYears: 15,
+    totalYears: 8,
     yearCounter: 0,
     overdozeReport: '',
     overdozeAlertVisible: false,
@@ -38,15 +40,30 @@ export const employeeModule = {
       variants: [],
       treatment: ''
     },
-    accidentTimer: -1
+    accidentTimer: -1,
+    diseaseAlertVisible: false
   },
-  getters: {},
+  getters: {
+    getDiseasesReport(state: any): string {
+      let report = ''
+      for (const employee of state.employees) {
+        if (employee.diseases.length) {
+          if (employee.diseases.length === 1) {
+            report += `Професійна хвороба ${allDiseases[employee.diseases[0]].translation} настигла Вашого робітника фаху ${employee.translation}.<br>`
+          } else {
+            report += `Професійні хвороби ${employee.diseases.map((x: any) => allDiseases[x].translation).join(', ')} настигла Вашого робітника ${employee.translation}.<br>`
+          }
+        }
+      }
+      return report
+    }
+  },
   mutations: {
     setSetting(state: any, setting: any): void {
       Object.assign(state.employees[setting[0] - 1].selectedSettings, setting[1])
     },
     setODozeTreatment(state: any, treatment: any): void {
-      Object.assign(state.employees[treatment.eId - 1].selectedODozeTreatments, 
+      Object.assign(state.employees[treatment.eId - 1].selectedODozeTreatment, 
         {[treatment.overdozeTitle]: treatment.variant})
     },
     setYearCounter(state: any, payload: number): void {
@@ -87,31 +104,32 @@ export const employeeModule = {
     setMissedSettingIndex(state: any, index: string): void {
       state.missedSettingIndex = index
     },
-    setRandomAccident(state:any): void {
-      let newAccidents:Array<Accident> = []
+    setRandomAccident(state: any): void {
+      const newAccidents: Array<Accident> = []
 
-      for(let i = 0;i < 2; i++)
-        newAccidents.push({year:0,employee:-1,accident:{}})
+      for (let i = 0; i < 2; i++) {
+        newAccidents.push({year: 0, employee: -1, accident: {}})
+      }
 
       //randomYears
-      const firstMin=1,
-          firstMax=6,
-          secMax=13,
-          interval= 7
+      const firstMin = 1,
+          firstMax = 6,
+          secMax = 13,
+          interval = 7
 
-      const firstYear = 1//Math.floor(Math.random() * (firstMax - firstMin + 1)) + firstMin
-      const secMin=firstYear + interval
+      const firstYear = 1 //Math.floor(Math.random() * (firstMax - firstMin + 1)) + firstMin
+      const secMin = firstYear + interval
       const secYear = Math.floor(Math.random() * (secMax - secMin + 1)) + secMin
 
       newAccidents[0].year = firstYear
       newAccidents[1].year = secYear
 
       //randomEmployee
-      let emplIndexes = [0,1,2,3]
+      let emplIndexes = [0, 1, 2, 3]
 
-      const firstEmpl = Math.floor(Math.random()*4)
-      emplIndexes.splice(firstEmpl,1)
-      const secEmpl = emplIndexes[Math.floor(Math.random()*3)]
+      const firstEmpl = Math.floor(Math.random() * 4)
+      emplIndexes.splice(firstEmpl, 1)
+      const secEmpl = emplIndexes[Math.floor(Math.random() * 3)]
 
       newAccidents[0].employee = firstEmpl
       newAccidents[1].employee = secEmpl
@@ -123,55 +141,61 @@ export const employeeModule = {
       const firstAccInd = Math.floor(Math.random() * firstAccTypes.length)
       const secAccInd = Math.floor(Math.random() * secAccTypes.length)
 
-      let firstAcc = accidents[firstAccTypes[firstAccInd]]
-      let secAcc = accidents[secAccTypes[secAccInd]]
+      const firstAcc = accidents[firstAccTypes[firstAccInd]]
+      const secAcc = accidents[secAccTypes[secAccInd]]
 
       newAccidents[0].accident = firstAcc
       newAccidents[1].accident = secAcc
 
       state.accidentDescription = newAccidents
-      console.log(firstYear, secYear, newAccidents)
     },
-    checkYearOnAccident(state:any): void {
-      let accidentYears = [state.accidentDescription[0].year, state.accidentDescription[1].year]
+    checkYearOnAccident(state: any): void {
+      const accidentYears = [state.accidentDescription[0].year, state.accidentDescription[1].year]
 
-      if(state.isAccident){
-        if(state.accidentTimer > 0)
+      if (state.isAccident) {
+        if (state.accidentTimer > 0) {
           state.accidentTimer--
-        else
+        } else {
           state.isAccident = false
-      } else if(state.yearCounter === accidentYears[0]){
+        }
+      } else if (state.yearCounter === accidentYears[0]) {
         state.accidentTimer = 2
         state.isAccident = true
         state.accidentAlert = true
         state.currentAccident = {
-          employee:state.employees[state.accidentDescription[0].employee].translation,
+          employee: state.employees[state.accidentDescription[0].employee].translation,
           emplIndex: state.accidentDescription[0].employee,
           ...state.accidentDescription[0].accident
         }
-
-      } else if(state.yearCounter === accidentYears[1]){
+      } else if (state.yearCounter === accidentYears[1]) {
         state.accidentTimer = 2
         state.isAccident = true
         state.accidentAlert = true
         state.currentAccident = {
-          employee:state.employees[state.accidentDescription[1].employee].translation,
+          employee: state.employees[state.accidentDescription[1].employee].translation,
           emplIndex: state.accidentDescription[1].employee,
           ...state.accidentDescription[0].accident
         }
       }
     },
-    setAccidentAlert(state:any,flag:boolean): void {
+    setAccidentAlert(state: any, flag: boolean): void {
       state.accidentAlert = flag
     },
-    updateStateAccident(state:any): void {
-      let emplIndex = state.currentAccident.emplIndex,
-          stat = state.currentAccident.damage
+    updateStateAccident(state: any): void {
+      const emplIndex = state.currentAccident.emplIndex
+      const stat = state.currentAccident.damage
 
       state.employees[emplIndex].state[stat] = Math.ceil(state.employees[emplIndex].state[stat] * 0.7)
     },
-    setAccidentTreatment(state:any, treatChoose:any): void {
-
+    setAccidentTreatment(state: any, treatChoose: any): void {
+      return
+    },
+    setDiseaseAlertVisible(state: any, payload: boolean): void {
+      state.diseaseAlertVisible = payload
+    },
+    setDiseaseTreatment(state: any, treatment: any): void {
+      Object.assign(state.employees[treatment.eId - 1].selectedDiseasesTreatment, 
+        {[treatment.diseaseTitle]: treatment.variant})
     }
   },
   actions: {
@@ -185,9 +209,13 @@ export const employeeModule = {
         dispatch('updateEmployeeState', employee)
         commit('pushState2History', employee)
 
-        if (Object.keys(employee.selectedODozeTreatments).length) {
+        if (Object.keys(employee.selectedODozeTreatment).length) {
           dispatch('overdozeTreatment', employee)
         }
+        if (Object.keys(employee.selectedDiseasesTreatment).length) {
+          dispatch('diseasesTreatment', employee)
+        }
+        dispatch('updateSystemsState', employee)
       }
       dispatch('dozesIncrement')
 
@@ -203,9 +231,8 @@ export const employeeModule = {
         return
       }
 
-      commit('checkYearOnAccident')
+      // commit('checkYearOnAccident')
       commit('setYearCounter', state.yearCounter + 1)
-
     },
     checkOnAllSelected({ state, commit }: any): void {
       let empSettings = null
@@ -244,20 +271,31 @@ export const employeeModule = {
       let id = 1
       let dozes, newEmp
       for (const employee of employees) {
+        // set main settings
         newEmp = {
           id: id,
           state: {hp: 100, vision: 100, hearing: 100}, 
+          systems: {},
           selectedSettings: {},
-          selectedODozeTreatments: {},
+          selectedODozeTreatment: {},
+          selectedDiseasesTreatment: {},
           history: [],
           optionalSettings: [],
+          diseases: [],
           ...JSON.parse(JSON.stringify(allEmployees[employee]))
         }
 
-        newEmp.settings.calories = categories[newEmp.category].calories
-        newEmp.settings.temperatureWarmSeason = categories[newEmp.category].temperatureWarmSeason
-        newEmp.settings.temperatureColdSeason = categories[newEmp.category].temperatureColdSeason
+        // set other main settings
+        // newEmp.settings.calories = categories[newEmp.category].calories
+        // newEmp.settings.temperatureWarmSeason = categories[newEmp.category].temperatureWarmSeason
+        // newEmp.settings.temperatureColdSeason = categories[newEmp.category].temperatureColdSeason
 
+        // set all systems
+        for (const system of Object.keys(allSystems)) {
+          newEmp.systems[system] = 100
+        }
+
+        // set employee dozes
         dozes = newEmp.dozes
         if (dozes) {
           for (const doze of Object.keys(dozes)) {
@@ -381,7 +419,6 @@ export const employeeModule = {
             for (const damage of Object.keys(setting.stateDamages)) {
               employee.state[damage] -= Math.abs(diff) * setting.stateDamages[damage]
               if (employee.state[damage] <= 0) {
-                console.log('1')
                 dispatch('gameOver', {stateTitle: damage, employeePosition: employee.translation})
               }
             }
@@ -421,8 +458,8 @@ export const employeeModule = {
       }
     },
     overdozeTreatment(_: any, employee: any): void {
-      for (const oDoze of Object.keys(employee.selectedODozeTreatments)) {
-        const treatmentFactor = allDozes[oDoze].treatmentWays[employee.selectedODozeTreatments[oDoze]]
+      for (const oDoze of Object.keys(employee.selectedODozeTreatment)) {
+        const treatmentFactor = allDozes[oDoze].treatmentWays[employee.selectedODozeTreatment[oDoze]]
         const currentState = employee.dozes[oDoze].state
         
         employee.dozes[oDoze].state -= Math.ceil(currentState * treatmentFactor)
@@ -430,7 +467,54 @@ export const employeeModule = {
           employee.optionalSettings = employee.optionalSettings.filter((doze: any) => doze.title !== oDoze)
         }
       }
-      for (const treat in employee.selectedODozeTreatments) delete employee.selectedODozeTreatments[treat]
+      for (const treat in employee.selectedODozeTreatment) delete employee.selectedODozeTreatment[treat]
+    },
+    updateSystemsState({ dispatch }: any, employee: any): void {
+      let dependCount = 0
+      for (const system of Object.keys(employee.systems)) {
+        for (const [dependState, coeff] of Object.entries(allSystems[system].dependencies as Object)) {
+          dependCount += employee.state[dependState] * coeff
+        }
+        employee.systems[system] = Math.round(dependCount)
+        dependCount = 0
+      }
+      dispatch('ckeckOnOccupationDiseases', employee)
+    },
+    ckeckOnOccupationDiseases({ commit }: any, employee: any): void {
+      let allConds = false
+      for (const potDis of employee.potentialDiseases) {
+        for (const [system, cod] of Object.entries(allDiseases[potDis].conditions as Object)) {
+          if (employee.systems[system] <= cod) {
+            allConds = true
+          } else {
+            allConds = false
+            return
+          }
+        }
+        if (allConds && !employee.diseases.includes(potDis)) {
+          employee.diseases.push(potDis)
+          commit('setDiseaseAlertVisible', true)
+        }
+        allConds = false
+      }
+    },
+    diseasesTreatment(_: any, employee: any): void {
+      let improvement, count
+      for (const disease of employee.diseases) {
+        improvement = allDiseases[disease].treatmentWays[employee.selectedDiseasesTreatment[disease]].healthImprovement * (100 / 3)
+        for (const system of Object.keys(allDiseases[disease].conditions)) {
+          count = Object.keys(allSystems[system].dependencies).length
+          for (const [dep, coeff] of Object.entries(allSystems[system].dependencies as Object)) {
+            employee.state[dep] += Math.round(improvement * count * coeff)
+            if (employee.state[dep] > 100) {
+              employee.state[dep] = 100
+            }
+          }
+        }
+      }
+
+      employee.diseases.length = 0
+      employee.selectedDiseasesTreatment = {}
     }
   }
 }

@@ -11,7 +11,7 @@ export default <any>{
       carbonMonoxide: 3, 
       carbonDioxide: 2
     },
-    diseases: ['radiculitis'],
+    potentialDiseases: ['radiculitis'],
     accidentType: 'office'
   },
   manager: {
@@ -25,7 +25,7 @@ export default <any>{
     dozes: {
       paperDust: 6
     },
-    diseases: ['hypodynamia'],
+    potentialDiseases: ['hypodynamia'],
     accidentType: 'office'
   },
   brewer: {
@@ -37,7 +37,7 @@ export default <any>{
       illumination: '150-300'
     },
     dozes: null,
-    diseases: ['tuberculosis'],
+    potentialDiseases: ['tuberculosis'],
     accidentType: 'office'
   },
   smelter: {
@@ -49,7 +49,7 @@ export default <any>{
       illumination: null
     },
     dozes: null,
-    diseases: ['silicosis'],
+    potentialDiseases: ['silicosis'],
     accidentType: 'office'
   },
   welder: {
@@ -64,7 +64,7 @@ export default <any>{
       carbonMonoxide: 2,
       nitricOxide: 1
     },
-    diseases: ['bronchialAsthma'],
+    potentialDiseases: ['bronchialAsthma'],
     accidentType: 'office'
   },
   dispatcher: {
@@ -78,7 +78,7 @@ export default <any>{
     dozes: {
       carbonDioxide: 1
     },
-    diseases: ['hypodynamia'],
+    potentialDiseases: ['hypodynamia'],
     accidentType: 'office'
   },
   handyman: {
@@ -93,7 +93,7 @@ export default <any>{
       woodDust: 2,
       metalDust: 3
     },
-    diseases: ['epicondylitis'],
+    potentialDiseases: ['epicondylitis'],
     accidentType: 'office'
   },
   agronomist: {
@@ -107,7 +107,7 @@ export default <any>{
     dozes: {
       earthDust: 1
     },
-    diseases: ['chronicalBronchitis'],
+    potentialDiseases: ['chronicalBronchitis'],
     accidentType: 'office'
   },
   pilot: {
@@ -121,7 +121,7 @@ export default <any>{
     dozes: {
       carbonDioxide: 1
     },
-    diseases: ['tuberculosis'],
+    potentialDiseases: ['tuberculosis'],
     accidentType: 'office'
   },
   shipRepair: {
@@ -137,7 +137,7 @@ export default <any>{
       lead: 1,
       metalDust: 2
     },
-    diseases: ['tuberculosis'],
+    potentialDiseases: ['tuberculosis'],
     accidentType: 'office'
   },
   conveyor: {
@@ -151,7 +151,7 @@ export default <any>{
     dozes: {
       paperDust: 2
     },
-    diseases: ['bronchialAsthma'],
+    potentialDiseases: ['bronchialAsthma'],
     accidentType: 'office'
   },
   miner: {
@@ -165,7 +165,7 @@ export default <any>{
     dozes: {
       methane: 3
     },
-    diseases: ['silicosis'],
+    potentialDiseases: ['silicosis'],
     accidentType: 'office'
   },
   dataAnalyst: {
@@ -177,7 +177,7 @@ export default <any>{
       illumination: '200-500'
     },
     dozes: null,
-    diseases: ['hypodynamia'],
+    potentialDiseases: ['hypodynamia'],
     accidentType: 'office'
   },
   tester: {
@@ -189,7 +189,7 @@ export default <any>{
       illumination: null
     },
     dozes: null,
-    diseases: ['hypodynamia'],
+    potentialDiseases: ['hypodynamia'],
     accidentType: 'office'
   },
   projectManager: {
@@ -201,7 +201,7 @@ export default <any>{
       illumination: null,
     },
     dozes: null,
-    diseases: ['radiculitis'],
+    potentialDiseases: ['radiculitis'],
     accidentType: 'office'
   },
   HRManager: {
@@ -213,7 +213,7 @@ export default <any>{
       illumination: null
     },
     dozes: null,
-    diseases: ['tuberculosis'],
+    potentialDiseases: ['tuberculosis'],
     accidentType: 'office'
   },
   accountant: {
@@ -227,7 +227,7 @@ export default <any>{
     dozes: {
       paperDust: 1
     },
-    diseases: ['osteochondrosis'],
+    potentialDiseases: ['osteochondrosis'],
     accidentType: 'office'
   },
   economist: {
@@ -241,7 +241,7 @@ export default <any>{
     dozes: {
       paperDust: 1
     },
-    diseases: ['osteochondrosis'],
+    potentialDiseases: ['osteochondrosis'],
     accidentType: 'office'
   },
   teacher: {
@@ -253,7 +253,7 @@ export default <any>{
       illumination: '200-500'
     },
     dozes: null,
-    diseases: ['osteochondrosis'],
+    potentialDiseases: ['osteochondrosis'],
     accidentType: 'office'
   },
   salesConsultant: {
@@ -265,7 +265,7 @@ export default <any>{
       illumination: null
     },
     dozes: null,
-    diseases: ['vegetovascularDystonia'],
+    potentialDiseases: ['vegetovascularDystonia'],
     accidentType: 'office'
   },
   cashier: {
@@ -277,7 +277,7 @@ export default <any>{
       illumination: null
     },
     dozes: null,
-    diseases: ['radiculitis'],
+    potentialDiseases: ['radiculitis'],
     accidentType: 'office'
   },
   secretary: {
@@ -289,7 +289,7 @@ export default <any>{
       illumination: '200-500'
     },
     dozes: null,
-    diseases: ['osteochondrosis'],
+    potentialDiseases: ['osteochondrosis'],
     accidentType: 'office'
   },
   dean: {
@@ -301,7 +301,7 @@ export default <any>{
       illumination: '200-500'
     },
     dozes: null,
-    diseases: ['osteochondrosis'],
+    potentialDiseases: ['osteochondrosis'],
     accidentType: 'office'
   },
   student: {
@@ -313,7 +313,7 @@ export default <any>{
       illumination: '200-500'
     },
     dozes: null,
-    diseases: ['hypodynamia'],
+    potentialDiseases: ['hypodynamia'],
     accidentType: 'office'
   },
   administrator: {
@@ -325,7 +325,7 @@ export default <any>{
       illumination: null
     },
     dozes: null,
-    diseases: ['hypodynamia'],
+    potentialDiseases: ['hypodynamia'],
     accidentType: 'office'
   },
   driller: {
@@ -339,7 +339,7 @@ export default <any>{
     dozes: {
       earthDust: 3
     },
-    diseases: ['silicosis'],
+    potentialDiseases: ['silicosis'],
     accidentType: 'office'
   },
   engineer: {
@@ -353,7 +353,7 @@ export default <any>{
     dozes: {
       metalDust: 1
     },
-    diseases: ['osteochondrosis'],
+    potentialDiseases: ['osteochondrosis'],
     accidentType: 'office'
   },
   builder: {
@@ -367,7 +367,7 @@ export default <any>{
     dozes: {
       metalDust: 2
     },
-    diseases: ['prostatitis'],
+    potentialDiseases: ['prostatitis'],
     accidentType: 'office'
   }
 }

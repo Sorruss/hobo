@@ -40,10 +40,17 @@
         />
 
         <collapse-item-overdoze 
-          v-show="employee.optionalSettings"
+          v-show="employee.optionalSettings.length"
           v-for="overdoze in getOptionalSettings(employee)" 
           :key="overdoze.eId" 
           :overdoze="overdoze"
+        />
+
+        <collapse-item-disease 
+          v-show="employee.diseases.length"
+          v-for="disease in getDiseases(employee)" 
+          :key="disease.eId" 
+          :disease="disease"
         />
 
         <collapse-item 
@@ -83,7 +90,8 @@
 import { defineComponent, ref } from 'vue'
 import { Status } from '@/types/statusType'
 import allSettings from '@/static/data/settings'
-import { mapState, mapMutations, mapActions } from 'vuex'
+import allDiseases from '@/static/data/diseases'
+import { mapState } from 'vuex'
 
 export default defineComponent({
   name: 'EmployeeCard',
@@ -93,7 +101,7 @@ export default defineComponent({
       statePerc: 0,
       images: {
         smileImage: require('@/static/images/smileState.jpeg'),
-        middleStateImage: require('@/static/images/smileState.jpeg'),
+        middleStateImage: require('@/static/images/middleState.png'),
         sadState1: require('@/static/images/sadState1.png'),
         sadState2: require('@/static/images/sadState2.png')
       },
@@ -143,7 +151,7 @@ export default defineComponent({
     },
     getSettings(employee: any): Array<any> {
       const settings = []
-      for (let setting of Object.entries(employee.settings)) {
+      for (const setting of Object.entries(employee.settings)) {
         if (setting[1]) {
           settings.push({translation: setting[0], ...allSettings[setting[0]]})
         }
@@ -151,13 +159,35 @@ export default defineComponent({
       return settings
     },
     getOptionalSettings(employee: any): Array<any> {
+      if (!employee.optionalSettings.length) {
+        return []
+      }
       return employee.optionalSettings
     },
     isTreat(): boolean {
-      console.log(this.employee.id, this.accident.emplIndex)
       return (this.isAccident && (this.employee.id === (this.accident.emplIndex + 1)))
-    }
+    },
+    getDiseases(employee: any): Array<any> {
+      if (!employee.diseases.length) {
+        return []
+      }
 
+      let treatmentWays
+      const diseases = []
+      for (const disease of employee.diseases) {
+        treatmentWays = JSON.parse(JSON.stringify(allDiseases[disease].treatmentWays))
+        for (const treatWay of Object.keys(treatmentWays)) {
+          treatmentWays[treatWay].engName = treatWay
+        }
+        diseases.push({
+          eId: employee.id, 
+          translation: allDiseases[disease].translation, 
+          engName: disease,
+          treatmentWays
+        })
+      }
+      return diseases
+    }
   },
   mounted() {
     this.mounted = true

@@ -100,9 +100,9 @@
               border 
               stripe
             >
-              <el-table-column prop="employeePosition" label="Професія" width="180"/>
-              <el-table-column prop="score" label="Бали" width="180"/>
-              <el-table-column prop="state" label="Стан"/>
+              <el-table-column class="table__column" prop="employeePosition" label="Професія"/>
+              <el-table-column class="table__column" prop="score" label="Бали"/>
+              <el-table-column class="table__column" prop="state" label="Стан"/>
             </el-table>
             <div class="table__title">
               <small>Таблиця 1. Ефективність праці працівників підприємства</small>
@@ -127,6 +127,7 @@ import { Download } from '@element-plus/icons-vue'
 import docxtemplater from 'docxtemplater'
 import JSZip from 'jszip'
 import JSzipUtils from 'jszip-utils'
+import allDiseases from '@/static/data/diseases'
 
 export default defineComponent({
   name: 'ResultReport',
@@ -157,15 +158,16 @@ export default defineComponent({
     },
     getTableData() {
       const tableData = []
-      let empScore = null
       let totalScore = 0
+      let empScore, diseases
       for (const employee of this.employees) {
+        diseases = employee.diseases.map((x: string) => allDiseases[x].translation[0].toUpperCase() + allDiseases[x].translation.slice(1))
         empScore = this.getEmployeeScore(employee)
         totalScore += empScore
         tableData.push({
           employeePosition: employee.translation,
           score: empScore.toString(),
-          state: 'Попереково-крижовий радикуліт  (XXX ст.)',
+          state: diseases.join(', '),
         })
       }
       tableData.push({
@@ -196,10 +198,13 @@ export default defineComponent({
     },
     downloadDocxTemplate(): void {
       const employees = []
+      let diseases
       for (const employee of this.employees) {
+        diseases = employee.diseases.map((x: string) => allDiseases[x].translation[0].toUpperCase() + allDiseases[x].translation.slice(1))
         employees.push({
           translation: employee.translation, 
-          score: this.getEmployeeScore(employee)
+          score: this.getEmployeeScore(employee),
+          diseases
         })
       }
       const dataset = {
