@@ -133,7 +133,7 @@ export default defineComponent({
       this.$store.commit('setStudentField', {field: 'gameStartTime', payload: new Date(new Date().getTime()).toLocaleString()})
       this.$store.commit('setStudentField', {field: 'region', payload: this.parts[this.mapCounter].about.regionInfo.name})
       this.$store.commit('setStudentField', {field: 'company', payload: this.parts[this.mapCounter].about.regionInfo.companyName})
-      this.$store.commit('employeeModule/setRandomAccident')
+      this.$store.dispatch('employeeModule/setRandomAccident')
     }
   },
   mounted(): void {

@@ -1,6 +1,6 @@
 import router from '@/router'
 
-import { Accident } from '@/types/accidentType'
+// import { Accident } from '@/types/accidentType'
 import accidentGroups from '@/static/data/accidentGroups'
 import allEmployees from '@/static/data/employees'
 // import categories from '@/static/data/categories'
@@ -19,7 +19,7 @@ export const employeeModule = {
   namespaced: true,
   state: {
     employees: [],
-    totalYears: 8,
+    totalYears: 15,
     yearCounter: 0,
     overdozeReport: '',
     overdozeAlertVisible: false,
@@ -41,7 +41,10 @@ export const employeeModule = {
       treatment: ''
     },
     accidentTimer: -1,
-    diseaseAlertVisible: false
+    diseaseAlertVisible: false,
+    coinsForPerfect: 20,
+    coinsStep: 5,
+    isEmergency: false
   },
   getters: {
     getDiseasesReport(state: any): string {
@@ -104,80 +107,6 @@ export const employeeModule = {
     setMissedSettingIndex(state: any, index: string): void {
       state.missedSettingIndex = index
     },
-    setRandomAccident(state: any): void {
-      const newAccidents: Array<Accident> = []
-
-      for (let i = 0; i < 2; i++) {
-        newAccidents.push({year: 0, employee: -1, accident: {}})
-      }
-
-      //randomYears
-      const firstMin = 1,
-          firstMax = 6,
-          secMax = 13,
-          interval = 7
-
-      const firstYear = 1 //Math.floor(Math.random() * (firstMax - firstMin + 1)) + firstMin
-      const secMin = firstYear + interval
-      const secYear = Math.floor(Math.random() * (secMax - secMin + 1)) + secMin
-
-      newAccidents[0].year = firstYear
-      newAccidents[1].year = secYear
-
-      //randomEmployee
-      let emplIndexes = [0, 1, 2, 3]
-
-      const firstEmpl = Math.floor(Math.random() * 4)
-      emplIndexes.splice(firstEmpl, 1)
-      const secEmpl = emplIndexes[Math.floor(Math.random() * 3)]
-
-      newAccidents[0].employee = firstEmpl
-      newAccidents[1].employee = secEmpl
-
-      //choosing the type of an accident
-      const firstAccTypes = accidentGroups[state.employees[firstEmpl].accidentType]
-      const secAccTypes = accidentGroups[state.employees[secEmpl].accidentType]
-
-      const firstAccInd = Math.floor(Math.random() * firstAccTypes.length)
-      const secAccInd = Math.floor(Math.random() * secAccTypes.length)
-
-      const firstAcc = accidents[firstAccTypes[firstAccInd]]
-      const secAcc = accidents[secAccTypes[secAccInd]]
-
-      newAccidents[0].accident = firstAcc
-      newAccidents[1].accident = secAcc
-
-      state.accidentDescription = newAccidents
-    },
-    checkYearOnAccident(state: any): void {
-      const accidentYears = [state.accidentDescription[0].year, state.accidentDescription[1].year]
-
-      if (state.isAccident) {
-        if (state.accidentTimer > 0) {
-          state.accidentTimer--
-        } else {
-          state.isAccident = false
-        }
-      } else if (state.yearCounter === accidentYears[0]) {
-        state.accidentTimer = 2
-        state.isAccident = true
-        state.accidentAlert = true
-        state.currentAccident = {
-          employee: state.employees[state.accidentDescription[0].employee].translation,
-          emplIndex: state.accidentDescription[0].employee,
-          ...state.accidentDescription[0].accident
-        }
-      } else if (state.yearCounter === accidentYears[1]) {
-        state.accidentTimer = 2
-        state.isAccident = true
-        state.accidentAlert = true
-        state.currentAccident = {
-          employee: state.employees[state.accidentDescription[1].employee].translation,
-          emplIndex: state.accidentDescription[1].employee,
-          ...state.accidentDescription[0].accident
-        }
-      }
-    },
     setAccidentAlert(state: any, flag: boolean): void {
       state.accidentAlert = flag
     },
@@ -196,10 +125,29 @@ export const employeeModule = {
     setDiseaseTreatment(state: any, treatment: any): void {
       Object.assign(state.employees[treatment.eId - 1].selectedDiseasesTreatment, 
         {[treatment.diseaseTitle]: treatment.variant})
+    },
+    setIsEmergency(state: any, payload: boolean): void {
+      state.isEmergency = payload
+    },
+    setAccidentDescription(state: any, accidents: any): void {
+      state.accidentDescription = accidents
+    },
+    setAccidentTimer(state: any, payload: number): void {
+      state.accidentTimer = payload
+    },
+    setIsAccident(state: any, payload: boolean): void {
+      state.isAccident = payload
+    },
+    setCurrentAccident(state: any, accident: any): void {
+      state.currentAccident = accident
     }
   },
   actions: {
-    nextYear({ state, commit, dispatch }: any): void {
+    nextYear({ state, commit, dispatch, rootState }: any): void {
+      if (!rootState.gameStarted) {
+        return
+      }
+
       dispatch('checkOnAllSelected')
       if (!state.permissionOnContinue || state.gameOver) {
         return
@@ -231,7 +179,8 @@ export const employeeModule = {
         return
       }
 
-      // commit('checkYearOnAccident')
+      dispatch('checkYearOnAccident')
+      dispatch('checkOnEmergencies')
       commit('setYearCounter', state.yearCounter + 1)
     },
     checkOnAllSelected({ state, commit }: any): void {
@@ -515,6 +464,89 @@ export const employeeModule = {
 
       employee.diseases.length = 0
       employee.selectedDiseasesTreatment = {}
+    },
+    checkOnEmergencies({ state, commit }: any): void {
+      for (const employee of state.employees) {
+        if (employee.diseases.length || employee.optionalSettings.length || state.isAccident) {
+          commit('setIsEmergency', true)
+          return
+        }
+      }
+      commit('setIsEmergency', false)
+    },
+    checkYearOnAccident({ state, commit }: any): void {
+      const accidentYears = [state.accidentDescription[0].year, state.accidentDescription[1].year]
+
+      if (state.isAccident) {
+        if (state.accidentTimer > 0) {
+          commit('setAccidentTimer', state.accidentTimer - 1)
+        } else {
+          commit('setIsAccident', false)
+        }
+      } else if (state.yearCounter === accidentYears[0]) {
+        commit('setAccidentTimer', 2)
+        commit('setIsAccident', true)
+        commit('setAccidentAlert', true)
+        commit('setCurrentAccident', {
+          employee: state.employees[state.accidentDescription[0].employee].translation,
+          emplIndex: state.accidentDescription[0].employee,
+          ...state.accidentDescription[0].accident
+        })
+      } else if (state.yearCounter === accidentYears[1]) {
+        commit('setAccidentTimer', 2)
+        commit('setIsAccident', true)
+        commit('setAccidentAlert', true)
+        commit('setCurrentAccident', {
+          employee: state.employees[state.accidentDescription[1].employee].translation,
+          emplIndex: state.accidentDescription[1].employee,
+          ...state.accidentDescription[0].accident
+        })
+      }
+    },
+    setRandomAccident({ state, commit }: any): void {
+      const newAccidents: Array<any> = []
+
+      for (let i = 0; i < 2; i++) {
+        newAccidents.push({year: 0, employee: -1, accident: {}})
+      }
+
+      //randomYears
+      const firstMin = 1,
+          firstMax = 6,
+          secMax = 13,
+          interval = 7
+
+      const firstYear = 1 //Math.floor(Math.random() * (firstMax - firstMin + 1)) + firstMin
+      const secMin = firstYear + interval
+      const secYear = Math.floor(Math.random() * (secMax - secMin + 1)) + secMin
+
+      newAccidents[0].year = firstYear
+      newAccidents[1].year = secYear
+
+      //randomEmployee
+      let emplIndexes = [0, 1, 2, 3]
+
+      const firstEmpl = Math.floor(Math.random() * 4)
+      emplIndexes.splice(firstEmpl, 1)
+      const secEmpl = emplIndexes[Math.floor(Math.random() * 3)]
+
+      newAccidents[0].employee = firstEmpl
+      newAccidents[1].employee = secEmpl
+
+      //choosing the type of an accident
+      const firstAccTypes = accidentGroups[state.employees[firstEmpl].accidentType]
+      const secAccTypes = accidentGroups[state.employees[secEmpl].accidentType]
+
+      const firstAccInd = Math.floor(Math.random() * firstAccTypes.length)
+      const secAccInd = Math.floor(Math.random() * secAccTypes.length)
+
+      const firstAcc = accidents[firstAccTypes[firstAccInd]]
+      const secAcc = accidents[secAccTypes[secAccInd]]
+
+      newAccidents[0].accident = firstAcc
+      newAccidents[1].accident = secAcc
+
+      commit('setAccidentDescription', newAccidents)
     }
   }
 }

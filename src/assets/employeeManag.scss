@@ -13,7 +13,7 @@
   flex-direction: column;
   position: fixed;
   .repeat, .reference {
-    height: 50vh;
+    height: 48vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,13 +22,24 @@
       position: fixed;
     }
   }
+  .extended {
+    height: 50vh;
+  }
+  .coins_counter {
+    background-color: #f9b759;
+    font-weight: bold;
+    color: saddlebrown;
+    height: 4vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 .repeat, .reference {
   transition: all 0.1s ease-in-out;
 }
 .repeat:hover, .reference:hover {
   background-color: darken($backgroundColor, 10);
-  transform: scale(1.05);
 }
 
 .el-drawer {
@@ -43,4 +54,11 @@
       transform: scale(1.05);
     }
   }
+}
+
+.el-radio {
+  word-break: break-word !important;
+  white-space: normal !important;
+  min-height: 40px !important;
+  height: inherit !important;
 }

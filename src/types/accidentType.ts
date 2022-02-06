@@ -1,5 +1,8 @@
 export type Accident = {
+    title: string,
     year:number,
     employee:number,
-    accident: object
+    accident: object,
+    variants: Array<string>,
+    emplIndex: number
 }
