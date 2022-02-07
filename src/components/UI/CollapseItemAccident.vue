@@ -1,12 +1,11 @@
 <template>
-  <el-collapse-item title="Профілактика" class="accident" :name="accident.emplIndex">
+  <el-collapse-item title="Профілактика" class="accident" :name="accident.emplIndex - 6">
     <el-radio-group v-model="resourse" size="medium">
       <el-radio
         v-for="(variant, id) in accident.variants"
         border
         :key="variant + id"
         :label="variant"
-        :ref="variant + id"
         @click="$store.commit('employeeModule/setAccidentTreatment', {emplIndex: accident.emplIndex, accidentTitle: accident.title, variant})"
       >
       </el-radio>

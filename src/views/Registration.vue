@@ -157,8 +157,7 @@ export default defineComponent({
             this.$store.commit('setStudent', {
               name: this.student.name.trim(), 
               surname: this.student.surname.trim(), 
-              group: this.student.group.trim(),
-              coins: 0
+              group: this.student.group.trim()
             })
             this.$router.push({name: 'EmployeeChoose'})
           } else {

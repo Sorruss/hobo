@@ -8,7 +8,6 @@
 }
 .left {
   width: calc((100% - $containerWidth) / 2);
-  cursor: pointer;
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -31,11 +30,16 @@
     color: saddlebrown;
     height: 4vh;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
+
+    .coin {
+      max-width: 40%;
+    }
   }
 }
 .repeat, .reference {
+  cursor: pointer;
   transition: all 0.1s ease-in-out;
 }
 .repeat:hover, .reference:hover {

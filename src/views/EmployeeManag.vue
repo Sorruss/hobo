@@ -47,7 +47,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
-import EmployeeCard from '@/views/EmployeeCard.vue'
+import EmployeeCard from '@/components/EmployeeCard.vue'
 
 export default defineComponent({
   name: 'EmployeeManagement',

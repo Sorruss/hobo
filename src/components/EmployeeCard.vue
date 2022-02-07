@@ -65,15 +65,19 @@
     </div>
   </div>
   <div v-else>
-    <el-skeleton :throttle="400" animated style="width: 20vw; display: flex; flex-direction: column; align-items: center; margin-top: 10px;">
+    <el-skeleton 
+      :throttle="400" 
+      animated 
+      style="width: 20vw; display: flex; flex-direction: column; align-items: center; margin-top: 10px;"
+    >
       <template #template>
-        <el-skeleton-item variant="p" style="width: 75%; margin-bottom: 5px;" />
+        <el-skeleton-item variant="p" style="width: 75%; margin-bottom: 5px;"/>
         
-        <el-skeleton-item variant="image" style="width: 100%; height: 240px; margin-bottom: 5px;" />
+        <el-skeleton-item variant="image" style="width: 100%; height: 240px; margin-bottom: 5px;"/>
         
-        <el-skeleton-item variant="rect" style="width: 100%; margin-bottom: 5px;" />
-        <el-skeleton-item variant="rect" style="width: 100%; margin-bottom: 5px;" />
-        <el-skeleton-item variant="rect" style="width: 100%; margin-bottom: 5px;" />
+        <el-skeleton-item variant="rect" style="width: 100%; margin-bottom: 5px;"/>
+        <el-skeleton-item variant="rect" style="width: 100%; margin-bottom: 5px;"/>
+        <el-skeleton-item variant="rect" style="width: 100%; margin-bottom: 5px;"/>
 
         <el-skeleton-item 
           v-for="(setting, id) in getSettings(employee)" 

@@ -1,12 +1,11 @@
 <template>
-  <el-collapse-item :title="'Міри щодо ' + overdoze.dozeTrans" class="overdoze" :name="overdoze.eId">
+  <el-collapse-item :title="'Міри щодо ' + overdoze.dozeTrans" class="overdoze" :name="overdoze.eId - 16">
     <el-radio-group v-model="resourse" size="medium"> 
       <el-radio 
         v-for="(variant, id) in overdoze.variants" 
         border 
         :key="variant + id"
         :label="variant"
-        :ref="variant + id"
         @click="$store.commit('employeeModule/setODozeTreatment', {eId: overdoze.eId, overdozeTitle: overdoze.title, variant})"
       >
       </el-radio>

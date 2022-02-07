@@ -27,6 +27,7 @@ svg {
 .part {
   transition: opacity 0.5s ease-in-out;
   opacity: 0;
+  cursor: pointer;
   &:hover {
     opacity: 0.25;
   }

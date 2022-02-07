@@ -8,7 +8,7 @@
       </div>
       
       <div v-if="isEmergency" class="coins_counter">
-        {{ student?.coins }}
+        {{ studentCoins }} <img class="coin" src="@/static/images/coin.png" alt="coin"> 
       </div>
 
       <div @click="drawerIsActive = true" class="reference" :class="!isEmergency ? 'extended' : ''">
@@ -272,6 +272,8 @@ export default defineComponent({
       this.$store.commit('setIsAuth', false)
       this.$store.commit('setGameStarted', false)
       this.$store.commit('employeeModule/setYearCounter', 0)
+      this.$store.commit('employeeModule/setStudentCoins', 0)
+      this.$store.commit('employeeModule/setIsEmergency', false)
       this.$store.dispatch('employeeModule/clearHistories')
       this.$store.dispatch('employeeModule/clearSettings')
 
@@ -297,11 +299,9 @@ export default defineComponent({
     })
   },
   computed: {
-    ...mapState({
-      student: (state: any) => state.student
-    }),
     ...mapState('employeeModule', {
-      isEmergency: (state: any) => state.isEmergency
+      isEmergency: (state: any) => state.isEmergency,
+      studentCoins: (state: any) => state.studentCoins
     })
   },
   mounted() {

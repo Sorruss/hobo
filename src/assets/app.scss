@@ -12,6 +12,9 @@ body {
   background: $backgroundColor;
   margin: 0;
 }
+::-webkit-scrollbar {
+  display: none !important;
+}
 
 .page {
   display: flex;

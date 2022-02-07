@@ -42,9 +42,12 @@ export const employeeModule = {
     },
     accidentTimer: -1,
     diseaseAlertVisible: false,
-    coinsForPerfect: 20,
-    coinsStep: 5,
-    isEmergency: false
+    studentCoins: 0,
+    coinsForPerfect: 5,
+    coinsStep: 1,
+    isEmergency: false,
+    notEnoughCoinsIdx: null,
+    currTimeout: null
   },
   getters: {
     getDiseasesReport(state: any): string {
@@ -122,9 +125,20 @@ export const employeeModule = {
     setDiseaseAlertVisible(state: any, payload: boolean): void {
       state.diseaseAlertVisible = payload
     },
-    setDiseaseTreatment(state: any, treatment: any): void {
+    setDiseaseTreatment(state: any, treatment: any): void {  
+      if (state.studentCoins >= treatment.variant.price) {
+        state.notEnoughCoinsIdx = null
+      } else {
+        clearTimeout(state.currTimeout)
+        state.notEnoughCoinsIdx = treatment.id
+        state.currTimeout = setTimeout(() => {
+          state.notEnoughCoinsIdx = null
+        }, 5000)
+        return
+      }
+
       Object.assign(state.employees[treatment.eId - 1].selectedDiseasesTreatment, 
-        {[treatment.diseaseTitle]: treatment.variant})
+        {[treatment.diseaseTitle]: treatment.variant.engName})
     },
     setIsEmergency(state: any, payload: boolean): void {
       state.isEmergency = payload
@@ -140,6 +154,9 @@ export const employeeModule = {
     },
     setCurrentAccident(state: any, accident: any): void {
       state.currentAccident = accident
+    },
+    setStudentCoins(state: any, payload: number): void {
+      state.studentCoins = payload
     }
   },
   actions: {
@@ -161,6 +178,7 @@ export const employeeModule = {
           dispatch('overdozeTreatment', employee)
         }
         if (Object.keys(employee.selectedDiseasesTreatment).length) {
+          console.log('tset1: ', employee.translation)
           dispatch('diseasesTreatment', employee)
         }
         dispatch('updateSystemsState', employee)
@@ -335,7 +353,7 @@ export const employeeModule = {
       commit('setGemeOver', true)
       commit('setGameOverReport', `Показник ${allStates[stateTitle].translation} Вашого робітника ${employeePosition} досяг критичного значення`)
     },
-    updateEmployeeState({ state, dispatch }: any, employee: any): void {
+    updateEmployeeState({ state, commit, dispatch }: any, employee: any): void {
       let settingType, setting, variants, diff = null
       for (const settingName of Object.keys(employee.settings)) {
         if (state.gameOver) {
@@ -350,7 +368,8 @@ export const employeeModule = {
         if (settingType === 'mp') {
           if (diff >= 0) {
             for (const damage of Object.keys(setting.stateDamages)) {
-              employee.state[damage] += (diff > 0 ? diff : 1) * setting.stateDamages[damage]
+              employee.state[damage] += (diff || 1) * setting.stateDamages[damage]
+              commit('setStudentCoins', state.studentCoins + (state.coinsForPerfect - (diff || 1) * state.coinsStep))
               if (employee.state[damage] > 100) {
                 employee.state[damage] = 100
               }
@@ -358,6 +377,7 @@ export const employeeModule = {
           } else {
             for (const damage of Object.keys(setting.stateDamages)) {
               employee.state[damage] -= (-diff) * setting.stateDamages[damage]
+              commit('setStudentCoins', state.studentCoins - (Math.abs(diff) * state.coinsStep))
               if (employee.state[damage] <= 0) {
                 dispatch('gameOver', {stateTitle: damage, employeePosition: employee.translation})
               }
@@ -367,6 +387,7 @@ export const employeeModule = {
           if (diff) {
             for (const damage of Object.keys(setting.stateDamages)) {
               employee.state[damage] -= Math.abs(diff) * setting.stateDamages[damage]
+              commit('setStudentCoins', state.studentCoins + state.coinsForPerfect)
               if (employee.state[damage] <= 0) {
                 dispatch('gameOver', {stateTitle: damage, employeePosition: employee.translation})
               }
@@ -374,6 +395,7 @@ export const employeeModule = {
           } else {
             for (const damage of Object.keys(setting.stateDamages)) {
               employee.state[damage] += setting.stateDamages[damage]
+              commit('setStudentCoins', state.studentCoins - (Math.abs(diff) * state.coinsStep))
               if (employee.state[damage] > 100) {
                 employee.state[damage] = 100
               }
@@ -383,6 +405,7 @@ export const employeeModule = {
           if (diff <= 0) {
             for (const damage of Object.keys(setting.stateDamages)) {
               employee.state[damage] += (diff !== 0 ? -diff : 1) * setting.stateDamages[damage]
+              commit('setStudentCoins', state.studentCoins + (state.coinsForPerfect - (Math.abs(diff) || 1) * state.coinsStep))
               if (employee.state[damage] > 100) {
                 employee.state[damage] = 100
               }
@@ -390,6 +413,7 @@ export const employeeModule = {
           } else {
             for (const damage of Object.keys(setting.stateDamages)) {
               employee.state[damage] -= diff * setting.stateDamages[damage]
+              commit('setStudentCoins', state.studentCoins - (diff * state.coinsStep))
               if (employee.state[damage] <= 0) {
                 dispatch('gameOver', {stateTitle: damage, employeePosition: employee.translation})
               }
@@ -450,6 +474,7 @@ export const employeeModule = {
     diseasesTreatment(_: any, employee: any): void {
       let improvement, count
       for (const disease of employee.diseases) {
+        console.log('disease:', disease)
         improvement = allDiseases[disease].treatmentWays[employee.selectedDiseasesTreatment[disease]].healthImprovement * (100 / 3)
         for (const system of Object.keys(allDiseases[disease].conditions)) {
           count = Object.keys(allSystems[system].dependencies).length
