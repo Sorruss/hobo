@@ -6,9 +6,9 @@
         border 
         :key="disease.translation + id"
         :label="disease.translation + id"
-        @click="$store.commit('employeeModule/setDiseaseTreatment', {eId: disease.eId, diseaseTitle: disease.engName, variant, id: disease.translation + id})"
+        @click="$store.dispatch('employeeModule/setDiseaseTreatment', {eId: disease.eId, diseaseTitle: disease.engName, variant, id: disease.translation + id})"
       >
-        <span v-if="!(notEnoughCoinsIdx === (disease.translation + id))">
+        <span v-if="!notEnoughCoinsIdxs.includes(disease.translation + id)">
           <span style="color: gold;">
             {{ variant.price }}
           </span>
@@ -45,7 +45,7 @@ export default defineComponent({
   },
   computed: {
     ...mapState('employeeModule', {
-      notEnoughCoinsIdx: (state: any) => state.notEnoughCoinsIdx,
+      notEnoughCoinsIdxs: (state: any) => state.notEnoughCoinsIdxs,
       studentCoins: (state: any) => state.studentCoins
     })
   }
