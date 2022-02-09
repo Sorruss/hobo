@@ -37,8 +37,8 @@ export const employeeModule = {
       emplIndex: -1,
       damage: '',
       text: '',
-      variants: [],
-      treatment: ''
+      treatment: {},
+      chosenTreatment: {}
     },
     accidentTimer: -1,
     diseaseAlertVisible: false,
@@ -117,10 +117,11 @@ export const employeeModule = {
       const emplIndex = state.currentAccident.emplIndex
       const stat = state.currentAccident.damage
 
-      state.employees[emplIndex].state[stat] = Math.ceil(state.employees[emplIndex].state[stat] * 0.7)
+      state.employees[emplIndex].state[stat] = Math.ceil(state.employees[emplIndex].state[stat] * 0.4)
     },
     setAccidentTreatment(state: any, treatChoose: any): void {
-      return
+      Object.assign(state.currentAccident.chosenTreatment,
+          treatChoose)
     },
     setDiseaseAlertVisible(state: any, payload: boolean): void {
       state.diseaseAlertVisible = payload
@@ -157,6 +158,11 @@ export const employeeModule = {
     },
     setStudentCoins(state: any, payload: number): void {
       state.studentCoins = payload
+    },
+    clearAccidentTreatment(state:any): void {
+      for (let prop in state.currentAccident.chosenTreatment){
+        delete state.currentAccident.chosenTreatment[prop]
+      }
     }
   },
   actions: {
@@ -173,6 +179,10 @@ export const employeeModule = {
       for (const employee of state.employees) {
         dispatch('updateEmployeeState', employee)
         commit('pushState2History', employee)
+
+        if(Object.keys(state.currentAccident.chosenTreatment).length) {
+          dispatch('accidentTreatment')
+        }
 
         if (Object.keys(employee.selectedODozeTreatment).length) {
           dispatch('overdozeTreatment', employee)
@@ -507,6 +517,7 @@ export const employeeModule = {
           commit('setAccidentTimer', state.accidentTimer - 1)
         } else {
           commit('setIsAccident', false)
+          commit('clearAccidentTreatment')
         }
       } else if (state.yearCounter === accidentYears[0]) {
         commit('setAccidentTimer', 2)
@@ -514,6 +525,7 @@ export const employeeModule = {
         commit('setAccidentAlert', true)
         commit('setCurrentAccident', {
           employee: state.employees[state.accidentDescription[0].employee].translation,
+          chosenTreatment:{},
           emplIndex: state.accidentDescription[0].employee,
           ...state.accidentDescription[0].accident
         })
@@ -524,6 +536,7 @@ export const employeeModule = {
         commit('setCurrentAccident', {
           employee: state.employees[state.accidentDescription[1].employee].translation,
           emplIndex: state.accidentDescription[1].employee,
+          chosenTreatment:{},
           ...state.accidentDescription[0].accident
         })
       }
@@ -572,6 +585,21 @@ export const employeeModule = {
       newAccidents[1].accident = secAcc
 
       commit('setAccidentDescription', newAccidents)
+    },
+    accidentTreatment({ state, commit }: any): void {
+      let accident = state.currentAccident
+      let treatment = accident.chosenTreatment.variant
+      let accidentEmployee = state.employees[accident.emplIndex]
+
+
+      accidentEmployee.state[accident.damage] *= 1+treatment.healthImprovement
+
+
+
+      if (accidentEmployee.state[accident.damage] > 100) {
+        accidentEmployee.state[accident.damage] = 100
+      }
+
     }
   }
 }
