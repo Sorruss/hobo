@@ -6,7 +6,7 @@
         border
         :key="variant.translation + id"
         :label="variant.translation"
-        @click="$store.dispatch('employeeModule/setAccidentTreatment', {emplIndex: accident.emplIndex, accidentTitle: accident.title, variant, id: variant.translation + id})"
+        @click="$store.dispatch('employeeModule/setAccidentTreatment', {emplIndex: accident.emplIndex, accidentTitle: accident.translation, variant, id: variant.translation + id})"
       >
         <span v-if="!notEnoughCoinsIdxs.includes(variant.translation + id)">
           <span style="color: gold;">
