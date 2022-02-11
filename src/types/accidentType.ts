@@ -3,6 +3,6 @@ export type Accident = {
     year:number,
     employee:number,
     accident: object,
-    variants: Array<string>,
+    treatment: Array<any>,
     emplIndex: number
 }

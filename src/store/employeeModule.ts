@@ -32,21 +32,14 @@ export const employeeModule = {
     accidentDescription: [],
     accidentAlert: false,
     isAccident: false,
-    currentAccident: {
-      employee: '',
-      emplIndex: -1,
-      damage: '',
-      text: '',
-      treatment: {},
-      chosenTreatment: {}
-    },
+    currentAccident: {},
     accidentTimer: -1,
     diseaseAlertVisible: false,
     studentCoins: 0,
     coinsForPerfect: 5,
     coinsStep: 1,
     isEmergency: false,
-    notEnoughCoinsIdx: null,
+    notEnoughCoinsIdxs: [],
     currTimeout: null
   },
   getters: {
@@ -119,27 +112,8 @@ export const employeeModule = {
 
       state.employees[emplIndex].state[stat] = Math.ceil(state.employees[emplIndex].state[stat] * 0.4)
     },
-    setAccidentTreatment(state: any, treatChoose: any): void {
-      Object.assign(state.currentAccident.chosenTreatment,
-          treatChoose)
-    },
     setDiseaseAlertVisible(state: any, payload: boolean): void {
       state.diseaseAlertVisible = payload
-    },
-    setDiseaseTreatment(state: any, treatment: any): void {  
-      if (state.studentCoins >= treatment.variant.price) {
-        state.notEnoughCoinsIdx = null
-      } else {
-        clearTimeout(state.currTimeout)
-        state.notEnoughCoinsIdx = treatment.id
-        state.currTimeout = setTimeout(() => {
-          state.notEnoughCoinsIdx = null
-        }, 5000)
-        return
-      }
-
-      Object.assign(state.employees[treatment.eId - 1].selectedDiseasesTreatment, 
-        {[treatment.diseaseTitle]: treatment.variant.engName})
     },
     setIsEmergency(state: any, payload: boolean): void {
       state.isEmergency = payload
@@ -163,6 +137,9 @@ export const employeeModule = {
       for (let prop in state.currentAccident.chosenTreatment){
         delete state.currentAccident.chosenTreatment[prop]
       }
+    },
+    setCurrTimeout(state: any, payload: any): void {
+      state.currTimeout = payload
     }
   },
   actions: {
@@ -180,7 +157,7 @@ export const employeeModule = {
         dispatch('updateEmployeeState', employee)
         commit('pushState2History', employee)
 
-        if(Object.keys(state.currentAccident.chosenTreatment).length) {
+        if(state.currentAccident.chosenTreatment && Object.keys(state.currentAccident.chosenTreatment).length) {
           dispatch('accidentTreatment')
         }
 
@@ -360,6 +337,8 @@ export const employeeModule = {
       }
     },
     gameOver({ commit }: any, {stateTitle, employeePosition} : {stateTitle: string, employeePosition: string}): void {
+      commit('setIsAccident', false)
+      commit('setAccidentAlert', false)
       commit('setGemeOver', true)
       commit('setGameOverReport', `Показник ${allStates[stateTitle].translation} Вашого робітника ${employeePosition} досяг критичного значення`)
     },
@@ -517,28 +496,23 @@ export const employeeModule = {
           commit('setAccidentTimer', state.accidentTimer - 1)
         } else {
           commit('setIsAccident', false)
+          commit('setAccidentAlert', false)
           commit('clearAccidentTreatment')
         }
-      } else if (state.yearCounter === accidentYears[0]) {
-        commit('setAccidentTimer', 2)
-        commit('setIsAccident', true)
-        commit('setAccidentAlert', true)
-        commit('setCurrentAccident', {
-          employee: state.employees[state.accidentDescription[0].employee].translation,
-          chosenTreatment:{},
-          emplIndex: state.accidentDescription[0].employee,
-          ...state.accidentDescription[0].accident
-        })
-      } else if (state.yearCounter === accidentYears[1]) {
-        commit('setAccidentTimer', 2)
-        commit('setIsAccident', true)
-        commit('setAccidentAlert', true)
-        commit('setCurrentAccident', {
-          employee: state.employees[state.accidentDescription[1].employee].translation,
-          emplIndex: state.accidentDescription[1].employee,
-          chosenTreatment:{},
-          ...state.accidentDescription[0].accident
-        })
+      }
+
+      for (let idx in state.accidentDescription) {
+        if(state.accidentDescription[idx].year == state.yearCounter) {
+          commit('setAccidentTimer', 2)
+          commit('setIsAccident', true)
+          commit('setAccidentAlert', true)
+          Object.assign(state.currentAccident, {
+            employee:state.employees[state.accidentDescription[idx].employee].translation,
+            chosenTreatment:{},
+            emplIndex: state.accidentDescription[idx].employee,
+            ...state.accidentDescription[idx].accident
+          })
+        }
       }
     },
     setRandomAccident({ state, commit }: any): void {
@@ -586,20 +560,46 @@ export const employeeModule = {
 
       commit('setAccidentDescription', newAccidents)
     },
-    accidentTreatment({ state, commit }: any): void {
-      let accident = state.currentAccident
-      let treatment = accident.chosenTreatment.variant
-      let accidentEmployee = state.employees[accident.emplIndex]
+    accidentTreatment({ state }: any): void {
+      const accident = state.currentAccident
+      const treatment = accident.chosenTreatment.variant
+      const accidentEmployee = state.employees[accident.emplIndex]
 
-
-      accidentEmployee.state[accident.damage] *= 1+treatment.healthImprovement
-
-
+      accidentEmployee.state[accident.damage] *= 1 + treatment.healthImprovement
 
       if (accidentEmployee.state[accident.damage] > 100) {
         accidentEmployee.state[accident.damage] = 100
       }
+    },
+    setDiseaseTreatment({ state, dispatch }: any, treatment: any): void {  
+      if (!dispatch('checkStudentOnCoins', {price: treatment.variant.price, id: treatment.id})) {
+        return
+      }
 
+
+      Object.assign(state.employees[treatment.eId - 1].selectedDiseasesTreatment, 
+        {[treatment.diseaseTitle]: treatment.variant.engName})
+    },
+    setAccidentTreatment({ state, dispatch }: any, treatChoose: any): void {
+      if (!dispatch('checkStudentOnCoins', {price: treatChoose.variant.price, id: treatChoose.id})) {
+        return
+      }
+
+      Object.assign(state.currentAccident.chosenTreatment, treatChoose)
+    },
+    checkStudentOnCoins({ state, commit }: any, { price, id } : { price: number, id: string }): boolean {
+      if (state.studentCoins >= price) {
+        state.notEnoughCoinsIdxs = state.notEnoughCoinsIdxs.filter((idx: string) => idx !== id)
+      } else {
+        if (!state.notEnoughCoinsIdxs.includes(id)) {
+          state.notEnoughCoinsIdxs.push(id)
+          commit('setCurrTimeout', setTimeout(() => {
+            state.notEnoughCoinsIdxs = state.notEnoughCoinsIdxs.filter((idx: string) => idx !== id)
+          }, 5000))
+        }
+        return false
+      }
+      return true
     }
   }
 }
