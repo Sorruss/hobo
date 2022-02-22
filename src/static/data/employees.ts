@@ -32,7 +32,7 @@ export default <any>{
     translation: 'Пивовар',
     category: '2а',
     settings: {
-      workingDayHours: '8',
+      workingDayHours: '7',
       noiseLevel: null,
       illumination: '150-300'
     },
@@ -72,7 +72,7 @@ export default <any>{
     category: '1а',
     settings: {
       workingDayHours: '7',
-      noiseLevel: '<65',
+      noiseLevel: '<60',
       illumination: null
     },
     dozes: {
@@ -86,8 +86,8 @@ export default <any>{
     category: '2а',
     settings: {
       workingDayHours: '8',
-      noiseLevel: '<75',
-      illumination: '100-200'
+      noiseLevel: '<65',
+      illumination: '100-300'
     },
     dozes: {
       woodDust: 2,
@@ -114,7 +114,7 @@ export default <any>{
     translation: 'Пілот',
     category: '1а',
     settings: {
-      workingDayHours: '5-7',
+      workingDayHours: '6',
       noiseLevel: '>75',
       illumination: null
     },
@@ -125,12 +125,12 @@ export default <any>{
     accidentType: 'office'
   },
   shipRepair: {
-    translation: 'Судноремонт',
+    translation: 'Судноремонтний робочий',
     category: '3',
     settings: {
       workingDayHours: '8',
       noiseLevel: '<75',
-      illumination: '100-300'
+      illumination: '100-200'
     },
     dozes: {
       carbonMonoxide: 2,
@@ -197,7 +197,7 @@ export default <any>{
     category: '1б',
     settings: {
       workingDayHours: '8',
-      noiseLevel: '<50',
+      noiseLevel: '<65',
       illumination: null,
     },
     dozes: null,
@@ -272,7 +272,7 @@ export default <any>{
     translation: 'Касир',
     category: '1б',
     settings: {
-      workingDayHours: '8',
+      workingDayHours: '8-10',
       noiseLevel: '<65',
       illumination: null
     },
@@ -285,7 +285,7 @@ export default <any>{
     category: '1б',
     settings: {
       workingDayHours: '8',
-      noiseLevel: '<65',
+      noiseLevel: '<60',
       illumination: '200-500'
     },
     dozes: null,
@@ -296,7 +296,7 @@ export default <any>{
     translation: 'Декан',
     category: '1б',
     settings: {
-      workingDayHours: '6-8',
+      workingDayHours: '8',
       noiseLevel: '<65',
       illumination: '200-500'
     },
@@ -347,7 +347,7 @@ export default <any>{
     category: '2а',
     settings: {
       workingDayHours: '8',
-      noiseLevel: '<75',
+      noiseLevel: '<65',
       illumination: null,
     },
     dozes: {
@@ -360,7 +360,7 @@ export default <any>{
     translation: 'Будівельник',
     category: '2а',
     settings: {
-      workingDayHours: '8',
+      workingDayHours: '8-10',
       noiseLevel: '<75',
       illumination: null,
     },

@@ -32,14 +32,7 @@ export const employeeModule = {
     accidentDescription: [],
     accidentAlert: false,
     isAccident: false,
-    currentAccident: {
-      employee: '',
-      emplIndex: -1,
-      damage: '',
-      text: '',
-      treatment: {},
-      chosenTreatment: {}
-    },
+    currentAccident: {},
     accidentTimer: -1,
     diseaseAlertVisible: false,
     studentCoins: 0,
@@ -164,7 +157,7 @@ export const employeeModule = {
         dispatch('updateEmployeeState', employee)
         commit('pushState2History', employee)
 
-        if(Object.keys(state.currentAccident.chosenTreatment).length) {
+        if(state.currentAccident.chosenTreatment && Object.keys(state.currentAccident.chosenTreatment).length) {
           dispatch('accidentTreatment')
         }
 
@@ -344,6 +337,8 @@ export const employeeModule = {
       }
     },
     gameOver({ commit }: any, {stateTitle, employeePosition} : {stateTitle: string, employeePosition: string}): void {
+      commit('setIsAccident', false)
+      commit('setAccidentAlert', false)
       commit('setGemeOver', true)
       commit('setGameOverReport', `Показник ${allStates[stateTitle].translation} Вашого робітника ${employeePosition} досяг критичного значення`)
     },
@@ -501,28 +496,23 @@ export const employeeModule = {
           commit('setAccidentTimer', state.accidentTimer - 1)
         } else {
           commit('setIsAccident', false)
+          commit('setAccidentAlert', false)
           commit('clearAccidentTreatment')
         }
-      } else if (state.yearCounter === accidentYears[0]) {
-        commit('setAccidentTimer', 2)
-        commit('setIsAccident', true)
-        commit('setAccidentAlert', true)
-        commit('setCurrentAccident', {
-          employee: state.employees[state.accidentDescription[0].employee].translation,
-          chosenTreatment:{},
-          emplIndex: state.accidentDescription[0].employee,
-          ...state.accidentDescription[0].accident
-        })
-      } else if (state.yearCounter === accidentYears[1]) {
-        commit('setAccidentTimer', 2)
-        commit('setIsAccident', true)
-        commit('setAccidentAlert', true)
-        commit('setCurrentAccident', {
-          employee: state.employees[state.accidentDescription[1].employee].translation,
-          emplIndex: state.accidentDescription[1].employee,
-          chosenTreatment:{},
-          ...state.accidentDescription[0].accident
-        })
+      }
+
+      for (let idx in state.accidentDescription) {
+        if(state.accidentDescription[idx].year == state.yearCounter) {
+          commit('setAccidentTimer', 2)
+          commit('setIsAccident', true)
+          commit('setAccidentAlert', true)
+          Object.assign(state.currentAccident, {
+            employee:state.employees[state.accidentDescription[idx].employee].translation,
+            chosenTreatment:{},
+            emplIndex: state.accidentDescription[idx].employee,
+            ...state.accidentDescription[idx].accident
+          })
+        }
       }
     },
     setRandomAccident({ state, commit }: any): void {
