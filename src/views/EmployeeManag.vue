@@ -74,7 +74,7 @@ export default defineComponent({
       window.location.reload()
     },
     nextYearWrap(): void {
-      this.nextYear();
+      this.nextYear()
     },
     accidentAlertClick(): void {
       this.setAccidentAlert(false)

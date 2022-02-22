@@ -41,7 +41,7 @@ export default <any>{
   },
   temperatureWarmSeason: {
     title: 'Температура на теплий сезон',
-    variants: ['16-18', '17-19', '19-21', '21-23', '22-24'],
+    variants: ['19-20', '20-22', '21-23', '22-24', '23-25'],
     additionalText: '°C',
     type: 'mm',
     stateDamages: {
@@ -50,7 +50,7 @@ export default <any>{
   },
   temperatureColdSeason: {
     title: 'Температура на холодний сезон',
-    variants: ['19-20', '20-22', '21-23', '22-24', '23-25'],
+    variants: ['16-18', '17-19', '19-21', '21-23', '22-24'],
     additionalText: '°C',
     type: 'mm',
     stateDamages: {
@@ -59,7 +59,7 @@ export default <any>{
   },
   workingDayHours: {
     title: 'Робоча зміна',
-    variants: ['6', '6-7', '7', '8', '8-10'],
+    variants: ['6', '6-7', '6-8', '7', '8', '8-10'],
     additionalText: ' годин',
     type: 'pm',
     stateDamages: {

@@ -258,7 +258,7 @@ export default <any>{
   },
   salesConsultant: {
     translation: 'Продавець-консультант',
-    category: '2а',
+    category: '1б',
     settings: {
       workingDayHours: '8',
       noiseLevel: '<65',
@@ -306,7 +306,7 @@ export default <any>{
   },
   student: {
     translation: 'Студент',
-    category: '2а',
+    category: '1б',
     settings: {
       workingDayHours: '6',
       noiseLevel: '<65',

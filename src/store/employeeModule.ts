@@ -3,7 +3,7 @@ import router from '@/router'
 // import { Accident } from '@/types/accidentType'
 import accidentGroups from '@/static/data/accidentGroups'
 import allEmployees from '@/static/data/employees'
-// import categories from '@/static/data/categories'
+import categories from '@/static/data/categories'
 import allDiseases from '@/static/data/diseases'
 import allSettings from '@/static/data/settings'
 import allSystems from '@/static/data/systems'
@@ -575,7 +575,6 @@ export const employeeModule = {
       if (!dispatch('checkStudentOnCoins', {price: treatment.variant.price, id: treatment.id})) {
         return
       }
-
 
       Object.assign(state.employees[treatment.eId - 1].selectedDiseasesTreatment, 
         {[treatment.diseaseTitle]: treatment.variant.engName})

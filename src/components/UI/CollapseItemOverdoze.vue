@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { Overdoze } from '@/types/overdozeType'
 
 export default defineComponent({
@@ -27,7 +27,7 @@ export default defineComponent({
   },
   data() {
     return {
-      resourse: ''
+      resourse: ref('')
     }
   }
 })
