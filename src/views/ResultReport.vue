@@ -1,7 +1,7 @@
 <template>
   <div class="report" v-if="student">
     <div class="user">
-      <span class="user__info"><b>Звіт з лабораторної роботи "Работяга"</b></span>
+      <span class="user__info"><b>Звіт з лабораторної роботи "Умови праці"</b></span>
       <span class="user__info">Виконав: {{ student.surname + ' ' +  student.name}}</span>
       <span class="user__info">Група {{ student.group }}, ХНУРЕ, Харків</span>
     </div>

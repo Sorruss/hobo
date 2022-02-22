@@ -1,3 +1,3 @@
 module.exports = {
-  publicPath: '/work-conditions/'
+  publicPath: '/workconds/'
 }
